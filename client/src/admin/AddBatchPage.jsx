@@ -15,16 +15,19 @@ const EMPTY = {
   tested:      'false',
   hasList:     'false',
   price:       '',
+  moq:         '',
   status:      'available',
 };
 
 export default function AddBatchPage() {
   const navigate = useNavigate();
   const [form,    setForm]    = useState(EMPTY);
-  const [images,  setImages]  = useState([]); // File objects
-  const [previews,setPreviews]= useState([]); // data URLs
-  const [status,  setStatus]  = useState('idle'); // idle | saving | saved | error
-  const [errMsg,  setErrMsg]  = useState('');
+  const [images,   setImages]   = useState([]); // File objects
+  const [previews, setPreviews] = useState([]); // data URLs
+  const [pdfFile,  setPdfFile]  = useState(null); // PDF File object
+  const [pdfName,  setPdfName]  = useState('');   // PDF filename display
+  const [status,   setStatus]   = useState('idle');
+  const [errMsg,   setErrMsg]   = useState('');
 
   const handle = e => {
     setErrMsg('');
@@ -46,6 +49,11 @@ export default function AddBatchPage() {
     setPreviews(prev => prev.filter((_,idx) => idx !== i));
   };
 
+  const handlePdf = e => {
+    const file = e.target.files[0];
+    if (file) { setPdfFile(file); setPdfName(file.name); }
+  };
+
   const submit = async e => {
     e.preventDefault();
     if (!form.batchNumber || !form.title || !form.quantity || !form.price) {
@@ -57,10 +65,10 @@ export default function AddBatchPage() {
     setErrMsg('');
 
     try {
-      // Use FormData so images upload alongside the fields
       const fd = new FormData();
       Object.entries(form).forEach(([k, v]) => fd.append(k, v));
       images.forEach(img => fd.append('images', img));
+      if (pdfFile) fd.append('images', pdfFile); // multer picks it up by mimetype
 
       await api.post('/batches', fd, {
         headers: { 'Content-Type': 'multipart/form-data' },
@@ -136,6 +144,12 @@ export default function AddBatchPage() {
                 <input name="price" type="number" min="0" step="0.01" value={form.price} onChange={handle}
                   placeholder="e.g. 1490" required />
                 <span className="bfield-hint">Shown only to logged-in buyers</span>
+              </div>
+              <div className="bfield">
+                <label>MOQ (Min. Order Qty)</label>
+                <input name="moq" type="number" min="1" value={form.moq} onChange={handle}
+                  placeholder="e.g. 10" />
+                <span className="bfield-hint">Leave blank if no minimum</span>
               </div>
             </div>
           </div>
@@ -259,6 +273,34 @@ export default function AddBatchPage() {
                 </svg>
                 <p>Click to upload images</p>
                 <span>or drag and drop</span>
+              </label>
+            )}
+          </div>
+
+          {/* ── Section 5: Product List PDF ─────────────────── */}
+          <div className="form-section">
+            <h3 className="form-section-title">Product list file (PDF)</h3>
+            <p className="form-section-sub">Upload a PDF product list. Buyers can download it from the listing.</p>
+            {pdfName ? (
+              <div className="pdf-preview">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                  <path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/>
+                  <polyline points="14 2 14 8 20 8"/>
+                </svg>
+                <span>{pdfName}</span>
+                <button type="button" className="pdf-remove" onClick={() => { setPdfFile(null); setPdfName(''); }}>Remove</button>
+              </div>
+            ) : (
+              <label className="upload-area">
+                <input type="file" accept="application/pdf" onChange={handlePdf} style={{ display: 'none' }} />
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
+                  <path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/>
+                  <polyline points="14 2 14 8 20 8"/>
+                  <line x1="12" y1="18" x2="12" y2="12"/>
+                  <line x1="9" y1="15" x2="15" y2="15"/>
+                </svg>
+                <p>Click to upload PDF</p>
+                <span>Max 10MB</span>
               </label>
             )}
           </div>

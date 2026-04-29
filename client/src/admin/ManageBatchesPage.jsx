@@ -18,6 +18,7 @@ function EditDrawer({ batch, onClose, onSaved }) {
     grade:       batch.grade       || '',
     tested:      String(batch.tested  ?? false),
     hasList:     String(batch.hasList ?? false),
+    moq:         batch.moq         || '',
     status:      batch.status      || 'available',
   });
   const [saving, setSaving] = useState(false);
@@ -105,6 +106,13 @@ function EditDrawer({ batch, onClose, onSaved }) {
                 <label>Price (£)</label>
                 <input name="price" type="number" min="0" step="0.01" value={form.price} onChange={handle} />
               </div>
+            </div>
+            <div className="ds-row">
+              <div className="df">
+                <label>MOQ (Min. Order Qty)</label>
+                <input name="moq" type="number" min="1" value={form.moq} onChange={handle} placeholder="No minimum" />
+              </div>
+              <div className="df" />
             </div>
           </div>
 

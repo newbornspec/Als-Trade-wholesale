@@ -82,6 +82,19 @@ const batchSchema = new mongoose.Schema(
       },
     ],
 
+    // ── Product list file (PDF) ───────────────────────────────────────
+    productListFile: {
+      type: String,
+      // stored as URL path e.g. /uploads/lists/RT3426-list.pdf
+    },
+
+    // ── Minimum Order Quantity ────────────────────────────────────────
+    moq: {
+      type:    Number,
+      min:     [1, 'MOQ must be at least 1'],
+      default: null,
+    },
+
     // ── Status ────────────────────────────────────────────────────────
     status: {
       type:    String,

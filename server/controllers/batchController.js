@@ -62,13 +62,22 @@ const createBatch = async (req, res) => {
   try {
     const {
       batchNumber, title, quantity, category, brand,
-      description, specs, grade, tested, hasList, price, status,
+      description, specs, grade, tested, hasList, price, status, moq,
     } = req.body;
 
-    // Collect uploaded image paths
-    const images = req.files
-      ? req.files.map(f => `/uploads/batches/${f.filename}`)
-      : [];
+    // Separate images and PDF list file
+    const images          = [];
+    let   productListFile = null;
+
+    if (req.files) {
+      req.files.forEach(f => {
+        if (f.mimetype === 'application/pdf') {
+          productListFile = `/uploads/lists/${f.filename}`;
+        } else {
+          images.push(`/uploads/batches/${f.filename}`);
+        }
+      });
+    }
 
     const batch = await Batch.create({
       batchNumber, title, quantity, category, brand,
@@ -76,6 +85,8 @@ const createBatch = async (req, res) => {
       tested:  tested === 'true' || tested === true,
       hasList: hasList === 'true' || hasList === true,
       price, status, images,
+      moq: moq ? Number(moq) : null,
+      productListFile,
     });
 
     res.status(201).json(batch);
@@ -95,12 +106,24 @@ const createBatch = async (req, res) => {
 const updateBatch = async (req, res) => {
   try {
     const updates = { ...req.body };
+    if (updates.moq) updates.moq = Number(updates.moq);
 
-    // Append new images if uploaded
+    // Handle file uploads (images + PDF)
     if (req.files && req.files.length > 0) {
-      const newImages = req.files.map(f => `/uploads/batches/${f.filename}`);
-      const existing  = await Batch.findById(req.params.id).select('images');
-      updates.images  = [...(existing?.images || []), ...newImages];
+      const existing = await Batch.findById(req.params.id).select('images productListFile');
+      const newImages = [];
+
+      req.files.forEach(f => {
+        if (f.mimetype === 'application/pdf') {
+          updates.productListFile = `/uploads/lists/${f.filename}`;
+        } else {
+          newImages.push(`/uploads/batches/${f.filename}`);
+        }
+      });
+
+      if (newImages.length > 0) {
+        updates.images = [...(existing?.images || []), ...newImages];
+      }
     }
 
     const batch = await Batch.findByIdAndUpdate(req.params.id, updates, {

@@ -126,6 +126,20 @@
 .spec-row.highlight .spec-value { color: var(--accent); font-weight: 600; }
 .spec-label { font-size: 13px; color: var(--gray-400); flex-shrink: 0; }
 .spec-value { font-size: 13px; color: var(--gray-700); text-align: right; }
+
+/* PDF download link */
+.pdf-download-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--green);
+  border-bottom: 1px solid transparent;
+  transition: border-color var(--t);
+}
+.pdf-download-link:hover { border-color: var(--green); }
+.pdf-download-link svg { color: var(--green); }
 .desc-text { font-size: 14px; color: var(--gray-500); line-height: 1.8; }
 .specs-mono { font-family: var(--font-body); font-size: 14px; font-weight: 600; color: var(--gray-700); }
 
