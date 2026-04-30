@@ -88,3 +88,8 @@
   .footer-inner { grid-template-columns: 1fr; }
   .footer-bottom { flex-direction: column; gap: 4px; text-align: center; }
 }
+.footer-logo-img {
+  height: 50px;
+  width: auto;
+  object-fit: contain;
+}

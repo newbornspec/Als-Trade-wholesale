@@ -1,5 +1,6 @@
 import { Link } from 'react-router-dom';
 import './Footer.css';
+import logo from '../assets/logo.png';
 
 export default function Footer() {
   return (
@@ -7,9 +8,8 @@ export default function Footer() {
       <div className="container footer-inner">
         <div className="footer-brand">
           <div className="footer-logo">
-            <span className="logo-dw">ALS</span>
-            <span className="logo-text">A.L.S<br/>Trade LTD</span>
-          </div>
+          <img src={logo} alt="Your Company" className="footer-logo-img" /> 
+             </div>
           <p className="footer-tagline">
             Worldwide import &amp; export of<br/>bulk IT hardware.
           </p>
