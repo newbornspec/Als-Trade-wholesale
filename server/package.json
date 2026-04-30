@@ -1,7 +1,7 @@
 {
   "name": "derbywholesale-server",
   "version": "1.0.0",
-  "description": "Derby Wholesale B2B wholesale platform — Node.js/Express backend",
+  "description": "A.L.S Trade  B2B wholesale platform — Node.js/Express backend",
   "main": "index.js",
   "scripts": {
     "dev": "nodemon index.js",

@@ -99,7 +99,7 @@ export default function ContactPage() {
 
           {/* Quick contact pills */}
           <div className="quick-contact">
-            <a href="tel:+44 7911 123456" className="qc-pill">
+            <a href="tel:0203 747 1310" className="qc-pill">
               <div className="qc-icon">
                 <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
                   <path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07A19.5 19.5 0 013.07 8.81a19.79 19.79 0 01-3.07-8.68A2 2 0 012 0h3a2 2 0 012 1.72c.127.96.361 1.903.7 2.81a2 2 0 01-.45 2.11L6.09 7.91a16 16 0 006 6l1.27-1.27a2 2 0 012.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0122 14.92v2z" />
@@ -107,11 +107,11 @@ export default function ContactPage() {
               </div>
               <div>
                 <span className="qc-label">Call us</span>
-                <span className="qc-value">+44 7911 123456</span>
+                <span className="qc-value">0203 747 1310</span>
               </div>
             </a>
 
-            <a href="mailto:info@derbywholesale.co.uk" className="qc-pill">
+            <a href="mailto:info@alservices.org.uk" className="qc-pill">
               <div className="qc-icon">
                 <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
                   <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z" />
@@ -120,7 +120,7 @@ export default function ContactPage() {
               </div>
               <div>
                 <span className="qc-label">Email us</span>
-                <span className="qc-value">info@derbywholesale.co.uk</span>
+                <span className="qc-value">info@alservices.org.uk</span>
               </div>
             </a>
 
@@ -319,8 +319,8 @@ export default function ContactPage() {
                 </div>
                 <div>
                   <span className="info-row-label">Phone / WhatsApp</span>
-                  <a href="tel:+44 7911 123456" className="info-row-value">
-                    +44 7911 123456
+                  <a href="tel:0203 747 1310" className="info-row-value">
+                    0203 747 1310
                   </a>
                 </div>
               </div>
@@ -334,8 +334,8 @@ export default function ContactPage() {
                 </div>
                 <div>
                   <span className="info-row-label">Email</span>
-                  <a href="mailto:info@derbywholesale.co.uk" className="info-row-value">
-                    info@derbywholesale.co.uk
+                  <a href="mailto:info@alservices.org.uk" className="info-row-value">
+                    info@alservices.org.uk
                   </a>
                 </div>
               </div>
@@ -350,8 +350,8 @@ export default function ContactPage() {
                 <div>
                   <span className="info-row-label">Address</span>
                   <span className="info-row-value">
-                    123 High Street<br />
-                    Derby DE1 1AA<br />
+                    Unit 11a Waterhall Farm<br />
+                    Hertford SG138LE<br />
                     United Kingdom
                   </span>
                 </div>
@@ -380,7 +380,7 @@ export default function ContactPage() {
                 <div>
                   <span className="info-row-label">Company</span>
                   <span className="info-row-value">
-                    Derby Wholesale Ltd<br />
+                    A.L.S Trade  Ltd<br />
                     Company No: 12345678<br />
                     VAT: GB123456789
                   </span>
@@ -408,10 +408,10 @@ export default function ContactPage() {
               <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
                 <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z" /><circle cx="12" cy="10" r="3" />
               </svg>
-              123 High Street, Derby DE1 1AA, United Kingdom
+              Unit 11a Waterhall Farm, Hertford SG138LE, United Kingdom
             </div>
             <iframe
-              title="Derby Wholesale location"
+              title="A.L.S Trade  location"
               src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2484.5!2d6.051!3d51.39!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0x0!2zNTHCsDIzJzI0LjAiTiA2wrAwMycwMy42IkU!5e0!3m2!1sen!2snl!4v1700000000000"
               width="100%"
               height="260"

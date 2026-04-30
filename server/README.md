@@ -1,6 +1,6 @@
-# Derby Wholesale — Node.js Backend
+# A.L.S Trade  — Node.js Backend
 
-REST API built with Node.js, Express and MongoDB for the Derby Wholesale B2B wholesale platform.
+REST API built with Node.js, Express and MongoDB for the A.L.S Trade  B2B wholesale platform.
 
 ---
 

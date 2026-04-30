@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { Link, NavLink, useNavigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 import './Navbar.css';
+import logo from '../assets/logo.png';
 
 export default function Navbar() {
   const { user, logout } = useAuth();
@@ -21,8 +22,7 @@ export default function Navbar() {
       <div className="nav-inner container">
         {/* Logo */}
         <Link to="/" className="nav-logo" onClick={close}>
-          <span className="logo-dw">DW</span>
-          <span className="logo-text">Derby<br/>Wholesale</span>
+        <img src={logo} alt="ALS Trade LTD" className="logo-img" />
         </Link>
 
         {/* Desktop links */}

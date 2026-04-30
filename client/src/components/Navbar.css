@@ -9,6 +9,11 @@
   box-shadow: 0 1px 0 rgba(0,0,0,.06);
 }
 
+.logo-img {
+  height: 40px;
+  width: auto;
+  object-fit: contain;
+}
 .nav-inner {
   height: 100%;
   display: flex;

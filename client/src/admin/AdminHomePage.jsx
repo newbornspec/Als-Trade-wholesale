@@ -105,7 +105,7 @@ export default function AdminHomePage() {
             <p className="ah-greeting">{greeting},</p>
             <h1 className="ah-name">{user?.name || 'Admin'}</h1>
             <p className="ah-tagline">
-              Here's what's happening with Derby Wholesale today.
+              Here's what's happening with A.L.S Trade  today.
             </p>
           </div>
           <div className="ah-banner-meta">

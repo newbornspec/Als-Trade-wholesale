@@ -67,7 +67,7 @@ export default function AdminLayout({ children }) {
         <div className="as-logo">
           <span className="logo-dw">DW</span>
           <div>
-            <p className="as-logo-name">Derby Wholesale</p>
+            <p className="as-logo-name">A.L.S Trade </p>
             <p className="as-logo-tag">Admin panel</p>
           </div>
         </div>

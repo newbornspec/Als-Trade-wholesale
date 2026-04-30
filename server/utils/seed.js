@@ -121,7 +121,7 @@ const seedDB = async () => {
     // Create admin user
     await User.create({
       name:        'Sem',
-      companyName: 'Derby Wholesale Ltd',
+      companyName: 'A.L.S Trade  Ltd',
       email:       'admin@derbywholesale.co.uk',
       phone:       '+31622971053',
       country:     'United Kingdom',

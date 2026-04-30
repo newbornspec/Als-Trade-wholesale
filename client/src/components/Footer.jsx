@@ -7,8 +7,8 @@ export default function Footer() {
       <div className="container footer-inner">
         <div className="footer-brand">
           <div className="footer-logo">
-            <span className="logo-dw">DW</span>
-            <span className="logo-text">Derby<br/>Wholesale</span>
+            <span className="logo-dw">ALS</span>
+            <span className="logo-text">A.L.S<br/>Trade LTD</span>
           </div>
           <p className="footer-tagline">
             Worldwide import &amp; export of<br/>bulk IT hardware.
@@ -43,16 +43,16 @@ export default function Footer() {
 
         <div className="footer-col">
           <h4>Contact</h4>
-          <a href="tel:+44 7911 123456">+44 7911 123456</a>
-          <a href="mailto:info@derbywholesale.co.uk">info@derbywholesale.co.uk</a>
+          <a href="tel:0203 747 1310">0203 747 1310</a>
+          <a href="mailto:info@alservices.org.uk">info@alservices.org.uk</a>
           <p style={{color:'var(--gray-500)', fontSize:'13px', marginTop:'4px'}}>
-            123 High Street<br/>Derby DE1 1AA<br/>United Kingdom
+            Unit 11a Waterhall Farm<br/>Hertford SG138LE<br/>United Kingdom
           </p>
         </div>
       </div>
 
       <div className="footer-bottom container">
-        <p>© {new Date().getFullYear()} Derby Wholesale Ltd All rights reserved.</p>
+        <p>© {new Date().getFullYear()} A.L.S Trade  Ltd All rights reserved.</p>
         <p>Company No: 12345678 | VAT: GB123456789</p>
       </div>
     </footer>

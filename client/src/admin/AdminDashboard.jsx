@@ -30,7 +30,7 @@ export default function AdminDashboard() {
     <div className="admin-page">
       <div className="admin-page-header">
         <h1 className="admin-page-title">Dashboard</h1>
-        <p className="admin-page-sub">Overview of your Derby Wholesale inventory</p>
+        <p className="admin-page-sub">Overview of your A.L.S Trade  inventory</p>
       </div>
 
       {/* Stats grid */}

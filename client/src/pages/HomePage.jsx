@@ -246,7 +246,7 @@ export default function HomePage() {
         <div className="container">
           <div className="section-header centered">
             <p className="section-eyebrow">Why us</p>
-            <h2 className="section-title">Why trade with Derby Wholesale</h2>
+            <h2 className="section-title">Why trade with A.L.S Trade </h2>
           </div>
 
           <div className="usp-grid">

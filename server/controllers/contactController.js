@@ -37,7 +37,7 @@ const sendEnquiry = async (req, res) => {
     // 1. Save enquiry to database
     await Enquiry.create({ name, companyName, phone, email, message, batchRef });
 
-    // 2. Send email notification to Derby Wholesale
+    // 2. Send email notification to A.L.S Trade 
     const transporter = createTransporter();
 
     await transporter.sendMail({
@@ -47,7 +47,7 @@ const sendEnquiry = async (req, res) => {
       subject: `New enquiry — ${name}${companyName ? ` (${companyName})` : ''}`,
       html: `
         <div style="font-family: sans-serif; max-width: 600px;">
-          <h2 style="color: #1a1a1a;">New enquiry via Derby Wholesale website</h2>
+          <h2 style="color: #1a1a1a;">New enquiry via A.L.S Trade  website</h2>
           ${batchInfo}
           <table style="width:100%; border-collapse:collapse;">
             <tr><td style="padding:8px 0; color:#666; width:130px;">Name</td><td style="padding:8px 0;"><strong>${name}</strong></td></tr>
@@ -66,17 +66,17 @@ const sendEnquiry = async (req, res) => {
     await transporter.sendMail({
       from:    process.env.EMAIL_FROM || process.env.EMAIL_USER,
       to:      email,
-      subject: 'We received your message — Derby Wholesale',
+      subject: 'We received your message — A.L.S Trade ',
       html: `
         <div style="font-family: sans-serif; max-width: 600px;">
           <h2>Thank you, ${name}!</h2>
           <p>We have received your message and will contact you as soon as possible.</p>
           <p>In the meantime you can also reach us directly:</p>
           <ul>
-            <li>Phone / WhatsApp: <a href="tel:+44 7911 123456">+44 7911 123456</a></li>
-            <li>Email: <a href="mailto:info@derbywholesale.co.uk">info@derbywholesale.co.uk</a></li>
+            <li>Phone / WhatsApp: <a href="tel:0203 747 1310">0203 747 1310</a></li>
+            <li>Email: <a href="mailto:info@alservices.org.uk">info@alservices.org.uk</a></li>
           </ul>
-          <p style="color:#666; font-size:13px;">Derby Wholesale Ltd — 123 High Street, Derby DE1 1AA, United Kingdom</p>
+          <p style="color:#666; font-size:13px;">A.L.S Trade  Ltd — Unit 11a Waterhall Farm, Hertford SG138LE, United Kingdom</p>
         </div>
       `,
     });

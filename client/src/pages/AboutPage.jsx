@@ -179,7 +179,7 @@ export default function AboutPage() {
             <h2 className="story-title">Started with one batch.<br/>Built from there.</h2>
 
             <p>
-              Derby Wholesale was founded in the United Kingdom with a straightforward mission:
+              A.L.S Trade  was founded in the United Kingdom with a straightforward mission:
               connect businesses that have surplus IT hardware with businesses that need it,
               at fair prices, with no unnecessary complexity.
             </p>
@@ -206,7 +206,7 @@ export default function AboutPage() {
               <div className="sc-logo">
                 <span className="logo-dw">DW</span>
                 <div>
-                  <p className="sc-company">Derby Wholesale Ltd</p>
+                  <p className="sc-company">A.L.S Trade  Ltd</p>
                   <p className="sc-tagline">Bulk IT Hardware</p>
                 </div>
               </div>
@@ -338,13 +338,13 @@ export default function AboutPage() {
                 <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
                   <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3"/>
                 </svg>
-                123 High Street, Derby DE1 1AA, United Kingdom
+                Unit 11a Waterhall Farm, Hertford SG138LE, United Kingdom
               </div>
               <div className="ld-row">
                 <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
                   <path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07A19.5 19.5 0 013.07 8.81a19.79 19.79 0 01-3.07-8.68A2 2 0 012 0h3a2 2 0 012 1.72c.127.96.361 1.903.7 2.81a2 2 0 01-.45 2.11L6.09 7.91a16 16 0 006 6l1.27-1.27a2 2 0 012.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0122 14.92v2z"/>
                 </svg>
-                +44 7911 123456
+                0203 747 1310
               </div>
               <div className="ld-row">
                 <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
@@ -374,7 +374,7 @@ export default function AboutPage() {
           {/* Map */}
           <div className="location-map">
             <iframe
-              title="Derby Wholesale location"
+              title="A.L.S Trade  location"
               src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2484.5!2d6.051!3d51.39!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0x0!2zNTHCsDIzJzI0LjAiTiA2wrAwMycwMy42IkU!5e0!3m2!1sen!2snl!4v1700000000000"
               width="100%"
               height="100%"

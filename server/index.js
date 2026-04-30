@@ -70,7 +70,7 @@ app.use((err, req, res, next) => {
 // ── Start server ───────────────────────────────────────────────────────────
 const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => {
-  console.log(`\n Derby Wholesale API running`);
+  console.log(`\n A.L.S Trade  API running`);
   console.log(` http://localhost:${PORT}`);
   console.log(` Mode: ${process.env.NODE_ENV}\n`);
 });
