@@ -157,3 +157,8 @@
 @media (max-width: 480px) {
   .form-row-2 { grid-template-columns: 1fr; }
 }
+.auth-logo-img {
+  height: 48px;
+  width: auto;
+  object-fit: contain;
+}

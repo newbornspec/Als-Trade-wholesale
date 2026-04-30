@@ -3,6 +3,7 @@ import { Link, useNavigate, useLocation } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 import api from '../api/axios';
 import './AuthPages.css';
+import logo from '../assets/logo.png';
 
 export default function SignInPage() {
   const { login }  = useAuth();
@@ -42,12 +43,10 @@ export default function SignInPage() {
       <div className="auth-brand">
         <div className="auth-brand-bg" />
         <div className="auth-brand-inner">
-
-          <Link to="/" className="auth-logo">
-            <span className="logo-dw">DW</span>
-            <span className="logo-text">Derby<br/>Wholesale</span>
-          </Link>
-
+        <Link to="/" className="auth-logo">
+  <img src={logo} alt="Derby Wholesale" className="auth-logo-img" />
+</Link>
+         
           <div className="auth-brand-copy">
             <h2 className="auth-brand-title">
               Bulk IT hardware<br/>

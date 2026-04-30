@@ -3,6 +3,7 @@ import { Link, useNavigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 import api from '../api/axios';
 import './AuthPages.css';
+import logo from '../assets/logo.png';
 
 function getStrength(pw) {
   if (!pw) return { score: 0, label: '', bars: [] };
@@ -90,11 +91,10 @@ export default function SignUpPage() {
       <div className="auth-brand">
         <div className="auth-brand-bg" />
         <div className="auth-brand-inner">
-
-          <Link to="/" className="auth-logo">
-            <span className="logo-dw">DW</span>
-            <span className="logo-text">Derby<br/>Wholesale</span>
-          </Link>
+        <Link to="/" className="auth-logo">
+  <img src={logo} alt="Derby Wholesale" className="auth-logo-img" />
+</Link>    
+         
 
           <div className="auth-brand-copy">
             <h2 className="auth-brand-title">Join hundreds of<br/><span style={{color:'var(--accent)'}}>B2B buyers.</span></h2>
