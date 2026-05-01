@@ -1,8 +1,6 @@
-/* ═══════════════════════════════════════════════════════
-   AUTH PAGES — completely clean layout
+/*   AUTH PAGES — completely clean layout
    Two columns: left dark (420px) + right form (rest)
    Footer sits below both, full width
-════════════════════════════════════════════════════════ */
 
 .auth-page {
   padding-top: var(--nav-h);
@@ -53,7 +51,7 @@
   gap: 10px;
   text-decoration: none;
 }
-.auth-logo .logo-dw {
+.auth-logo .logo-als {
   width: 38px; height: 38px;
   background: var(--accent);
   color: var(--white);
@@ -156,9 +154,4 @@
 }
 @media (max-width: 480px) {
   .form-row-2 { grid-template-columns: 1fr; }
-}
-.auth-logo-img {
-  height: 48px;
-  width: auto;
-  object-fit: contain;
 }

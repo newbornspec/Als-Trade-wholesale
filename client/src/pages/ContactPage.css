@@ -1,5 +1,4 @@
    CONTACT PAGE
-═══════════════════════════════════════════════════════════════ */
 .contact-page { padding-top: var(--nav-h); min-height: 100vh; background: var(--off-white); }
 
 .contact-hero { background: var(--white); border-bottom: 1px solid var(--gray-100); padding: 4rem 0 3rem; }
@@ -92,6 +91,3 @@ a.info-row-value:hover { color: var(--accent); }
 
 @media (max-width: 960px) { .contact-body { grid-template-columns: 1fr; } .contact-right { position: static; } .quick-contact { flex-direction: row; flex-wrap: wrap; } .qc-pill { min-width: 220px; flex: 1; } }
 @media (max-width: 600px) { .ch-inner { flex-direction: column; } .quick-contact { flex-direction: column; } .qc-pill { min-width: 0; width: 100%; } .form-row { grid-template-columns: 1fr; } .form-footer { flex-direction: column; align-items: stretch; } .submit-btn { justify-content: center; } }
-
-
-

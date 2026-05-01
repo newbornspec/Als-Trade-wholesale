@@ -1,5 +1,4 @@
    ABOUT PAGE
-═══════════════════════════════════════════════════════════════ */
 .about-page { padding-top: var(--nav-h); min-height: 100vh; background: var(--white); }
 
 .about-hero {
@@ -168,6 +167,3 @@
   .number-item:nth-child(2) { border-right: none; }
 }
 @media (max-width: 640px) { .values-grid { grid-template-columns: 1fr; } .trade-grid { grid-template-columns: 1fr; } .about-cta-inner,.location-actions { flex-direction: column; } .about-cta-btns { flex-direction: column; } .about-cta-btns .btn,.location-actions .btn { justify-content: center; } }
-
-
-/* ═══════════════════════════════════════════════════════════════

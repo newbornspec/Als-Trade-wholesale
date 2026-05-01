@@ -1,5 +1,4 @@
    HOW IT WORKS
-═══════════════════════════════════════════════════════════════ */
 .hiw-page { padding-top: var(--nav-h); min-height: 100vh; background: var(--white); }
 
 .hiw-hero { background: var(--white); border-bottom: 1px solid var(--gray-100); padding: 4rem 0; }
@@ -78,6 +77,3 @@
 @media (max-width: 1024px) { .step-row,.step-row.reverse { grid-template-columns: 44px 1fr; } .step-row.reverse .step-card { grid-column: 2; } .step-row.reverse .step-spacer { display: none; } .step-spacer { display: none; } .grades-grid { grid-template-columns: repeat(2, 1fr); } .hiw-faq-inner { grid-template-columns: 1fr; gap: 2rem; } }
 @media (max-width: 700px) { .hiw-hero-inner { flex-direction: column; } .hiw-pills { flex-direction: row; flex-wrap: wrap; } .hiw-pill { min-width: 0; flex: 1; min-width: 140px; } .step-row,.step-row.reverse { grid-template-columns: 36px 1fr; } .step-card { flex-direction: column; } .grades-grid { grid-template-columns: 1fr 1fr; } .hiw-cta-inner { flex-direction: column; } .hiw-cta-btns { flex-direction: column; } .hiw-cta-btns .btn { justify-content: center; } }
 @media (max-width: 480px) { .grades-grid { grid-template-columns: 1fr; } }
-
-
-/* ═══════════════════════════════════════════════════════════════

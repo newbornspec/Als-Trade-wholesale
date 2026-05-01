@@ -1,5 +1,4 @@
    SOLD STOCK PAGE
-═══════════════════════════════════════════════════════════════ */
 .sold-page { padding-top: var(--nav-h); min-height: 100vh; background: var(--off-white); }
 
 .sold-hero { background: var(--white); border-bottom: 1px solid var(--gray-100); padding: 4rem 0 3rem; }
@@ -86,6 +85,3 @@
 
 @media (max-width: 900px) { .sh-inner { flex-direction: column; align-items: flex-start; } .sh-stats { width: 100%; justify-content: space-around; } .sold-toolbar { flex-direction: column; align-items: flex-start; } .sold-controls { width: 100%; } .search-box { flex: 1; } .search-box input { width: 100%; } }
 @media (max-width: 600px) { .sold-grid { grid-template-columns: 1fr; } .cat-tabs { width: 100%; overflow-x: auto; } .sold-cta-inner { flex-direction: column; } .sold-cta-btns { flex-direction: column; } .sold-cta-btns .btn { justify-content: center; } }
-
-
-/* ═══════════════════════════════════════════════════════════════
