@@ -1,98 +1,13 @@
-/*   AUTH PAGES — completely clean layout
-   Two columns: left dark (420px) + right form (rest)
-   Footer sits below both, full width
-
 .auth-page {
-  padding-top: var(--nav-h);
-  display: grid;
-  grid-template-columns: 420px 1fr;
+  margin-top: var(--nav-h);
   min-height: calc(100vh - var(--nav-h));
+  display: grid;
+  place-items: center;
   width: 100%;
-}
-
-/* LEFT column */
-.auth-brand {
-  background: var(--gray-800);
-  display: flex;
-  flex-direction: column;
-  overflow: hidden;
-  position: relative;
-}
-
-/* RIGHT column */
-.auth-form-panel {
   background: var(--off-white);
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  padding: 3rem 2rem;
+  padding: 2rem;
+  box-sizing: border-box;
 }
-
-/* ── Brand internals ─────────────────────────────── */
-.auth-brand-bg {
-  position: absolute;
-  inset: 0;
-  background: radial-gradient(ellipse 100% 80% at 0% 100%, rgba(201,146,43,.15) 0%, transparent 60%);
-  pointer-events: none;
-}
-.auth-brand-inner {
-  position: relative;
-  z-index: 1;
-  display: flex;
-  flex-direction: column;
-  gap: 2rem;
-  padding: 2.5rem 2rem;
-  height: 100%;
-}
-.auth-logo {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  text-decoration: none;
-}
-.auth-logo .logo-als {
-  width: 38px; height: 38px;
-  background: var(--accent);
-  color: var(--white);
-  font-family: var(--font-display);
-  font-size: 15px; font-weight: 800;
-  display: flex; align-items: center; justify-content: center;
-  border-radius: 9px; flex-shrink: 0;
-}
-.auth-logo .logo-text {
-  font-family: var(--font-display);
-  font-size: 12px; font-weight: 800;
-  letter-spacing: 0.02em; line-height: 1.2;
-  color: var(--white); text-transform: uppercase;
-}
-.auth-logo-img {
-  height: 44px; width: auto; object-fit: contain;
-}
-.auth-brand-title {
-  font-family: var(--font-display);
-  font-size: clamp(22px, 2.5vw, 30px);
-  font-weight: 800; letter-spacing: -0.02em;
-  color: var(--white); line-height: 1.2;
-  margin-bottom: 0.6rem; text-transform: none;
-}
-.auth-brand-sub { font-size: 13px; color: var(--gray-400); line-height: 1.65; }
-.auth-features  { display: flex; flex-direction: column; gap: 10px; }
-.auth-feature   { display: flex; align-items: center; gap: 10px; font-size: 13px; color: var(--gray-400); }
-.af-dot         { width: 6px; height: 6px; border-radius: 50%; background: var(--accent); flex-shrink: 0; }
-.auth-brand-stats {
-  display: flex; align-items: center; gap: 1.5rem;
-  margin-top: auto;
-  padding-top: 1.5rem; padding-bottom: 1rem;
-  border-top: 1px solid rgba(255,255,255,.12);
-}
-.abs-stat  { display: flex; flex-direction: column; gap: 2px; }
-.abs-num   { font-family: var(--font-display); font-size: 24px; font-weight: 800; color: var(--white); line-height: 1; letter-spacing: -0.03em; }
-.abs-lbl   { font-size: 11px; color: var(--gray-500); text-transform: uppercase; letter-spacing: .07em; }
-.abs-divider { width: 1px; height: 28px; background: rgba(255,255,255,.1); }
-.register-benefits { display: flex; flex-direction: column; gap: 10px; }
-.reg-benefit { display: flex; align-items: center; gap: 10px; font-size: 13px; color: var(--gray-400); }
-.rb-icon { font-size: 15px; width: 28px; height: 28px; background: var(--accent-lt); border: 1px solid var(--accent-mid); border-radius: 7px; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
 
 /* ── Form internals ──────────────────────────────── */
 .auth-form-inner { width: 100%; max-width: 440px; display: flex; flex-direction: column; gap: 1.25rem; }
@@ -148,8 +63,6 @@
 
 /* ── Responsive ──────────────────────────────────── */
 @media (max-width: 900px) {
-  .auth-page { grid-template-columns: 1fr; }
-  .auth-brand { display: none; }
   .auth-form-panel { padding: 2rem 1.25rem; min-height: calc(100vh - var(--nav-h)); }
 }
 @media (max-width: 480px) {

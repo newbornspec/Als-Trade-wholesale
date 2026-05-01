@@ -3,7 +3,6 @@ import { Link, useNavigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 import api from '../api/axios';
 import './AuthPages.css';
-import logo from '../assets/logo.png';
 
 function getStrength(pw) {
   if (!pw) return { score: 0, label: '', bars: [] };
@@ -87,58 +86,7 @@ export default function SignUpPage() {
   return (
     <div className="auth-page">
 
-      {/* ── Left brand panel ── */}
-      <div className="auth-brand">
-        <div className="auth-brand-bg" />
-        <div className="auth-brand-inner">
-        <Link to="/" className="auth-logo">
-  <img src={logo} alt="Derby Wholesale" className="auth-logo-img" />
-</Link>    
-         
-
-          <div className="auth-brand-copy">
-            <h2 className="auth-brand-title">Join hundreds of<br/><span style={{color:'var(--accent)'}}>B2B buyers.</span></h2>
-            <p className="auth-brand-sub">Register your company for free and get instant access to live pricing on all available batches.</p>
-          </div>
-
-          <div className="register-benefits">
-            {[
-              { icon: '💰', text: 'See prices on every batch instantly' },
-              { icon: '📦', text: 'Browse laptops, phones, tablets & mixed lots' },
-              { icon: '✉️', text: 'Enquire directly from any listing' },
-              { icon: '🌍', text: 'Worldwide shipping arranged for you' },
-              { icon: '🔄', text: 'Buy as many batches as you like' },
-            ].map((b, i) => (
-              <div key={i} className="reg-benefit">
-                <span className="rb-icon">{b.icon}</span>
-                <span>{b.text}</span>
-              </div>
-            ))}
-          </div>
-
-          <div className="auth-brand-stats">
-            <div className="abs-stat">
-              <span className="abs-num">Free</span>
-              <span className="abs-lbl">To register</span>
-            </div>
-            <div className="abs-divider" />
-            <div className="abs-stat">
-              <span className="abs-num">2 min</span>
-              <span className="abs-lbl">To sign up</span>
-            </div>
-            <div className="abs-divider" />
-            <div className="abs-stat">
-              <span className="abs-num">0</span>
-              <span className="abs-lbl">Hidden fees</span>
-            </div>
-          </div>
-
-        </div>
-      </div>
-
-      {/* ── Right form panel ── */}
-      <div className="auth-form-panel">
-        <div className="auth-form-inner" style={{ maxWidth: '480px' }}>
+      <div className="auth-form-inner" style={{ maxWidth: '480px' }}>
 
           <div className="auth-top-link">
             <span>Already have an account?</span>
@@ -299,7 +247,6 @@ export default function SignUpPage() {
             </p>
           </div>
 
-        </div>
       </div>
 
     </div>

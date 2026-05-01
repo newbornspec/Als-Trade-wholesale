@@ -3,7 +3,6 @@ import { Link, useNavigate, useLocation } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 import api from '../api/axios';
 import './AuthPages.css';
-import logo from '../assets/logo.png';
 
 export default function SignInPage() {
   const { login }  = useAuth();
@@ -39,57 +38,7 @@ export default function SignInPage() {
   return (
     <div className="auth-page">
 
-      {/* ── Left brand panel ── */}
-      <div className="auth-brand">
-        <div className="auth-brand-bg" />
-        <div className="auth-brand-inner">
-        <Link to="/" className="auth-logo">
-  <img src={logo} alt="Derby Wholesale" className="auth-logo-img" />
-</Link>
-         
-          <div className="auth-brand-copy">
-            <h2 className="auth-brand-title">
-              Bulk IT hardware<br/>
-              <span style={{ color: 'var(--accent)' }}>at trade prices.</span>
-            </h2>
-            <p className="auth-brand-sub">
-              Log in to access live pricing on all available batches
-              and enquire directly on any listing.
-            </p>
-          </div>
-
-          <div className="auth-features">
-            {[
-              'See prices on every batch',
-              'Enquire directly from listings',
-              'B2B verified buyers only',
-              'Worldwide shipping available',
-            ].map((f, i) => (
-              <div key={i} className="auth-feature">
-                <div className="af-dot" />
-                {f}
-              </div>
-            ))}
-          </div>
-
-          <div className="auth-brand-stats">
-            <div className="abs-stat">
-              <span className="abs-num">500+</span>
-              <span className="abs-lbl">Batches sold</span>
-            </div>
-            <div className="abs-divider" />
-            <div className="abs-stat">
-              <span className="abs-num">20+</span>
-              <span className="abs-lbl">Countries</span>
-            </div>
-          </div>
-
-        </div>
-      </div>
-
-      {/* ── Right form panel ── */}
-      <div className="auth-form-panel">
-        <div className="auth-form-inner">
+      <div className="auth-form-inner">
 
           <div className="auth-top-link">
             <span>Don't have an account?</span>
@@ -168,7 +117,6 @@ export default function SignInPage() {
             </p>
           </div>
 
-        </div>
       </div>
 
     </div>
