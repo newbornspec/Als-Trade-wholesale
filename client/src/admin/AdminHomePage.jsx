@@ -263,7 +263,7 @@ export default function AdminHomePage() {
           </div>
           <div className="ah-ss-item">
             <div className="ah-ss-dot green" />
-            <span>API live at localhost:5000</span>
+            <span>API live at als-trade-wholesale-production.up.railway.app</span>
           </div>
           <div className="ah-ss-item">
             <div className="ah-ss-dot green" />

@@ -42,7 +42,7 @@ This creates 6 sample batches and two accounts:
 ### 4. Run in development
 ```bash
 npm run dev
-# → http://localhost:5000
+# → http://als-trade-wholesale-production.up.railway.app
 ```
 
 ---
