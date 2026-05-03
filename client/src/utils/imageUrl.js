@@ -1,14 +1,14 @@
 /**
  * Returns the correct URL for a batch image.
  *
- * In development, Vite proxies /uploads → https://als-trade-wholesale-production.up.railway.app,
+ * In development, Vite proxies /uploads → https://als-trade-wholesale-production.up.railway.app/api/batches,
  * so relative paths like /uploads/batches/RT3426-xxx.jpg work fine.
  *
  * In production, the frontend is on a different domain from the API,
  * so we prepend the full API origin (VITE_API_URL without the /api suffix).
  */
 const API_ORIGIN = (() => {
-  const base = import.meta.env.VITE_API_URL || 'http://https://als-trade-wholesale-production.up.railway.app/api';
+  const base = import.meta.env.VITE_API_URL || 'https://als-trade-wholesale-production.up.railway.app/api/batches';
   // Strip the trailing /api to get the origin only
   return base.replace(/\/api\/?$/, '');
 })();

@@ -7,12 +7,12 @@ export default defineConfig({
     proxy: {
       // Forward all /api requests to Express
       '/api': {
-        target: 'http://https://als-trade-wholesale-production.up.railway.app',
+        target: 'https://als-trade-wholesale-production.up.railway.app/api/batches',
         changeOrigin: true,
       },
       // Forward all /uploads requests to Express so images load correctly
       '/uploads': {
-        target: 'http://https://als-trade-wholesale-production.up.railway.app',
+        target: 'https://als-trade-wholesale-production.up.railway.app/api/batches',
         changeOrigin: true,
       },
     },

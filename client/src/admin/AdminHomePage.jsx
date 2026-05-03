@@ -263,7 +263,7 @@ export default function AdminHomePage() {
           </div>
           <div className="ah-ss-item">
             <div className="ah-ss-dot green" />
-            <span>API live at https://als-trade-wholesale-production.up.railway.app</span>
+            <span>API live at https://als-trade-wholesale-production.up.railway.app/api/batches</span>
           </div>
           <div className="ah-ss-item">
             <div className="ah-ss-dot green" />
