@@ -1,22 +1,23 @@
 const multer = require('multer');
-const path   = require('path');
-const fs     = require('fs');
+const cloudinary = require('cloudinary').v2;
+const { CloudinaryStorage } = require('multer-storage-cloudinary');
+const path = require('path');
 
-// Ensure upload directories exist
-['uploads/batches', 'uploads/lists'].forEach(dir => {
-  if (!fs.existsSync(dir)) fs.mkdirSync(dir, { recursive: true });
+cloudinary.config({
+  cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
+  api_key:    process.env.CLOUDINARY_API_KEY,
+  api_secret: process.env.CLOUDINARY_API_SECRET,
 });
 
-const storage = multer.diskStorage({
-  destination: (req, file, cb) => {
-    // PDFs go to uploads/lists, images to uploads/batches
-    const dir = file.mimetype === 'application/pdf' ? 'uploads/lists' : 'uploads/batches';
-    cb(null, dir);
-  },
-  filename: (req, file, cb) => {
-    const batchNum = req.body.batchNumber || 'batch';
-    const ext      = path.extname(file.originalname).toLowerCase();
-    cb(null, `${batchNum}-${Date.now()}${ext}`);
+const storage = new CloudinaryStorage({
+  cloudinary,
+  params: (req, file) => {
+    const isPdf = file.mimetype === 'application/pdf';
+    return {
+      folder:        isPdf ? 'als-trade/lists' : 'als-trade/batches',
+      resource_type: isPdf ? 'raw' : 'image',
+      public_id:     `${req.body.batchNumber || 'batch'}-${Date.now()}`,
+    };
   },
 });
 
@@ -33,7 +34,7 @@ const fileFilter = (req, file, cb) => {
 const upload = multer({
   storage,
   fileFilter,
-  limits: { fileSize: 10 * 1024 * 1024 }, // 10MB max
+  limits: { fileSize: 10 * 1024 * 1024 },
 });
 
 module.exports = upload;
