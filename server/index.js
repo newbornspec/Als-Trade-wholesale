@@ -14,7 +14,7 @@ const app = express()
 // ── Global Middleware ──────────────────────────────────────────────────────
 app.use(cors({
   origin: [
-    'https://als-trade-wholesale-production.up.railway.app/api/batches',
+    'https://als-trade-wholesale.vercel.app',
     'http://localhost:5173'
   ],
   credentials: true
