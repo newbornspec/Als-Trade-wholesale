@@ -8,6 +8,7 @@ export default function Navbar() {
   const { user, logout } = useAuth();
   const navigate = useNavigate();
   const [menuOpen, setMenuOpen] = useState(false);
+const [dropdownOpen, setDropdownOpen] = useState(false);
 
   const handleLogout = () => {
     logout();
@@ -15,7 +16,7 @@ export default function Navbar() {
     setMenuOpen(false);
   };
 
-  const close = () => setMenuOpen(false);
+  const close = () => { setMenuOpen(false); setDropdownOpen(false); }
 
   return (
     <nav className="navbar">
@@ -35,23 +36,36 @@ export default function Navbar() {
           <li><NavLink to="/contact"         className={({isActive}) => isActive ? 'active' : ''}>Contact</NavLink></li>
         </ul>
 
-        {/* Auth buttons */}
-        <div className="nav-auth">
-          {user ? (
-            <>
-              <span className="nav-user">
-                <span className="nav-user-dot" />
-                {user.companyName}
-              </span>
-              <button className="btn btn-outline btn-sm" onClick={handleLogout}>Log out</button>
-            </>
-          ) : (
-            <>
-              <Link to="/sign-in" className="btn btn-outline btn-sm">Log in</Link>
-              <Link to="/sign-up" className="btn btn-primary btn-sm">Register</Link>
-            </>
+       {/* Auth buttons */}
+<div className="nav-auth">
+  {user ? (
+    <div className="nav-dropdown-wrap">
+      <button className="nav-avatar-btn" onClick={() => setDropdownOpen(o => !o)}>
+        <span className="nav-avatar">{user.companyName?.[0] || 'U'}</span>
+        <span className="nav-user-dot" />
+      </button>
+      {dropdownOpen && (
+  <div className="nav-dropdown">
+          {user.role === 'admin' && (
+            <Link to="/admin" className="nav-dd-item" onClick={close}>
+              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5"><circle cx="12" cy="8" r="4"/><path d="M4 20c0-4 3.6-7 8-7s8 3 8 7"/></svg>
+              Admin
+            </Link>
           )}
+          <button className="nav-dd-item nav-dd-logout" onClick={handleLogout}>
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5"><path d="M9 21H5a2 2 0 01-2-2V5a2 2 0 012-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>
+            Log out
+          </button>
         </div>
+      )}
+    </div>
+  ) : (
+    <>
+      <Link to="/sign-in" className="btn btn-outline btn-sm">Log in</Link>
+      <Link to="/sign-up" className="btn btn-primary btn-sm">Register</Link>
+    </>
+  )}
+</div>
 
         {/* Hamburger */}
         <button
