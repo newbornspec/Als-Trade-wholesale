@@ -2,18 +2,10 @@
   "name": "als-trade-server",
   "version": "1.0.0",
   "type": "module",
-  ...
-}
-{
-  "name": "als-trade-server",
-  "version": "1.0.0",
-  "description": "A.L.S Trade  B2B wholesale platform — Node.js/Express backend",
-  "main": "index.js",
   "scripts": {
-    "dev": "nodemon index.js",
-    "start": "node index.js",
-    "seed": "node utils/seed.js"
-  },
+    "start": "node index.js"
+  }
+}
   "dependencies": {
     "bcryptjs": "^2.4.3",
     "cors": "^2.8.5",
