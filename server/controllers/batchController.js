@@ -1,26 +1,40 @@
 const Batch = require('../models/Batch');
+const cloudinary = require('cloudinary').v2;
+
+cloudinary.config({
+  cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
+  api_key:    process.env.CLOUDINARY_API_KEY,
+  api_secret: process.env.CLOUDINARY_API_SECRET,
+});
+
+// Helper to upload buffer to Cloudinary
+const uploadToCloudinary = (buffer, folder, isPdf = false) => {
+  return new Promise((resolve, reject) => {
+    const options = {
+      folder,
+      resource_type: isPdf ? 'raw' : 'image',
+    };
+    cloudinary.uploader.upload_stream(options, (error, result) => {
+      if (error) reject(error);
+      else resolve(result.secure_url);
+    }).end(buffer);
+  });
+};
 
 // ── GET /api/batches ───────────────────────────────────────────────────────
-// Returns all available stock.
-// Guests: price field stripped. Logged-in users: price included.
 const getAvailable = async (req, res) => {
   try {
     const { category, brand, tested, search } = req.query;
-
-    // Build dynamic filter
     const filter = { status: 'available' };
     if (category && category !== 'all') filter.category = category;
-    if (brand)    filter.brand   = new RegExp(brand, 'i');
-    if (tested)   filter.tested  = tested === 'true';
-    if (search)   filter.title   = new RegExp(search, 'i');
+    if (brand)  filter.brand  = new RegExp(brand, 'i');
+    if (tested) filter.tested = tested === 'true';
+    if (search) filter.title  = new RegExp(search, 'i');
 
     const batches = await Batch.find(filter).sort('-createdAt');
-
-    // Hide price for non-authenticated users
     const result = batches.map(batch =>
       req.user ? batch.toObject() : batch.toPublic()
     );
-
     res.json(result);
   } catch (err) {
     res.status(500).json({ message: err.message });
@@ -33,8 +47,7 @@ const getSold = async (req, res) => {
     const batches = await Batch
       .find({ status: 'sold' })
       .sort('-soldAt')
-      .select('-price'); // never expose price on sold stock
-
+      .select('-price');
     res.json(batches);
   } catch (err) {
     res.status(500).json({ message: err.message });
@@ -45,11 +58,7 @@ const getSold = async (req, res) => {
 const getOne = async (req, res) => {
   try {
     const batch = await Batch.findOne({ slug: req.params.slug });
-
-    if (!batch) {
-      return res.status(404).json({ message: 'Batch not found' });
-    }
-
+    if (!batch) return res.status(404).json({ message: 'Batch not found' });
     const result = req.user ? batch.toObject() : batch.toPublic();
     res.json(result);
   } catch (err) {
@@ -65,18 +74,17 @@ const createBatch = async (req, res) => {
       description, specs, grade, tested, hasList, price, status, moq,
     } = req.body;
 
-    // Separate images and PDF list file
-    const images          = [];
-    let   productListFile = null;
+    const images = [];
+    let productListFile = null;
 
-    if (req.files) {
-      req.files.forEach(f => {
-        if (f.mimetype === 'application/pdf') {
-          productListFile = `/uploads/lists/${f.filename}`;
-        } else {
-          images.push(`/uploads/batches/${f.filename}`);
-        }
-      });
+    if (req.files && req.files.length > 0) {
+      for (const f of req.files) {
+        const isPdf = f.mimetype === 'application/pdf';
+        const folder = isPdf ? 'als-trade/lists' : 'als-trade/batches';
+        const url = await uploadToCloudinary(f.buffer, folder, isPdf);
+        if (isPdf) productListFile = url;
+        else images.push(url);
+      }
     }
 
     const batch = await Batch.create({
@@ -108,18 +116,17 @@ const updateBatch = async (req, res) => {
     const updates = { ...req.body };
     if (updates.moq) updates.moq = Number(updates.moq);
 
-    // Handle file uploads (images + PDF)
     if (req.files && req.files.length > 0) {
       const existing = await Batch.findById(req.params.id).select('images productListFile');
       const newImages = [];
 
-      req.files.forEach(f => {
-        if (f.mimetype === 'application/pdf') {
-          updates.productListFile = `/uploads/lists/${f.filename}`;
-        } else {
-          newImages.push(`/uploads/batches/${f.filename}`);
-        }
-      });
+      for (const f of req.files) {
+        const isPdf = f.mimetype === 'application/pdf';
+        const folder = isPdf ? 'als-trade/lists' : 'als-trade/batches';
+        const url = await uploadToCloudinary(f.buffer, folder, isPdf);
+        if (isPdf) updates.productListFile = url;
+        else newImages.push(url);
+      }
 
       if (newImages.length > 0) {
         updates.images = [...(existing?.images || []), ...newImages];
@@ -127,7 +134,7 @@ const updateBatch = async (req, res) => {
     }
 
     const batch = await Batch.findByIdAndUpdate(req.params.id, updates, {
-      new:           true,
+      new: true,
       runValidators: true,
     });
 

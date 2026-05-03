@@ -1,14 +1,6 @@
 const multer = require('multer');
-const cloudinary = require('cloudinary').v2;
 const path = require('path');
 
-cloudinary.config({
-  cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
-  api_key:    process.env.CLOUDINARY_API_KEY,
-  api_secret: process.env.CLOUDINARY_API_SECRET,
-});
-
-// Use memory storage instead
 const storage = multer.memoryStorage();
 
 const fileFilter = (req, file, cb) => {
@@ -24,4 +16,4 @@ const upload = multer({
   limits: { fileSize: 10 * 1024 * 1024 },
 });
 
-module.exports = { upload, cloudinary };
+module.exports = upload;
