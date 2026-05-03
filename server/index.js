@@ -10,6 +10,7 @@ dotenv.config()
 console.log('MONGODB_URI loaded:', process.env.MONGODB_URI ? 'YES' : 'MISSING')
 
 const app = express()
+app.set('trust proxy', 1) 
 // ... rest stays the same
 // ── Global Middleware ──────────────────────────────────────────────────────
 app.use(cors({
