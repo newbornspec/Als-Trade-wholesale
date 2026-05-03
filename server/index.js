@@ -4,11 +4,10 @@ const morgan       = require('morgan');
 const rateLimit    = require('express-rate-limit');
 const connectDB    = require('./config/db');
 require('dotenv').config();
-import cors from 'cors'
 
 app.use(cors({
   origin: [
-    'als-trade-wholesale.vercel.app', // your Vercel URL
+    'https://als-trade-wholesale.vercel.app', // your Vercel URL
     'http://localhost:5173' // keep this for local development
   ],
   credentials: true
