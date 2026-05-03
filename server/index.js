@@ -1,16 +1,14 @@
-import express from 'express'
-import cors from 'cors'
-import mongoose from 'mongoose'
-import dotenv from 'dotenv'
-import morgan from 'morgan'
-import rateLimit from 'express-rate-limit'
-import { createRequire } from 'module'
+const express = require('express')
+const cors = require('cors')
+const mongoose = require('mongoose')
+const dotenv = require('dotenv')
+const morgan = require('morgan')
+const rateLimit = require('express-rate-limit')
 
 dotenv.config()
 
-const require = createRequire(import.meta.url)
 const app = express()
-
+// ... rest stays the same
 // ── Global Middleware ──────────────────────────────────────────────────────
 app.use(cors({
   origin: [
