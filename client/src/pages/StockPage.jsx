@@ -86,6 +86,7 @@ function BatchRow({ batch }) {
 /* ── Main page ────────────────────────────────────────────────── */
 export default function StockPage() {
   const [searchParams, setSearchParams] = useSearchParams();
+  const { user } = useAuth();
 
   const [allBatches, setAllBatches] = useState([]);
   const [loading,    setLoading]    = useState(true);
@@ -156,7 +157,9 @@ export default function StockPage() {
               <span className="count-num">{loading ? '…' : allBatches.length}</span>
               <span className="count-label">Batches currently available</span>
             </div>
+            {!user && (
             <Link to="/sign-up" className="btn btn-primary">Register to see prices →</Link>
+            )}
           </div>
         </div>
       </header>
@@ -226,9 +229,11 @@ export default function StockPage() {
                 <path d="M15 7a2 2 0 012 2m4 0a6 6 0 01-7.743 5.743L11 17H9v2H7v2H4a1 1 0 01-1-1v-2.586a1 1 0 01.293-.707l5.964-5.964A6 6 0 1121 9z"/>
               </svg>
               <p>Register free to see prices on every batch instantly.</p>
+              {!user && (
               <Link to="/sign-up" className="btn btn-primary" style={{width:'100%',justifyContent:'center',fontSize:'12px',padding:'10px 16px'}}>
                 Register free
-              </Link>
+               </Link>
+              )}
             </div>
 
             {/* Contact strip */}
