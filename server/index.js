@@ -1,19 +1,13 @@
-const express      = require('express');
-const cors         = require('cors');
-const morgan       = require('morgan');
-const rateLimit    = require('express-rate-limit');
-const connectDB    = require('./config/db');
-require('dotenv').config();
 import express from 'express'
 import cors from 'cors'
-import morgan from 'morgan'
-import rateLimit from 'express-rate-limit'
-import connectDB from './config/db'
+import mongoose from 'mongoose'
 import dotenv from 'dotenv'
 
-const app = express()  // ✅ create app FIRST
+dotenv.config()
 
-app.use(cors({         // ✅ THEN use it
+const app = express()
+
+app.use(cors({
   origin: [
     'https://als-trade-wholesale.vercel.app',
     'http://localhost:5173'
@@ -21,11 +15,14 @@ app.use(cors({         // ✅ THEN use it
   credentials: true
 }))
 
-// ── Connect to MongoDB ─────────────────────────────────────────────────────
-connectDB();
+app.use(express.json())
 
-const app = express();
+// MongoDB connection
+mongoose.connect(process.env.MONGODB_URI)
+  .then(() => console.log('MongoDB connected'))
+  .catch(err => console.error('MongoDB connection failed:', err))
 
+// YOUR ROUTES GO HERE (keep all your existing routes below this line)
 // ── Global Middleware ──────────────────────────────────────────────────────
 app.use(cors({
   origin: process.env.CLIENT_URL || 'http://localhost:5173',
