@@ -1,5 +1,6 @@
 import { useEffect, useState, useCallback } from 'react';
 import { Link } from 'react-router-dom';
+import { useAuth } from '../context/AuthContext';
 import api from '../api/axios';
 import { getImageUrl } from '../utils/imageUrl';
 import './SoldStockPage.css';
@@ -67,6 +68,7 @@ function SoldCard({ batch, index }) {
 
 /* ── Main page ─────────────────────────────────────────────────── */
 export default function SoldStockPage() {
+  const { user } = useAuth();
   const [allBatches,  setAllBatches]  = useState([]);
   const [loading,     setLoading]     = useState(true);
   const [error,       setError]       = useState('');
@@ -140,18 +142,20 @@ export default function SoldStockPage() {
         </div>
       </header>
 
-      {/* ── Notice banner ────────────────────────────────────── */}
-      <div className="notice-bar">
-        <div className="container notice-inner">
-          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-            <circle cx="12" cy="12" r="10"/>
-            <line x1="12" y1="8" x2="12" y2="12"/>
-            <line x1="12" y1="16" x2="12.01" y2="16"/>
-          </svg>
-          Prices are not shown on sold stock. Want to see prices on available batches?
-          <Link to="/sign-up" className="notice-link">Register free →</Link>
+    {/* ── Notice banner ────────────────────────────────────── */}
+    {!user && (
+        <div className="notice-bar">
+          <div className="container notice-inner">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+              <circle cx="12" cy="12" r="10"/>
+              <line x1="12" y1="8" x2="12" y2="12"/>
+              <line x1="12" y1="16" x2="12.01" y2="16"/>
+            </svg>
+            Prices are not shown on sold stock. Want to see prices on available batches?
+            <Link to="/sign-up" className="notice-link">Register free →</Link>
+          </div>
         </div>
-      </div>
+      )}
 
       <div className="container sold-body">
 
