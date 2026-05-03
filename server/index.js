@@ -6,6 +6,8 @@ const morgan = require('morgan')
 const rateLimit = require('express-rate-limit')
 
 dotenv.config()
+dotenv.config()
+console.log('MONGODB_URI loaded:', process.env.MONGODB_URI ? 'YES' : 'MISSING')
 
 const app = express()
 // ... rest stays the same
