@@ -2,7 +2,7 @@ require('dotenv').config();
 const mongoose = require('mongoose');
 const User     = require('./models/User');
 
-const EMAIL = 'stephenukaeg@gmail.com'; // ← change this
+const EMAIL = 'shady@alservices.org.uk'; // ← change this
 
 mongoose.connect(process.env.MONGO_URI).then(async () => {
   const user = await User.findOneAndUpdate(
