@@ -19,19 +19,91 @@ const EMPTY = {
   status:      'available',
 };
 
+/* Reusable Design-H radio option */
+function RadioOpt({ checked, onClick, title, desc, tag, tagColor }) {
+  const borderColor = checked
+    ? tagColor === 'green' ? '#16a34a' : '#c9922b'
+    : 'transparent';
+  const bg = checked
+    ? tagColor === 'green' ? '#f0fdf4' : 'rgba(201,146,43,.07)'
+    : 'var(--gray-200)';
+  const circleColor = checked
+    ? tagColor === 'green' ? '#16a34a' : '#c9922b'
+    : 'transparent';
+
+  return (
+    <div
+      onClick={onClick}
+      style={{
+        display: 'flex',
+        alignItems: 'center',
+        gap: 12,
+        padding: '11px 14px',
+        background: bg,
+        border: `1.5px solid ${checked ? borderColor : 'var(--gray-300)'}`,
+        borderLeft: checked ? `3px solid ${borderColor}` : '1.5px solid var(--gray-300)',
+        borderRadius: 8,
+        cursor: 'pointer',
+        transition: 'all .15s',
+        userSelect: 'none',
+      }}
+    >
+      {/* Circle */}
+      <div style={{
+        width: 18, height: 18, borderRadius: '50%',
+        border: `1.5px solid ${checked ? borderColor : 'var(--gray-400)'}`,
+        background: checked ? circleColor : 'transparent',
+        flexShrink: 0,
+        display: 'flex', alignItems: 'center', justifyContent: 'center',
+      }}>
+        {checked && <div style={{ width: 6, height: 6, borderRadius: '50%', background: '#fff' }} />}
+      </div>
+
+      {/* Text */}
+      <div style={{ flex: 1 }}>
+        <div style={{ fontSize: 13, fontWeight: 600, color: 'var(--white)' }}>{title}</div>
+        <div style={{ fontSize: 11, color: 'var(--gray-500)', marginTop: 2 }}>{desc}</div>
+      </div>
+
+      {/* Tag */}
+      <span style={{
+        fontSize: 10, fontWeight: 600,
+        padding: '2px 9px', borderRadius: 20,
+        background: tagColor === 'green'
+          ? (checked ? '#dcfce7' : 'var(--gray-300)')
+          : (checked ? 'rgba(201,146,43,.18)' : 'var(--gray-300)'),
+        color: tagColor === 'green'
+          ? (checked ? '#15803d' : 'var(--gray-500)')
+          : (checked ? '#c9922b' : 'var(--gray-500)'),
+        border: `1px solid ${tagColor === 'green'
+          ? (checked ? '#86efac' : 'var(--gray-300)')
+          : (checked ? 'rgba(201,146,43,.3)' : 'var(--gray-300)')}`,
+        whiteSpace: 'nowrap', flexShrink: 0,
+      }}>
+        {tag}
+      </span>
+    </div>
+  );
+}
+
 export default function AddBatchPage() {
   const navigate = useNavigate();
-  const [form,    setForm]    = useState(EMPTY);
-  const [images,   setImages]   = useState([]); // File objects
-  const [previews, setPreviews] = useState([]); // data URLs
-  const [pdfFile,  setPdfFile]  = useState(null); // PDF File object
-  const [pdfName,  setPdfName]  = useState('');   // PDF filename display
+  const [form,     setForm]     = useState(EMPTY);
+  const [images,   setImages]   = useState([]);
+  const [previews, setPreviews] = useState([]);
+  const [pdfFile,  setPdfFile]  = useState(null);
+  const [pdfName,  setPdfName]  = useState('');
   const [status,   setStatus]   = useState('idle');
   const [errMsg,   setErrMsg]   = useState('');
 
   const handle = e => {
     setErrMsg('');
     setForm({ ...form, [e.target.name]: e.target.value });
+  };
+
+  const set = (field, value) => {
+    setErrMsg('');
+    setForm(f => ({ ...f, [field]: value }));
   };
 
   const handleImages = e => {
@@ -60,20 +132,13 @@ export default function AddBatchPage() {
       setErrMsg('Batch number, title, quantity and price are required.');
       return;
     }
-
-    setStatus('saving');
-    setErrMsg('');
-
+    setStatus('saving'); setErrMsg('');
     try {
       const fd = new FormData();
       Object.entries(form).forEach(([k, v]) => fd.append(k, v));
       images.forEach(img => fd.append('images', img));
-      if (pdfFile) fd.append('images', pdfFile); // multer picks it up by mimetype
-
-      await api.post('/batches', fd, {
-        headers: { 'Content-Type': 'multipart/form-data' },
-      });
-
+      if (pdfFile) fd.append('images', pdfFile);
+      await api.post('/batches', fd, { headers: { 'Content-Type': 'multipart/form-data' } });
       setStatus('saved');
       setTimeout(() => navigate('/admin/batches'), 1200);
     } catch (err) {
@@ -87,11 +152,8 @@ export default function AddBatchPage() {
   };
 
   const reset = () => {
-    setForm(EMPTY);
-    setImages([]);
-    setPreviews([]);
-    setStatus('idle');
-    setErrMsg('');
+    setForm(EMPTY); setImages([]); setPreviews([]);
+    setPdfFile(null); setPdfName(''); setStatus('idle'); setErrMsg('');
   };
 
   return (
@@ -119,58 +181,52 @@ export default function AddBatchPage() {
             </div>
           )}
 
-          {/* ── Section 1: Identity ──────────────────────── */}
+          {/* ── Section 1: Identity ─────────────────────────── */}
           <div className="form-section">
             <h3 className="form-section-title">Batch identity</h3>
             <div className="form-grid-2">
               <div className="bfield">
                 <label>Batch number <span className="req">*</span></label>
-                <input name="batchNumber" value={form.batchNumber} onChange={handle}
-                  placeholder="e.g. RT3427" required />
+                <input name="batchNumber" value={form.batchNumber} onChange={handle} placeholder="e.g. ALS3427" required />
                 <span className="bfield-hint">Unique identifier shown on the listing</span>
               </div>
               <div className="bfield">
                 <label>Title <span className="req">*</span></label>
-                <input name="title" value={form.title} onChange={handle}
-                  placeholder="e.g. 49x Apple iPhone & iPads Mix" required />
+                <input name="title" value={form.title} onChange={handle} placeholder="e.g. 49x Apple iPhone & iPads Mix" required />
               </div>
               <div className="bfield">
                 <label>Quantity <span className="req">*</span></label>
-                <input name="quantity" type="number" min="1" value={form.quantity} onChange={handle}
-                  placeholder="Number of units" required />
+                <input name="quantity" type="number" min="1" value={form.quantity} onChange={handle} placeholder="Number of units" required />
               </div>
               <div className="bfield">
                 <label>Price (£) <span className="req">*</span></label>
-                <input name="price" type="number" min="0" step="0.01" value={form.price} onChange={handle}
-                  placeholder="e.g. 1490" required />
+                <input name="price" type="number" min="0" step="0.01" value={form.price} onChange={handle} placeholder="e.g. 1490" required />
                 <span className="bfield-hint">Shown only to logged-in buyers</span>
               </div>
               <div className="bfield">
                 <label>MOQ (Min. Order Qty)</label>
-                <input name="moq" type="number" min="1" value={form.moq} onChange={handle}
-                  placeholder="e.g. 10" />
+                <input name="moq" type="number" min="1" value={form.moq} onChange={handle} placeholder="e.g. 10" />
                 <span className="bfield-hint">Leave blank if no minimum</span>
               </div>
             </div>
           </div>
 
-          {/* ── Section 2: Classification ────────────────── */}
+          {/* ── Section 2: Classification ───────────────────── */}
           <div className="form-section">
             <h3 className="form-section-title">Classification</h3>
-            <div className="form-grid-3">
+            <div className="form-grid-3" style={{ marginBottom: '1.25rem' }}>
               <div className="bfield">
                 <label>Category <span className="req">*</span></label>
                 <select name="category" value={form.category} onChange={handle}>
                   <option value="laptops">Laptops</option>
-                  <option value="Computers">Computers</option>
-                  <option value="Monitors">Monitors</option>
+                  <option value="computers">Computers</option>
+                  <option value="monitors">Monitors</option>
                   <option value="other">Other</option>
                 </select>
               </div>
               <div className="bfield">
                 <label>Brand</label>
-                <input name="brand" value={form.brand} onChange={handle}
-                  placeholder="e.g. Apple, HP, Mixed" />
+                <input name="brand" value={form.brand} onChange={handle} placeholder="e.g. Apple, HP, Mixed" />
               </div>
               <div className="bfield">
                 <label>Grade</label>
@@ -184,115 +240,99 @@ export default function AddBatchPage() {
               </div>
             </div>
 
-          {/* Tested */}
-<div className="bfield">
-  <label>Tested?</label>
-  <div className="radio-group">
-    <div
-      className={`radio-opt ${form.tested === 'true' ? 'selected' : ''}`}
-      onClick={() => setForm({ ...form, tested: 'true' })}
-    >
-      <div className="radio-circle"><div className="radio-dot" /></div>
-      <div className="radio-body">
-        <div className="radio-title">Yes — tested</div>
-        <div className="radio-desc">Graded & checked</div>
-      </div>
-      <span className="radio-tag tag-gold">Tested</span>
-    </div>
-    <div
-      className={`radio-opt ${form.tested === 'false' ? 'selected' : ''}`}
-      onClick={() => setForm({ ...form, tested: 'false' })}
-    >
-      <div className="radio-circle"><div className="radio-dot" /></div>
-      <div className="radio-body">
-        <div className="radio-title">No — untested</div>
-        <div className="radio-desc">As received</div>
-      </div>
-      <span className="radio-tag tag-gray">Untested</span>
-    </div>
-  </div>
-</div>
+            {/* ── Design H radio buttons ── */}
+            <div className="form-grid-3">
 
-{/* Item list */}
-<div className="bfield">
-  <label>Item list available?</label>
-  <div className="radio-group">
-    <div
-      className={`radio-opt ${form.hasList === 'true' ? 'selected' : ''}`}
-      onClick={() => setForm({ ...form, hasList: 'true' })}
-    >
-      <div className="radio-circle"><div className="radio-dot" /></div>
-      <div className="radio-body">
-        <div className="radio-title">Yes — list available</div>
-        <div className="radio-desc">Buyers can request it</div>
-      </div>
-      <span className="radio-tag tag-gold">Available</span>
-    </div>
-    <div
-      className={`radio-opt ${form.hasList === 'false' ? 'selected' : ''}`}
-      onClick={() => setForm({ ...form, hasList: 'false' })}
-    >
-      <div className="radio-circle"><div className="radio-dot" /></div>
-      <div className="radio-body">
-        <div className="radio-title">No list</div>
-        <div className="radio-desc">Not available</div>
-      </div>
-      <span className="radio-tag tag-gray">None</span>
-    </div>
-  </div>
-</div>
+              {/* TESTED */}
+              <div className="bfield">
+                <label>Tested?</label>
+                <div style={{ display: 'flex', flexDirection: 'column', gap: 6 }}>
+                  <RadioOpt
+                    checked={form.tested === 'true'}
+                    onClick={() => set('tested', 'true')}
+                    title="Yes — tested"
+                    desc="Graded & checked"
+                    tag="Tested"
+                    tagColor="gold"
+                  />
+                  <RadioOpt
+                    checked={form.tested === 'false'}
+                    onClick={() => set('tested', 'false')}
+                    title="No — untested"
+                    desc="As received"
+                    tag="Untested"
+                    tagColor="gray"
+                  />
+                </div>
+              </div>
 
-{/* Status */}
-<div className="bfield">
-  <label>Status</label>
-  <div className="radio-group">
-    <div
-      className={`radio-opt ${form.status === 'available' ? 'selected-green' : ''}`}
-      onClick={() => setForm({ ...form, status: 'available' })}
-    >
-      <div className="radio-circle"><div className="radio-dot" /></div>
-      <div className="radio-body">
-        <div className="radio-title">For sale</div>
-        <div className="radio-desc">Visible to all buyers</div>
-      </div>
-      <span className="radio-tag tag-green">Live</span>
-    </div>
-    <div
-      className={`radio-opt ${form.status === 'sold' ? 'selected' : ''}`}
-      onClick={() => setForm({ ...form, status: 'sold' })}
-    >
-      <div className="radio-circle"><div className="radio-dot" /></div>
-      <div className="radio-body">
-        <div className="radio-title">Sold</div>
-        <div className="radio-desc">Move to archive</div>
-      </div>
-      <span className="radio-tag tag-gray">Archive</span>
-    </div>
-  </div>
-</div>
+              {/* ITEM LIST */}
+              <div className="bfield">
+                <label>Item list available?</label>
+                <div style={{ display: 'flex', flexDirection: 'column', gap: 6 }}>
+                  <RadioOpt
+                    checked={form.hasList === 'true'}
+                    onClick={() => set('hasList', 'true')}
+                    title="List available"
+                    desc="Buyers can request it"
+                    tag="Available"
+                    tagColor="gold"
+                  />
+                  <RadioOpt
+                    checked={form.hasList === 'false'}
+                    onClick={() => set('hasList', 'false')}
+                    title="No list"
+                    desc="Not available"
+                    tag="None"
+                    tagColor="gray"
+                  />
+                </div>
+              </div>
 
-          {/* ── Section 3: Description ───────────────────── */}
+              {/* STATUS */}
+              <div className="bfield">
+                <label>Status</label>
+                <div style={{ display: 'flex', flexDirection: 'column', gap: 6 }}>
+                  <RadioOpt
+                    checked={form.status === 'available'}
+                    onClick={() => set('status', 'available')}
+                    title="For sale"
+                    desc="Visible to all buyers"
+                    tag="Live"
+                    tagColor="green"
+                  />
+                  <RadioOpt
+                    checked={form.status === 'sold'}
+                    onClick={() => set('status', 'sold')}
+                    title="Sold"
+                    desc="Move to archive"
+                    tag="Archive"
+                    tagColor="gray"
+                  />
+                </div>
+              </div>
+
+            </div>
+          </div>
+
+          {/* ── Section 3: Description ──────────────────────── */}
           <div className="form-section">
             <h3 className="form-section-title">Description & specs</h3>
             <div className="bfield">
               <label>Specs line</label>
-              <input name="specs" value={form.specs} onChange={handle}
-                placeholder="e.g. Intel Core i7 8th Gen — 8GB RAM — 256GB SSD" />
+              <input name="specs" value={form.specs} onChange={handle} placeholder="e.g. Intel Core i7 8th Gen — 8GB RAM — 256GB SSD" />
               <span className="bfield-hint">Short line shown on batch cards and in the listing header</span>
             </div>
-            <div className="bfield" style={{marginTop:'1rem'}}>
+            <div className="bfield" style={{ marginTop: '1rem' }}>
               <label>Description</label>
-              <textarea name="description" value={form.description} onChange={handle}
-                rows={4} placeholder="Full description of the batch — contents, condition notes, what's included…" />
+              <textarea name="description" value={form.description} onChange={handle} rows={4} placeholder="Full description of the batch — contents, condition notes, what's included…" />
             </div>
           </div>
 
-          {/* ── Section 4: Images ───────────────────────── */}
+          {/* ── Section 4: Images ───────────────────────────── */}
           <div className="form-section">
             <h3 className="form-section-title">Images</h3>
             <p className="form-section-sub">Up to 10 images. JPG, PNG or WebP, max 5MB each.</p>
-
-            {/* Previews */}
             {previews.length > 0 && (
               <div className="image-previews">
                 {previews.map((src, i) => (
@@ -304,17 +344,9 @@ export default function AddBatchPage() {
                 ))}
               </div>
             )}
-
-            {/* Upload area */}
             {images.length < 10 && (
               <label className="upload-area">
-                <input
-                  type="file"
-                  accept="image/jpeg,image/png,image/webp"
-                  multiple
-                  onChange={handleImages}
-                  style={{ display: 'none' }}
-                />
+                <input type="file" accept="image/jpeg,image/png,image/webp" multiple onChange={handleImages} style={{ display: 'none' }} />
                 <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
                   <polyline points="16 16 12 12 8 16"/>
                   <line x1="12" y1="12" x2="12" y2="21"/>
@@ -326,10 +358,10 @@ export default function AddBatchPage() {
             )}
           </div>
 
-          {/* ── Section 5: Product List PDF ─────────────────── */}
+          {/* ── Section 5: Product list file ────────────────── */}
           <div className="form-section">
-            <h3 className="form-section-title">Product list file </h3>
-            <p className="form-section-sub">Upload a product list. Buyers can download it from the listing.</p>
+            <h3 className="form-section-title">Product list file</h3>
+            <p className="form-section-sub">Upload a product list file. Buyers can download it from the listing.</p>
             {pdfName ? (
               <div className="pdf-preview">
                 <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
@@ -348,32 +380,20 @@ export default function AddBatchPage() {
                   <line x1="12" y1="18" x2="12" y2="12"/>
                   <line x1="9" y1="15" x2="15" y2="15"/>
                 </svg>
-                <p>Click to upload </p>
+                <p>Click to upload file</p>
                 <span>Max 10MB</span>
               </label>
             )}
           </div>
 
-          {/* ── Actions ─────────────────────────────────── */}
+          {/* ── Actions ─────────────────────────────────────── */}
           <div className="form-actions">
-            <button type="button" className="btn btn-outline" onClick={reset}>
-              Reset form
-            </button>
-            <button
-              type="submit"
-              className="btn btn-primary"
-              disabled={status === 'saving'}
-              style={{ minWidth: '160px', justifyContent: 'center' }}
-            >
+            <button type="button" className="btn btn-outline" onClick={reset}>Reset form</button>
+            <button type="submit" className="btn btn-primary" disabled={status === 'saving'} style={{ minWidth: 160, justifyContent: 'center' }}>
               {status === 'saving' ? (
                 <><span className="spinner" /> Saving…</>
               ) : (
-                <>
-                  Publish batch
-                  <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                    <path d="M5 12h14M12 5l7 7-7 7"/>
-                  </svg>
-                </>
+                <>Publish batch <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg></>
               )}
             </button>
           </div>
