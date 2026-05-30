@@ -1,8 +1,10 @@
 import { Link } from 'react-router-dom';
+import { useAuth } from '../context/AuthContext';
 import './Footer.css';
 import logo from '../assets/logo.png';
 
 export default function Footer() {
+  const { user } = useAuth();
   return (
     <footer className="footer">
       <div className="container footer-inner">
@@ -37,7 +39,7 @@ export default function Footer() {
 
         <div className="footer-col">
           <h4>Account</h4>
-          <Link to="/sign-up">Register for free</Link>
+          {!user && <Link to="/sign-up">Register for free</Link>}
           <Link to="/sign-in">Login</Link>
         </div>
 
