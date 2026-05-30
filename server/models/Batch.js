@@ -31,7 +31,7 @@ const batchSchema = new mongoose.Schema(
     category: {
       type:     String,
       required: [true, 'Category is required'],
-      enum:     ['laptops', 'phones', 'tablets', 'mixed', 'other'],
+      enum:     ['laptops', 'Computers', 'Monitors', 'other'],
     },
     brand: {
       type: String,

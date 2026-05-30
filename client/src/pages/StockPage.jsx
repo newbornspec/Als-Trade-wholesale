@@ -10,9 +10,9 @@ import './StockPage.css';
 const CATEGORIES = [
   { value: 'all',     label: 'All stock' },
   { value: 'laptops', label: 'Laptops'   },
-  { value: 'phones',  label: 'Phones'    },
-  { value: 'tablets', label: 'Tablets'   },
-  { value: 'mixed',   label: 'Mixed'     },
+  { value: 'Computers',  label: 'Computers'    },
+  { value: 'Monitors', label: 'Monitors'   },
+  { value: 'Other',   label: 'Other'     },
 ];
 
 const SORT_OPTIONS = [

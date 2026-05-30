@@ -162,9 +162,8 @@ export default function AddBatchPage() {
                 <label>Category <span className="req">*</span></label>
                 <select name="category" value={form.category} onChange={handle}>
                   <option value="laptops">Laptops</option>
-                  <option value="phones">Phones</option>
-                  <option value="tablets">Tablets</option>
-                  <option value="mixed">Mixed</option>
+                  <option value="Computers">Computers</option>
+                  <option value="Monitors">Monitors</option>
                   <option value="other">Other</option>
                 </select>
               </div>

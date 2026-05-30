@@ -168,9 +168,9 @@ export default function HomePage() {
         <div className="container cat-inner">
           {[
             { label: 'Laptops',  icon: '💻', slug: 'laptops'  },
-            { label: 'Phones',   icon: '📱', slug: 'phones'   },
-            { label: 'Tablets',  icon: '📲', slug: 'tablets'  },
-            { label: 'Mixed',    icon: '📦', slug: 'mixed'    },
+            { label: 'Computer',   icon: '📱', slug: 'Computer'   },
+            { label: 'Monitors',  icon: '📲', slug: 'Monitors'  },
+            { label: 'Others',    icon: '📦', slug: 'Others'    },
           ].map(cat => (
             <Link
               key={cat.slug}
