@@ -184,42 +184,92 @@ export default function AddBatchPage() {
               </div>
             </div>
 
-            <div className="form-grid-3" style={{marginTop:'1rem'}}>
-              <div className="bfield">
-                <label>Tested?</label>
-                <div className="radio-group">
-                  {[['true','Yes — tested & graded'],['false','No — untested']].map(([v,l]) => (
-                    <label key={v} className={`radio-opt ${form.tested === v ? 'active' : ''}`}>
-                      <input type="radio" name="tested" value={v} checked={form.tested === v} onChange={handle} />
-                      {l}
-                    </label>
-                  ))}
-                </div>
-              </div>
-              <div className="bfield">
-                <label>Item list available?</label>
-                <div className="radio-group">
-                  {[['true','Yes — list available'],['false','No — NO List!']].map(([v,l]) => (
-                    <label key={v} className={`radio-opt ${form.hasList === v ? 'active' : ''}`}>
-                      <input type="radio" name="hasList" value={v} checked={form.hasList === v} onChange={handle} />
-                      {l}
-                    </label>
-                  ))}
-                </div>
-              </div>
-              <div className="bfield">
-                <label>Status</label>
-                <div className="radio-group">
-                  {[['available','For sale'],['sold','Already sold']].map(([v,l]) => (
-                    <label key={v} className={`radio-opt ${form.status === v ? 'active' : ''}`}>
-                      <input type="radio" name="status" value={v} checked={form.status === v} onChange={handle} />
-                      {l}
-                    </label>
-                  ))}
-                </div>
-              </div>
-            </div>
-          </div>
+          {/* Tested */}
+<div className="bfield">
+  <label>Tested?</label>
+  <div className="radio-group">
+    <div
+      className={`radio-opt ${form.tested === 'true' ? 'selected' : ''}`}
+      onClick={() => setForm({ ...form, tested: 'true' })}
+    >
+      <div className="radio-circle"><div className="radio-dot" /></div>
+      <div className="radio-body">
+        <div className="radio-title">Yes — tested</div>
+        <div className="radio-desc">Graded & checked</div>
+      </div>
+      <span className="radio-tag tag-gold">Tested</span>
+    </div>
+    <div
+      className={`radio-opt ${form.tested === 'false' ? 'selected' : ''}`}
+      onClick={() => setForm({ ...form, tested: 'false' })}
+    >
+      <div className="radio-circle"><div className="radio-dot" /></div>
+      <div className="radio-body">
+        <div className="radio-title">No — untested</div>
+        <div className="radio-desc">As received</div>
+      </div>
+      <span className="radio-tag tag-gray">Untested</span>
+    </div>
+  </div>
+</div>
+
+{/* Item list */}
+<div className="bfield">
+  <label>Item list available?</label>
+  <div className="radio-group">
+    <div
+      className={`radio-opt ${form.hasList === 'true' ? 'selected' : ''}`}
+      onClick={() => setForm({ ...form, hasList: 'true' })}
+    >
+      <div className="radio-circle"><div className="radio-dot" /></div>
+      <div className="radio-body">
+        <div className="radio-title">Yes — list available</div>
+        <div className="radio-desc">Buyers can request it</div>
+      </div>
+      <span className="radio-tag tag-gold">Available</span>
+    </div>
+    <div
+      className={`radio-opt ${form.hasList === 'false' ? 'selected' : ''}`}
+      onClick={() => setForm({ ...form, hasList: 'false' })}
+    >
+      <div className="radio-circle"><div className="radio-dot" /></div>
+      <div className="radio-body">
+        <div className="radio-title">No list</div>
+        <div className="radio-desc">Not available</div>
+      </div>
+      <span className="radio-tag tag-gray">None</span>
+    </div>
+  </div>
+</div>
+
+{/* Status */}
+<div className="bfield">
+  <label>Status</label>
+  <div className="radio-group">
+    <div
+      className={`radio-opt ${form.status === 'available' ? 'selected-green' : ''}`}
+      onClick={() => setForm({ ...form, status: 'available' })}
+    >
+      <div className="radio-circle"><div className="radio-dot" /></div>
+      <div className="radio-body">
+        <div className="radio-title">For sale</div>
+        <div className="radio-desc">Visible to all buyers</div>
+      </div>
+      <span className="radio-tag tag-green">Live</span>
+    </div>
+    <div
+      className={`radio-opt ${form.status === 'sold' ? 'selected' : ''}`}
+      onClick={() => setForm({ ...form, status: 'sold' })}
+    >
+      <div className="radio-circle"><div className="radio-dot" /></div>
+      <div className="radio-body">
+        <div className="radio-title">Sold</div>
+        <div className="radio-desc">Move to archive</div>
+      </div>
+      <span className="radio-tag tag-gray">Archive</span>
+    </div>
+  </div>
+</div>
 
           {/* ── Section 3: Description ───────────────────── */}
           <div className="form-section">

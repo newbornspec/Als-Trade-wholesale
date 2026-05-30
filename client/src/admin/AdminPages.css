@@ -93,9 +93,47 @@
 .bfield-hint { font-size: 11px; color: var(--gray-400); }
 
 .radio-group { display: flex; flex-direction: column; gap: 6px; }
-.radio-opt { display: flex; align-items: center; gap: 8px; padding: 8px 12px; background: var(--gray-50); border: 1.5px solid var(--gray-200); border-radius: 8px; font-size: 13px; color: var(--gray-500); cursor: pointer; transition: all var(--t); }
-.radio-opt input[type="radio"] { accent-color: var(--accent); }
-.radio-opt.active { border-color: var(--accent-mid); color: var(--gray-800); background: var(--accent-lt); }
+
+.radio-opt {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 12px 14px;
+  background: var(--white);
+  border: 1px solid var(--gray-200);
+  border-radius: 10px;
+  cursor: pointer;
+  transition: all 0.15s;
+}
+.radio-opt:hover { border-color: var(--gray-300); }
+.radio-opt.selected { border-color: var(--accent); border-left: 3px solid var(--accent); background: var(--accent-lt); }
+.radio-opt.selected-green { border-color: #16a34a; border-left: 3px solid #16a34a; background: #f0fdf4; }
+
+.radio-circle {
+  width: 18px; height: 18px;
+  border-radius: 50%;
+  border: 1.5px solid var(--gray-300);
+  flex-shrink: 0;
+  display: flex; align-items: center; justify-content: center;
+  transition: all 0.15s;
+}
+.radio-opt.selected .radio-circle { background: var(--accent); border-color: var(--accent); }
+.radio-opt.selected-green .radio-circle { background: #16a34a; border-color: #16a34a; }
+.radio-dot { width: 6px; height: 6px; border-radius: 50%; background: white; }
+
+.radio-body { flex: 1; }
+.radio-title { font-size: 13px; font-weight: 600; color: var(--gray-700); }
+.radio-desc  { font-size: 11px; color: var(--gray-400); margin-top: 2px; }
+
+.radio-tag {
+  font-size: 10px; font-weight: 600;
+  padding: 2px 8px; border-radius: 20px;
+  white-space: nowrap;
+}
+.tag-gold  { background: var(--accent-lt); color: var(--accent); }
+.tag-green { background: #f0fdf4; color: #16a34a; }
+.tag-gray  { background: var(--gray-100); color: var(--gray-400); }
+
 
 .image-previews { display: flex; gap: 10px; flex-wrap: wrap; margin-bottom: 1rem; }
 .img-preview { position: relative; width: 90px; height: 70px; border-radius: 8px; overflow: hidden; border: 1.5px solid var(--gray-200); }
