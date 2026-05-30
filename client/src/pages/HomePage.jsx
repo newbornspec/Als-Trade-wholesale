@@ -3,6 +3,8 @@ import { Link } from 'react-router-dom';
 import api from '../api/axios';
 import BatchCard from '../components/BatchCard';
 import './HomePage.css';
+import { useAuth } from '../context/AuthContext';
+
 
 /* ── Animated counter ────────────────────────────────────────── */
 function CountUp({ target, suffix = '+', duration = 1600 }) {
@@ -86,6 +88,7 @@ const HOW_IT_WORKS = [
 export default function HomePage() {
   const [latestBatches, setLatestBatches] = useState([]);
   const [loadingBatches, setLoadingBatches] = useState(true);
+  const { user } = useAuth();
   const [stats, setStats] = useState({ available: 0, sold: 0, countries: '20+' });
 
   useEffect(() => {
@@ -128,9 +131,11 @@ export default function HomePage() {
                 <path d="M5 12h14M12 5l7 7-7 7"/>
               </svg>
             </Link>
-            <Link to="/sign-up" className="btn btn-outline hero-btn">
-              Register free
-            </Link>
+            {!user && (
+  <Link to="/sign-up" className="btn btn-outline hero-btn">
+    Register free
+  </Link>
+)}
           </div>
 
           {/* Hero stats — Batches sold first, then available, then countries */}
