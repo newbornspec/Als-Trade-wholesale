@@ -279,8 +279,8 @@ export default function AddBatchPage() {
 
           {/* ── Section 5: Product List PDF ─────────────────── */}
           <div className="form-section">
-            <h3 className="form-section-title">Product list file (PDF)</h3>
-            <p className="form-section-sub">Upload a PDF product list. Buyers can download it from the listing.</p>
+            <h3 className="form-section-title">Product list file </h3>
+            <p className="form-section-sub">Upload a product list. Buyers can download it from the listing.</p>
             {pdfName ? (
               <div className="pdf-preview">
                 <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
@@ -299,7 +299,7 @@ export default function AddBatchPage() {
                   <line x1="12" y1="18" x2="12" y2="12"/>
                   <line x1="9" y1="15" x2="15" y2="15"/>
                 </svg>
-                <p>Click to upload PDF</p>
+                <p>Click to upload </p>
                 <span>Max 10MB</span>
               </label>
             )}
