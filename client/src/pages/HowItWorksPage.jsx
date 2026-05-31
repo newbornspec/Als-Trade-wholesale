@@ -1,5 +1,8 @@
 import { Link } from 'react-router-dom';
 import './HowItWorksPage.css';
+import { useAuth } from '../context/AuthContext';
+// inside the function:
+const { user } = useAuth();
 
 const STEPS = [
   {
@@ -317,7 +320,7 @@ export default function HowItWorksPage() {
             </p>
           </div>
           <div className="hiw-cta-btns">
-            <Link to="/sign-up" className="btn btn-primary">Register free</Link>
+          {!user && <Link to="/sign-up" className="btn btn-primary">Register free</Link>}
             <Link to="/available-stock" className="btn btn-outline-dark">Browse stock first</Link>
           </div>
         </div>

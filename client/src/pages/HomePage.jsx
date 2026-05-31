@@ -4,6 +4,8 @@ import api from '../api/axios';
 import BatchCard from '../components/BatchCard';
 import './HomePage.css';
 import { useAuth } from '../context/AuthContext';
+// inside the function:
+const { user } = useAuth();
 
 
 /* ── Animated counter ────────────────────────────────────────── */
@@ -274,7 +276,7 @@ export default function HomePage() {
             <p className="cta-sub">Register free and get instant access to all stock and pricing.</p>
           </div>
           <div className="cta-actions">
-            <Link to="/sign-up" className="btn btn-primary">Register free</Link>
+          {!user && <Link to="/sign-up" className="btn btn-primary">Register free</Link>}
             <Link to="/contact" className="btn btn-outline-dark">Contact us</Link>
           </div>
         </div>
