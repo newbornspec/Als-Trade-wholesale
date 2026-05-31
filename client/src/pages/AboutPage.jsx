@@ -178,26 +178,42 @@ export default function AboutPage() {
             <p className="section-eyebrow">Our story</p>
             <h2 className="story-title">Started with one batch.<br/>Built from there.</h2>
 
-            <p>
-              A.L.S Trade  was founded in the United Kingdom with a straightforward mission:
-              connect businesses that have surplus IT hardware with businesses that need it,
-              at fair prices, with no unnecessary complexity.
-            </p>
-            <p>
-              We started small — buying and selling single batches, learning the market,
-              building supplier relationships. Over time we grew our network, expanded to
-              international buyers, and developed a reputation for honest, accurate listings
-              and fast execution.
-            </p>
-            <p>
-              Today we handle hundreds of batches a year across every major IT category.
-              Our buyers range from small repair shops to large resellers and refurbishers
-              in over 20 countries.
-            </p>
-            <p>
-              We are based in Derby, United Kingdom. We are a lean team — not a faceless
-              platform. When you contact us, you speak to the person who knows the stock.
-            </p>
+            <p>A.L.S Trade was founded in the United Kingdom with a clear and straightforward mission: to 
+              connect businesses with surplus IT hardware to buyers actively seeking quality technology equipment,
+               creating value for both parties through fair pricing, transparency, and efficient transactions.</p>
+
+<p>What began in Birmingham as a small IT trading operation, focused on 
+  sourcing and selling individual batches of technology equipment, has grown into a trusted 
+  international business built on industry expertise, strong supplier relationships, 
+  and a commitment to delivering reliable service. By understanding market demand,
+   developing long-term partnerships, and maintaining high standards of accuracy
+    and transparency, we have steadily expanded our reach throughout the UK 
+    and across international markets.</p>
+
+<p>Over the years, we have developed an extensive network of buyers,
+   resellers, refurbishers, wholesalers, and technology businesses worldwide. 
+   Today, we successfully handle hundreds of IT hardware batches each year 
+   across a wide range of product categories, including laptops, desktops,
+    servers, networking equipment, components, peripherals, and enterprise 
+    technology solutions.</p>
+
+<p>Our customer base spans more than 20 countries and includes everyone
+   from independent repair shops and local technology retailers to 
+   large-scale resellers, distributors, and refurbishment companies. 
+   Regardless of the size of the transaction, our focus remains the same: 
+   providing accurate product information, competitive pricing, responsive
+    communication, and a smooth trading experience from start to finish.</p>
+
+<p>Based in Hertfordshire, United Kingdom, A.L.S Trade operates as a
+   dedicated and experienced team rather than a faceless online marketplace.
+    We believe that successful business relationships are built on trust, expertise,
+     and direct communication. When you contact us, you speak with someone who understands 
+     the inventory, knows the market, and can provide the information you need quickly
+      and accurately.</p>
+
+<p>As we continue to grow, our commitment remains unchanged: to make buying and 
+  selling surplus IT hardware simple, reliable, and profitable for businesses 
+  around the world.</p>
           </div>
 
           {/* Right: info card */}
