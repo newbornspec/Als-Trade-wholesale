@@ -341,7 +341,7 @@ export default function AboutPage() {
             <p className="section-eyebrow">Where we are</p>
             <h2 className="section-title">Based in the United Kingdom</h2>
             <p className="location-body">
-              Our warehouse and offices are located in Derby, in the East Midlands,
+              Our warehouse and offices are located in Hertford,
               United Kingdom. Centrally positioned in the UK for efficient
               shipping across the continent and beyond.
             </p>
@@ -367,7 +367,7 @@ export default function AboutPage() {
                   <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/>
                   <polyline points="22,6 12,13 2,6"/>
                 </svg>
-                info@yourdomain.com
+                info@alservice.org.uk
               </div>
             </div>
             <div className="location-actions">
