@@ -13,14 +13,20 @@ const app = express()
 app.set('trust proxy', 1) 
 // ... rest stays the same
 // ── Global Middleware ──────────────────────────────────────────────────────
+const allowedOrigins = [
+  'http://localhost:5173',
+  'https://als-trade-wholesale-git-main-newbornspecs-projects.vercel.app',
+  'https://als-trade-wholesale-9whhxxv23-newbornspecs-projects.vercel.app',
+  process.env.CLIENT_URL,
+].filter(Boolean);
+
 app.use(cors({
-  origin: [
-    'https://als-trade-wholesale.vercel.app',
-    'https://als-trade-wholesale-git-main-newbornspecs-projects.vercel.app/',
-    'http://localhost:5173',
-  ],
-  credentials: true
-}))
+  origin: (origin, callback) => {
+    if (!origin || allowedOrigins.includes(origin)) callback(null, true);
+    else callback(new Error('Not allowed by CORS'));
+  },
+  credentials: true,
+}));
 
 app.use(express.json())
 app.use(express.urlencoded({ extended: true }))
