@@ -23,7 +23,6 @@ export default function App() {
     <AuthProvider>
       <Navbar />
       <Routes>
-        {/* Public */}
         <Route path="/"                      element={<HomePage />} />
         <Route path="/available-stock"       element={<StockPage />} />
         <Route path="/available-stock/:slug" element={<BatchDetailPage />} />
@@ -33,8 +32,6 @@ export default function App() {
         <Route path="/contact"               element={<ContactPage />} />
         <Route path="/sign-in"               element={<SignInPage />} />
         <Route path="/sign-up"               element={<SignUpPage />} />
-
-        {/* Admin */}
         <Route path="/admin" element={
           <AdminRoute><AdminLayout><AdminHomePage /></AdminLayout></AdminRoute>
         } />
