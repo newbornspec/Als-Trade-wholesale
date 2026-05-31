@@ -1,8 +1,6 @@
 import { Link } from 'react-router-dom';
 import './HowItWorksPage.css';
 import { useAuth } from '../context/AuthContext';
-// inside the function:
-const { user } = useAuth();
 
 const STEPS = [
   {
@@ -156,6 +154,7 @@ function FaqItem({ q, a }) {
 }
 
 export default function HowItWorksPage() {
+  const { user } = useAuth();
   return (
     <main className="hiw-page">
 
