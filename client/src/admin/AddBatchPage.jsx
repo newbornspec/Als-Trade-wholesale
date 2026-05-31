@@ -19,72 +19,48 @@ const EMPTY = {
   status:      'available',
 };
 
-/* Reusable Design-H radio option */
-function RadioOpt({ checked, onClick, title, desc, tag, tagColor }) {
-  const borderColor = checked
-    ? tagColor === 'green' ? '#16a34a' : '#c9922b'
-    : 'transparent';
-  const bg = checked
-    ? tagColor === 'green' ? '#f0fdf4' : 'rgba(201,146,43,.07)'
-    : 'var(--gray-200)';
-  const circleColor = checked
-    ? tagColor === 'green' ? '#16a34a' : '#c9922b'
-    : 'transparent';
+const radioStyle = (checked, color) => ({
+  display: 'flex',
+  alignItems: 'center',
+  gap: 12,
+  padding: '11px 14px',
+  background: checked
+    ? color === 'green' ? '#f0fdf4' : 'rgba(201,146,43,.07)'
+    : 'var(--gray-50)',
+  border: `1.5px solid ${checked
+    ? color === 'green' ? '#16a34a' : '#c9922b'
+    : 'var(--gray-200)'}`,
+  borderLeft: checked
+    ? `3px solid ${color === 'green' ? '#16a34a' : '#c9922b'}`
+    : '1.5px solid var(--gray-200)',
+  borderRadius: 8,
+  cursor: 'pointer',
+  transition: 'all .15s',
+  userSelect: 'none',
+  marginBottom: 6,
+});
 
-  return (
-    <div
-      onClick={onClick}
-      style={{
-        display: 'flex',
-        alignItems: 'center',
-        gap: 12,
-        padding: '11px 14px',
-        background: bg,
-        border: `1.5px solid ${checked ? borderColor : 'var(--gray-300)'}`,
-        borderLeft: checked ? `3px solid ${borderColor}` : '1.5px solid var(--gray-300)',
-        borderRadius: 8,
-        cursor: 'pointer',
-        transition: 'all .15s',
-        userSelect: 'none',
-      }}
-    >
-      {/* Circle */}
-      <div style={{
-        width: 18, height: 18, borderRadius: '50%',
-        border: `1.5px solid ${checked ? borderColor : 'var(--gray-400)'}`,
-        background: checked ? circleColor : 'transparent',
-        flexShrink: 0,
-        display: 'flex', alignItems: 'center', justifyContent: 'center',
-      }}>
-        {checked && <div style={{ width: 6, height: 6, borderRadius: '50%', background: '#fff' }} />}
-      </div>
+const dotStyle = (checked, color) => ({
+  width: 18, height: 18, borderRadius: '50%', flexShrink: 0,
+  border: `1.5px solid ${checked ? (color === 'green' ? '#16a34a' : '#c9922b') : 'var(--gray-400)'}`,
+  background: checked ? (color === 'green' ? '#16a34a' : '#c9922b') : 'transparent',
+  display: 'flex', alignItems: 'center', justifyContent: 'center',
+});
 
-      {/* Text */}
-      <div style={{ flex: 1 }}>
-        <div style={{ fontSize: 13, fontWeight: 600, color: 'var(--white)' }}>{title}</div>
-        <div style={{ fontSize: 11, color: 'var(--gray-500)', marginTop: 2 }}>{desc}</div>
-      </div>
-
-      {/* Tag */}
-      <span style={{
-        fontSize: 10, fontWeight: 600,
-        padding: '2px 9px', borderRadius: 20,
-        background: tagColor === 'green'
-          ? (checked ? '#dcfce7' : 'var(--gray-300)')
-          : (checked ? 'rgba(201,146,43,.18)' : 'var(--gray-300)'),
-        color: tagColor === 'green'
-          ? (checked ? '#15803d' : 'var(--gray-500)')
-          : (checked ? '#c9922b' : 'var(--gray-500)'),
-        border: `1px solid ${tagColor === 'green'
-          ? (checked ? '#86efac' : 'var(--gray-300)')
-          : (checked ? 'rgba(201,146,43,.3)' : 'var(--gray-300)')}`,
-        whiteSpace: 'nowrap', flexShrink: 0,
-      }}>
-        {tag}
-      </span>
-    </div>
-  );
-}
+const tagStyle = (checked, color) => ({
+  fontSize: 10, fontWeight: 600,
+  padding: '2px 9px', borderRadius: 20,
+  background: checked
+    ? color === 'green' ? '#dcfce7' : 'rgba(201,146,43,.18)'
+    : 'var(--gray-100)',
+  color: checked
+    ? color === 'green' ? '#15803d' : '#c9922b'
+    : 'var(--gray-400)',
+  border: `1px solid ${checked
+    ? color === 'green' ? '#86efac' : 'rgba(201,146,43,.3)'
+    : 'var(--gray-200)'}`,
+  whiteSpace: 'nowrap', flexShrink: 0,
+});
 
 export default function AddBatchPage() {
   const navigate = useNavigate();
@@ -117,7 +93,7 @@ export default function AddBatchPage() {
   };
 
   const removeImage = i => {
-    setImages(prev  => prev.filter((_,idx)  => idx !== i));
+    setImages(prev  => prev.filter((_,idx) => idx !== i));
     setPreviews(prev => prev.filter((_,idx) => idx !== i));
   };
 
@@ -173,22 +149,16 @@ export default function AddBatchPage() {
         <form className="batch-form" onSubmit={submit}>
 
           {errMsg && (
-            <div className="form-err-banner">
-              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                <circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/>
-              </svg>
-              {errMsg}
-            </div>
+            <div className="form-err-banner">{errMsg}</div>
           )}
 
-          {/* ── Section 1: Identity ─────────────────────────── */}
+          {/* Section 1 */}
           <div className="form-section">
             <h3 className="form-section-title">Batch identity</h3>
             <div className="form-grid-2">
               <div className="bfield">
                 <label>Batch number <span className="req">*</span></label>
                 <input name="batchNumber" value={form.batchNumber} onChange={handle} placeholder="e.g. ALS3427" required />
-                <span className="bfield-hint">Unique identifier shown on the listing</span>
               </div>
               <div className="bfield">
                 <label>Title <span className="req">*</span></label>
@@ -201,17 +171,15 @@ export default function AddBatchPage() {
               <div className="bfield">
                 <label>Price (£) <span className="req">*</span></label>
                 <input name="price" type="number" min="0" step="0.01" value={form.price} onChange={handle} placeholder="e.g. 1490" required />
-                <span className="bfield-hint">Shown only to logged-in buyers</span>
               </div>
               <div className="bfield">
                 <label>MOQ (Min. Order Qty)</label>
                 <input name="moq" type="number" min="1" value={form.moq} onChange={handle} placeholder="e.g. 10" />
-                <span className="bfield-hint">Leave blank if no minimum</span>
               </div>
             </div>
           </div>
 
-          {/* ── Section 2: Classification ───────────────────── */}
+          {/* Section 2 */}
           <div className="form-section">
             <h3 className="form-section-title">Classification</h3>
             <div className="form-grid-3" style={{ marginBottom: '1.25rem' }}>
@@ -240,104 +208,115 @@ export default function AddBatchPage() {
               </div>
             </div>
 
-            {/* ── Design H radio buttons ── */}
+            {/* Radio buttons — inlined, no sub-component */}
             <div className="form-grid-3">
 
               {/* TESTED */}
               <div className="bfield">
                 <label>Tested?</label>
-                <div style={{ display: 'flex', flexDirection: 'column', gap: 6 }}>
-                  <RadioOpt
-                    checked={form.tested === 'true'}
-                    onClick={() => set('tested', 'true')}
-                    title="Yes — tested"
-                    desc="Graded & checked"
-                    tag="Tested"
-                    tagColor="gold"
-                  />
-                  <RadioOpt
-                    checked={form.tested === 'false'}
-                    onClick={() => set('tested', 'false')}
-                    title="No — untested"
-                    desc="As received"
-                    tag="Untested"
-                    tagColor="gray"
-                  />
+                <div>
+                  <div style={radioStyle(form.tested==='true','gold')} onClick={() => set('tested','true')}>
+                    <div style={dotStyle(form.tested==='true','gold')}>
+                      {form.tested==='true' && <div style={{width:6,height:6,borderRadius:'50%',background:'#fff'}}/>}
+                    </div>
+                    <div style={{flex:1}}>
+                      <div style={{fontSize:13,fontWeight:600,color:'var(--gray-700)'}}>Yes — tested</div>
+                      <div style={{fontSize:11,color:'var(--gray-400)',marginTop:2}}>Graded &amp; checked</div>
+                    </div>
+                    <span style={tagStyle(form.tested==='true','gold')}>Tested</span>
+                  </div>
+                  <div style={radioStyle(form.tested==='false','gray')} onClick={() => set('tested','false')}>
+                    <div style={dotStyle(form.tested==='false','gray')}>
+                      {form.tested==='false' && <div style={{width:6,height:6,borderRadius:'50%',background:'#fff'}}/>}
+                    </div>
+                    <div style={{flex:1}}>
+                      <div style={{fontSize:13,fontWeight:600,color:'var(--gray-700)'}}>No — untested</div>
+                      <div style={{fontSize:11,color:'var(--gray-400)',marginTop:2}}>As received</div>
+                    </div>
+                    <span style={tagStyle(form.tested==='false','gray')}>Untested</span>
+                  </div>
                 </div>
               </div>
 
               {/* ITEM LIST */}
               <div className="bfield">
                 <label>Item list available?</label>
-                <div style={{ display: 'flex', flexDirection: 'column', gap: 6 }}>
-                  <RadioOpt
-                    checked={form.hasList === 'true'}
-                    onClick={() => set('hasList', 'true')}
-                    title="List available"
-                    desc="Buyers can request it"
-                    tag="Available"
-                    tagColor="gold"
-                  />
-                  <RadioOpt
-                    checked={form.hasList === 'false'}
-                    onClick={() => set('hasList', 'false')}
-                    title="No list"
-                    desc="Not available"
-                    tag="None"
-                    tagColor="gray"
-                  />
+                <div>
+                  <div style={radioStyle(form.hasList==='true','gold')} onClick={() => set('hasList','true')}>
+                    <div style={dotStyle(form.hasList==='true','gold')}>
+                      {form.hasList==='true' && <div style={{width:6,height:6,borderRadius:'50%',background:'#fff'}}/>}
+                    </div>
+                    <div style={{flex:1}}>
+                      <div style={{fontSize:13,fontWeight:600,color:'var(--gray-700)'}}>List available</div>
+                      <div style={{fontSize:11,color:'var(--gray-400)',marginTop:2}}>Buyers can request it</div>
+                    </div>
+                    <span style={tagStyle(form.hasList==='true','gold')}>Available</span>
+                  </div>
+                  <div style={radioStyle(form.hasList==='false','gray')} onClick={() => set('hasList','false')}>
+                    <div style={dotStyle(form.hasList==='false','gray')}>
+                      {form.hasList==='false' && <div style={{width:6,height:6,borderRadius:'50%',background:'#fff'}}/>}
+                    </div>
+                    <div style={{flex:1}}>
+                      <div style={{fontSize:13,fontWeight:600,color:'var(--gray-700)'}}>No list</div>
+                      <div style={{fontSize:11,color:'var(--gray-400)',marginTop:2}}>Not available</div>
+                    </div>
+                    <span style={tagStyle(form.hasList==='false','gray')}>None</span>
+                  </div>
                 </div>
               </div>
 
               {/* STATUS */}
               <div className="bfield">
                 <label>Status</label>
-                <div style={{ display: 'flex', flexDirection: 'column', gap: 6 }}>
-                  <RadioOpt
-                    checked={form.status === 'available'}
-                    onClick={() => set('status', 'available')}
-                    title="For sale"
-                    desc="Visible to all buyers"
-                    tag="Live"
-                    tagColor="green"
-                  />
-                  <RadioOpt
-                    checked={form.status === 'sold'}
-                    onClick={() => set('status', 'sold')}
-                    title="Sold"
-                    desc="Move to archive"
-                    tag="Archive"
-                    tagColor="gray"
-                  />
+                <div>
+                  <div style={radioStyle(form.status==='available','green')} onClick={() => set('status','available')}>
+                    <div style={dotStyle(form.status==='available','green')}>
+                      {form.status==='available' && <div style={{width:6,height:6,borderRadius:'50%',background:'#fff'}}/>}
+                    </div>
+                    <div style={{flex:1}}>
+                      <div style={{fontSize:13,fontWeight:600,color:'var(--gray-700)'}}>For sale</div>
+                      <div style={{fontSize:11,color:'var(--gray-400)',marginTop:2}}>Visible to all buyers</div>
+                    </div>
+                    <span style={tagStyle(form.status==='available','green')}>Live</span>
+                  </div>
+                  <div style={radioStyle(form.status==='sold','gray')} onClick={() => set('status','sold')}>
+                    <div style={dotStyle(form.status==='sold','gray')}>
+                      {form.status==='sold' && <div style={{width:6,height:6,borderRadius:'50%',background:'#fff'}}/>}
+                    </div>
+                    <div style={{flex:1}}>
+                      <div style={{fontSize:13,fontWeight:600,color:'var(--gray-700)'}}>Sold</div>
+                      <div style={{fontSize:11,color:'var(--gray-400)',marginTop:2}}>Move to archive</div>
+                    </div>
+                    <span style={tagStyle(form.status==='sold','gray')}>Archive</span>
+                  </div>
                 </div>
               </div>
 
             </div>
           </div>
 
-          {/* ── Section 3: Description ──────────────────────── */}
+          {/* Section 3 */}
           <div className="form-section">
-            <h3 className="form-section-title">Description & specs</h3>
+            <h3 className="form-section-title">Description &amp; specs</h3>
             <div className="bfield">
               <label>Specs line</label>
               <input name="specs" value={form.specs} onChange={handle} placeholder="e.g. Intel Core i7 8th Gen — 8GB RAM — 256GB SSD" />
-              <span className="bfield-hint">Short line shown on batch cards and in the listing header</span>
             </div>
             <div className="bfield" style={{ marginTop: '1rem' }}>
               <label>Description</label>
-              <textarea name="description" value={form.description} onChange={handle} rows={4} placeholder="Full description of the batch — contents, condition notes, what's included…" />
+              <textarea name="description" value={form.description} onChange={handle} rows={4} placeholder="Full description of the batch…" />
             </div>
           </div>
 
-          {/* ── Section 4: Images ───────────────────────────── */}
+          {/* Section 4 — Images */}
           <div className="form-section">
             <h3 className="form-section-title">Images</h3>
-            <p className="form-section-sub">Up to 10 images. JPG, PNG or WebP, max 5MB each.</p>
+            <p className="form-section-sub">Up to 10 images. JPG, PNG or WebP.</p>
             {previews.length > 0 && (
               <div className="image-previews">
                 {previews.map((src, i) => (
                   <div key={i} className="img-preview">
-                    <img src={src} alt={`Preview ${i + 1}`} />
+                    <img src={src} alt={`Preview ${i+1}`} />
                     <button type="button" className="img-remove" onClick={() => removeImage(i)}>✕</button>
                     {i === 0 && <span className="img-main-tag">Main</span>}
                   </div>
@@ -347,54 +326,35 @@ export default function AddBatchPage() {
             {images.length < 10 && (
               <label className="upload-area">
                 <input type="file" accept="image/jpeg,image/png,image/webp" multiple onChange={handleImages} style={{ display: 'none' }} />
-                <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
-                  <polyline points="16 16 12 12 8 16"/>
-                  <line x1="12" y1="12" x2="12" y2="21"/>
-                  <path d="M20.39 18.39A5 5 0 0018 9h-1.26A8 8 0 103 16.3"/>
-                </svg>
                 <p>Click to upload images</p>
                 <span>or drag and drop</span>
               </label>
             )}
           </div>
 
-          {/* ── Section 5: Product list file ────────────────── */}
+          {/* Section 5 — Product list */}
           <div className="form-section">
             <h3 className="form-section-title">Product list file</h3>
             <p className="form-section-sub">Upload a product list file. Buyers can download it from the listing.</p>
             {pdfName ? (
               <div className="pdf-preview">
-                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                  <path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/>
-                  <polyline points="14 2 14 8 20 8"/>
-                </svg>
                 <span>{pdfName}</span>
                 <button type="button" className="pdf-remove" onClick={() => { setPdfFile(null); setPdfName(''); }}>Remove</button>
               </div>
             ) : (
               <label className="upload-area">
                 <input type="file" accept="*/*" onChange={handlePdf} style={{ display: 'none' }} />
-                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
-                  <path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/>
-                  <polyline points="14 2 14 8 20 8"/>
-                  <line x1="12" y1="18" x2="12" y2="12"/>
-                  <line x1="9" y1="15" x2="15" y2="15"/>
-                </svg>
                 <p>Click to upload file</p>
                 <span>Max 10MB</span>
               </label>
             )}
           </div>
 
-          {/* ── Actions ─────────────────────────────────────── */}
+          {/* Actions */}
           <div className="form-actions">
             <button type="button" className="btn btn-outline" onClick={reset}>Reset form</button>
             <button type="submit" className="btn btn-primary" disabled={status === 'saving'} style={{ minWidth: 160, justifyContent: 'center' }}>
-              {status === 'saving' ? (
-                <><span className="spinner" /> Saving…</>
-              ) : (
-                <>Publish batch <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg></>
-              )}
+              {status === 'saving' ? 'Saving…' : 'Publish batch →'}
             </button>
           </div>
 
