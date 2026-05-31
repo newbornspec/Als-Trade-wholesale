@@ -16,7 +16,8 @@ app.set('trust proxy', 1)
 app.use(cors({
   origin: [
     'https://als-trade-wholesale.vercel.app',
-    'http://localhost:5173'
+    'https://als-trade-wholesale-git-main-newbornspecs-projects.vercel.app/',
+    'http://localhost:5173',
   ],
   credentials: true
 }))

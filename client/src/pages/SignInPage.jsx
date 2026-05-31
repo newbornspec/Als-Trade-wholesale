@@ -48,7 +48,7 @@ export default function SignInPage() {
           <div className="auth-card">
             <div className="auth-card-head">
               <h1 className="auth-title">Welcome back</h1>
-              <p className="auth-sub">Log in to your Derby Wholesale account</p>
+              <p className="auth-sub">Log in to your ALS Trade account</p>
             </div>
 
             {errMsg && (
