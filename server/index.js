@@ -16,6 +16,8 @@ app.set('trust proxy', 1)
 const allowedOrigins = [
   'http://localhost:5173',
   'https://als-trade-wholesale.vercel.app',
+  'https://alswholesale.co.uk',
+  'https://www.alswholesale.co.uk',
   process.env.CLIENT_URL,
 ].filter(Boolean);
 
