@@ -15,8 +15,7 @@ app.set('trust proxy', 1)
 // ── Global Middleware ──────────────────────────────────────────────────────
 const allowedOrigins = [
   'http://localhost:5173',
-  'https://als-trade-wholesale-git-main-newbornspecs-projects.vercel.app',
-  'https://als-trade-wholesale-9whhxxv23-newbornspecs-projects.vercel.app',
+  'https://als-trade-wholesale.vercel.app',
   process.env.CLIENT_URL,
 ].filter(Boolean);
 
