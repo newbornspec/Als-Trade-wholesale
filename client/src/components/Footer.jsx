@@ -4,7 +4,7 @@ import './Footer.css';
 import logo from '../assets/logo.png';
 
 export default function Footer() {
-  const { user } = useAuth();
+  const { user, logout } = useAuth();
   return (
     <footer className="footer">
       <div className="container footer-inner">
@@ -38,10 +38,19 @@ export default function Footer() {
         </div>
 
         <div className="footer-col">
-          <h4>Account</h4>
-          {!user && <Link to="/sign-up">Register for free</Link>}
-          <Link to="/sign-in">Login</Link>
-        </div>
+  <h4>Account</h4>
+  {!user && <Link to="/sign-up">Register for free</Link>}
+  {user ? (
+    <button
+      onClick={logout}
+      style={{ background:'none', border:'none', cursor:'pointer', padding:0, color:'inherit', fontSize:'inherit', textAlign:'left' }}
+    >
+      Log out
+    </button>
+  ) : (
+    <Link to="/sign-in">Login</Link>
+  )}
+</div>
 
         <div className="footer-col">
           <h4>Contact</h4>
