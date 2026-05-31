@@ -170,16 +170,18 @@ export default function HowItWorksPage() {
               steps. No complexity, no surprises.
             </p>
             <div className="hiw-hero-actions">
-              <Link to="/sign-up" className="btn btn-primary">
-                Register free
-                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                  <path d="M5 12h14M12 5l7 7-7 7"/>
-                </svg>
-              </Link>
-              <Link to="/available-stock" className="btn btn-outline">
-                View stock
-              </Link>
-            </div>
+  {!user && (
+    <Link to="/sign-up" className="btn btn-primary">
+      Register free
+      <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+        <path d="M5 12h14M12 5l7 7-7 7"/>
+      </svg>
+    </Link>
+  )}
+  <Link to="/available-stock" className="btn btn-outline">
+    View stock
+  </Link>
+</div>
           </div>
 
         </div>
