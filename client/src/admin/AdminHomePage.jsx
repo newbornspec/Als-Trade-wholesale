@@ -259,7 +259,7 @@ export default function AdminHomePage() {
         <div className="ah-status-strip">
           <div className="ah-ss-item">
             <div className="ah-ss-dot green" />
-            <span>Frontend live at localhost:5173</span>
+            <span>Frontend live at alswholesale.co.uk</span>
           </div>
           <div className="ah-ss-item">
             <div className="ah-ss-dot green" />
