@@ -288,36 +288,32 @@ export default function AboutPage() {
           </div>
           <div className="trade-grid">
             {[
+             {[
               {
                 icon: '💻',
-                cat:  'Laptops',
+                cat: 'Laptops',
                 desc: 'Business laptops from HP, Dell, Lenovo, Apple and more. Single-brand and mixed batches, ranging from modern ultrabooks to older enterprise models.',
                 brands: ['HP', 'Dell', 'Lenovo', 'Apple', 'Toshiba', 'Asus', 'Acer'],
               },
               {
                 icon: '🖥️',
-                title: 'Computers',
+                cat: 'Computers',
                 desc: 'Desktop computers and workstations in bulk. All-in-ones, towers and enterprise desktops. Single-brand and mixed batches.',
                 brands: ['HP', 'Dell', 'Lenovo', 'Apple', 'Acer', 'Mixed'],
-                link: 'Browse computers →',
-                filter: 'computers',
               },
               {
                 icon: '🖥️',
-                title: 'Monitors',
+                cat: 'Monitors',
                 desc: 'LCD and LED monitors in bulk. Various screen sizes from 19" to 32". Single-brand and mixed batches with full condition information.',
                 brands: ['Dell', 'HP', 'Samsung', 'LG', 'Acer', 'Mixed'],
-                link: 'Browse monitors →',
-                filter: 'monitors',
               },
               {
                 icon: '📦',
-                title: 'Other',
+                cat: 'Other',
                 desc: 'Multi-category batches combining various IT hardware. Best value per unit for buyers who want volume across different product types.',
                 brands: ['Mixed brands', 'Various models'],
-                link: 'Browse other →',
-                filter: 'other',
               },
+            ]}
             ].map((t, i) => (
               <div key={i} className="trade-card">
                 <div className="trade-icon">{t.icon}</div>
