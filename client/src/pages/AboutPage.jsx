@@ -132,13 +132,13 @@ export default function AboutPage() {
             <div className="ah-right">
               <p className="ah-intro">
                 We are a B2B wholesale company specialising in bulk IT hardware —
-                laptops, phones and tablets, sourced and resold by the batch to businesses
+                laptops, computers and monitors, sourced and resold by the batch to businesses
                 worldwide. Founded on the idea that surplus technology should find a second
                 life, not a landfill.
               </p>
               <div className="ah-highlights">
                 {[
-                  { icon: '📦', text: 'Laptops, phones & tablets' },
+                  { icon: '📦', text: 'Laptops, computer & monitors' },
                   { icon: '🌍', text: 'Worldwide export' },
                   { icon: '🏢', text: 'Registered businesses only' },
                 ].map((h, i) => (
@@ -232,7 +232,7 @@ export default function AboutPage() {
               {[
                 { label: 'Founded',     value: 'United Kingdom' },
                 { label: 'Sector',      value: 'B2B IT Hardware Wholesale' },
-                { label: 'Speciality',  value: 'Laptops, phones, tablets' },
+                { label: 'Speciality',  value: 'Laptops, computer, monitors' },
                 { label: 'Coverage',    value: 'Worldwide export' },
                 { label: 'Customers',   value: 'Registered businesses only' },
                 { label: 'Company No',         value: '12345678' },
@@ -295,22 +295,28 @@ export default function AboutPage() {
                 brands: ['HP', 'Dell', 'Lenovo', 'Apple', 'Toshiba', 'Asus', 'Acer'],
               },
               {
-                icon: '📱',
-                cat:  'Phones',
-                desc: 'Smartphones in bulk — Apple iPhones, Samsung Galaxy and more. Tested and untested lots, with or without item lists.',
-                brands: ['Apple', 'Samsung', 'Huawei', 'Nokia', 'Mixed'],
+                icon: '🖥️',
+                title: 'Computers',
+                desc: 'Desktop computers and workstations in bulk. All-in-ones, towers and enterprise desktops. Single-brand and mixed batches.',
+                brands: ['HP', 'Dell', 'Lenovo', 'Apple', 'Acer', 'Mixed'],
+                link: 'Browse computers →',
+                filter: 'computers',
               },
               {
-                icon: '📲',
-                cat:  'Tablets',
-                desc: 'iPads, Android tablets and business tablets in bulk. Mixed and single-brand batches with full condition information.',
-                brands: ['Apple iPad', 'Samsung Tab', 'Lenovo Tab', 'Mixed'],
+                icon: '🖥️',
+                title: 'Monitors',
+                desc: 'LCD and LED monitors in bulk. Various screen sizes from 19" to 32". Single-brand and mixed batches with full condition information.',
+                brands: ['Dell', 'HP', 'Samsung', 'LG', 'Acer', 'Mixed'],
+                link: 'Browse monitors →',
+                filter: 'monitors',
               },
               {
                 icon: '📦',
-                cat:  'Mixed batches',
-                desc: 'Multi-category batches combining laptops, phones and tablets. Best value per unit for buyers who want volume.',
+                title: 'Other',
+                desc: 'Multi-category batches combining various IT hardware. Best value per unit for buyers who want volume across different product types.',
                 brands: ['Mixed brands', 'Various models'],
+                link: 'Browse other →',
+                filter: 'other',
               },
             ].map((t, i) => (
               <div key={i} className="trade-card">
