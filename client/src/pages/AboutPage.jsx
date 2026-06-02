@@ -2,33 +2,27 @@ import { Link } from 'react-router-dom';
 import { useEffect, useRef, useState } from 'react';
 import './AboutPage.css';
 
-/* ── Animated counter hook ───────────────────────────────── */
 function useCountUp(target, duration = 1800, start = false) {
   const [count, setCount] = useState(0);
-
   useEffect(() => {
     if (!start) return;
     let startTime = null;
     const step = (timestamp) => {
       if (!startTime) startTime = timestamp;
       const progress = Math.min((timestamp - startTime) / duration, 1);
-      // Ease out cubic
       const eased = 1 - Math.pow(1 - progress, 3);
       setCount(Math.floor(eased * target));
       if (progress < 1) requestAnimationFrame(step);
     };
     requestAnimationFrame(step);
   }, [start, target, duration]);
-
   return count;
 }
 
-/* ── Single animated stat ────────────────────────────────── */
 function AnimatedStat({ target, suffix, label, delay = 0 }) {
   const [started, setStarted] = useState(false);
   const ref = useRef(null);
   const count = useCountUp(target, 1800, started);
-
   useEffect(() => {
     const timer = setTimeout(() => {
       const observer = new IntersectionObserver(
@@ -40,17 +34,10 @@ function AnimatedStat({ target, suffix, label, delay = 0 }) {
     }, delay);
     return () => clearTimeout(timer);
   }, [delay]);
-
-  // Format 100000 as 100K
-  const display = target >= 1000
-    ? Math.floor(count / 1000) + 'K'
-    : count;
-
+  const display = target >= 1000 ? Math.floor(count / 1000) + 'K' : count;
   return (
     <div className="number-item" ref={ref}>
-      <span className="number-val">
-        {display}{suffix}
-      </span>
+      <span className="number-val">{display}{suffix}</span>
       <span className="number-label">{label}</span>
     </div>
   );
@@ -64,7 +51,7 @@ const VALUES = [
       </svg>
     ),
     title: 'Honest trading',
-    body:  'What you see is what you get. Every batch listing is accurate — condition, quantity, whether a list is available. No surprises when your shipment arrives.',
+    body: 'What you see is what you get. Every batch listing is accurate — condition, quantity, whether a list is available. No surprises when your shipment arrives.',
   },
   {
     icon: (
@@ -74,17 +61,16 @@ const VALUES = [
       </svg>
     ),
     title: 'B2B relationships',
-    body:  'We are not a marketplace. We are a trading company. We know our buyers by name and build long-term relationships built on trust, repeat business and fair prices.',
+    body: 'We are not a marketplace. We are a trading company. We know our buyers by name and build long-term relationships built on trust, repeat business and fair prices.',
   },
   {
     icon: (
       <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
-        <circle cx="12" cy="12" r="10"/>
-        <polyline points="12 6 12 12 16 14"/>
+        <circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/>
       </svg>
     ),
     title: 'Fast execution',
-    body:  'We move quickly. New stock is listed as soon as it arrives. Enquiries are answered within hours. Invoices go out the same day. Shipments leave as soon as payment clears.',
+    body: 'We move quickly. New stock is listed as soon as it arrives. Enquiries are answered within hours. Invoices go out the same day. Shipments leave as soon as payment clears.',
   },
   {
     icon: (
@@ -94,27 +80,51 @@ const VALUES = [
       </svg>
     ),
     title: 'Global reach',
-    body:  'We have shipped to buyers across Europe, Asia and beyond. We handle customs documentation ourselves so you do not have to deal with the complexity of cross-border logistics.',
+    body: 'We have shipped to buyers across Europe, Asia and beyond. We handle customs documentation ourselves so you do not have to deal with the complexity of cross-border logistics.',
   },
 ];
 
 const NUMBERS = [
-  { target: 500,   suffix: '+',  label: 'Batches sold'      },
-  { target: 20,    suffix: '+',  label: 'Countries reached' },
-  { target: 5,     suffix: '+',  label: 'Years active'      },
-  { target: 100000,suffix: '+',  label: 'Units moved'       },
+  { target: 500,    suffix: '+', label: 'Batches sold'      },
+  { target: 20,     suffix: '+', label: 'Countries reached' },
+  { target: 5,      suffix: '+', label: 'Years active'      },
+  { target: 100000, suffix: '+', label: 'Units moved'       },
+];
+
+const TRADE = [
+  {
+    icon: '💻',
+    cat: 'Laptops',
+    desc: 'Business laptops from HP, Dell, Lenovo, Apple and more. Single-brand and mixed batches, ranging from modern ultrabooks to older enterprise models.',
+    brands: ['HP', 'Dell', 'Lenovo', 'Apple', 'Toshiba', 'Asus', 'Acer'],
+  },
+  {
+    icon: '🖥️',
+    cat: 'Computers',
+    desc: 'Desktop computers and workstations in bulk. All-in-ones, towers and enterprise desktops. Single-brand and mixed batches.',
+    brands: ['HP', 'Dell', 'Lenovo', 'Apple', 'Acer', 'Mixed'],
+  },
+  {
+    icon: '🖥️',
+    cat: 'Monitors',
+    desc: 'LCD and LED monitors in bulk. Various screen sizes from 19" to 32". Single-brand and mixed batches with full condition information.',
+    brands: ['Dell', 'HP', 'Samsung', 'LG', 'Acer', 'Mixed'],
+  },
+  {
+    icon: '📦',
+    cat: 'Other',
+    desc: 'Multi-category batches combining various IT hardware. Best value per unit for buyers who want volume across different product types.',
+    brands: ['Mixed brands', 'Various models'],
+  },
 ];
 
 export default function AboutPage() {
   return (
     <main className="about-page">
 
-      {/* ── Hero ─────────────────────────────────────────────── */}
       <header className="about-hero">
         <div className="container">
           <div className="ah-inner">
-
-            {/* Left — eyebrow + title + tags */}
             <div className="ah-left">
               <p className="section-eyebrow">Who we are</p>
               <h1 className="ah-title">About Us</h1>
@@ -124,11 +134,7 @@ export default function AboutPage() {
                 ))}
               </div>
             </div>
-
-            {/* Divider */}
             <div className="ah-divider" />
-
-            {/* Right — intro text + highlights */}
             <div className="ah-right">
               <p className="ah-intro">
                 We are a B2B wholesale company specialising in bulk IT hardware —
@@ -138,7 +144,7 @@ export default function AboutPage() {
               </p>
               <div className="ah-highlights">
                 {[
-                  { icon: '📦', text: 'Laptops, computer & monitors' },
+                  { icon: '📦', text: 'Laptops, computers & monitors' },
                   { icon: '🌍', text: 'Worldwide export' },
                   { icon: '🏢', text: 'Registered businesses only' },
                 ].map((h, i) => (
@@ -149,94 +155,50 @@ export default function AboutPage() {
                 ))}
               </div>
             </div>
-
           </div>
         </div>
       </header>
 
-      {/* ── Numbers bar ──────────────────────────────────────── */}
       <div className="numbers-bar">
         <div className="container numbers-inner">
           {NUMBERS.map((n, i) => (
-            <AnimatedStat
-              key={i}
-              target={n.target}
-              suffix={n.suffix}
-              label={n.label}
-              delay={i * 150}
-            />
+            <AnimatedStat key={i} target={n.target} suffix={n.suffix} label={n.label} delay={i * 150} />
           ))}
         </div>
       </div>
 
-      {/* ── Story section ────────────────────────────────────── */}
       <section className="story-section">
         <div className="container story-inner">
-
-          {/* Left: text */}
           <div className="story-text">
             <p className="section-eyebrow">Our story</p>
             <h2 className="story-title">Started with one batch.<br/>Built from there.</h2>
-
-            <p>A.L.S Trade was founded in the United Kingdom with a clear and straightforward mission: to 
-              connect businesses with surplus IT hardware to buyers actively seeking quality technology equipment,
-               creating value for both parties through fair pricing, transparency, and efficient transactions.</p>
-
-<p>What began in Birmingham as a small IT trading operation, focused on 
-  sourcing and selling individual batches of technology equipment, has grown into a trusted 
-  international business built on industry expertise, strong supplier relationships, 
-  and a commitment to delivering reliable service. By understanding market demand,
-   developing long-term partnerships, and maintaining high standards of accuracy
-    and transparency, we have steadily expanded our reach throughout the UK 
-    and across international markets.</p>
-
-<p>Over the years, we have developed an extensive network of buyers,
-   resellers, refurbishers, wholesalers, and technology businesses worldwide. 
-   Today, we successfully handle hundreds of IT hardware batches each year 
-   across a wide range of product categories, including laptops, desktops,
-    servers, networking equipment, components, peripherals, and enterprise 
-    technology solutions.</p>
-
-<p>Our customer base spans more than 20 countries and includes everyone
-   from independent repair shops and local technology retailers to 
-   large-scale resellers, distributors, and refurbishment companies. 
-   Regardless of the size of the transaction, our focus remains the same: 
-   providing accurate product information, competitive pricing, responsive
-    communication, and a smooth trading experience from start to finish.</p>
-
-<p>Based in Hertfordshire, United Kingdom, A.L.S Trade operates as a
-   dedicated and experienced team rather than a faceless online marketplace.
-    We believe that successful business relationships are built on trust, expertise,
-     and direct communication. When you contact us, you speak with someone who understands 
-     the inventory, knows the market, and can provide the information you need quickly
-      and accurately.</p>
-
-<p>As we continue to grow, our commitment remains unchanged: to make buying and 
-  selling surplus IT hardware simple, reliable, and profitable for businesses 
-  around the world.</p>
+            <p>A.L.S Trade was founded in the United Kingdom with a clear and straightforward mission: to connect businesses with surplus IT hardware to buyers actively seeking quality technology equipment, creating value for both parties through fair pricing, transparency, and efficient transactions.</p>
+            <p>What began in Birmingham as a small IT trading operation, focused on sourcing and selling individual batches of technology equipment, has grown into a trusted international business built on industry expertise, strong supplier relationships, and a commitment to delivering reliable service. By understanding market demand, developing long-term partnerships, and maintaining high standards of accuracy and transparency, we have steadily expanded our reach throughout the UK and across international markets.</p>
+            <p>Over the years, we have developed an extensive network of buyers, resellers, refurbishers, wholesalers, and technology businesses worldwide. Today, we successfully handle hundreds of IT hardware batches each year across a wide range of product categories, including laptops, desktops, servers, networking equipment, components, peripherals, and enterprise technology solutions.</p>
+            <p>Our customer base spans more than 20 countries and includes everyone from independent repair shops and local technology retailers to large-scale resellers, distributors, and refurbishment companies. Regardless of the size of the transaction, our focus remains the same: providing accurate product information, competitive pricing, responsive communication, and a smooth trading experience from start to finish.</p>
+            <p>Based in Hertfordshire, United Kingdom, A.L.S Trade operates as a dedicated and experienced team rather than a faceless online marketplace. We believe that successful business relationships are built on trust, expertise, and direct communication. When you contact us, you speak with someone who understands the inventory, knows the market, and can provide the information you need quickly and accurately.</p>
+            <p>As we continue to grow, our commitment remains unchanged: to make buying and selling surplus IT hardware simple, reliable, and profitable for businesses around the world.</p>
           </div>
 
-          {/* Right: info card */}
           <div className="story-card">
             <div className="story-card-header">
               <div className="sc-logo">
-                <span className="logo-dw">DW</span>
+                <span className="logo-dw">ALS</span>
                 <div>
-                  <p className="sc-company">A.L.S Trade  Ltd</p>
+                  <p className="sc-company">A.L.S Trade Ltd</p>
                   <p className="sc-tagline">Bulk IT Hardware</p>
                 </div>
               </div>
             </div>
-
             <div className="sc-rows">
               {[
-                { label: 'Founded',     value: 'United Kingdom' },
-                { label: 'Sector',      value: 'B2B IT Hardware Wholesale' },
-                { label: 'Speciality',  value: 'Laptops, computer, monitors' },
-                { label: 'Coverage',    value: 'Worldwide export' },
-                { label: 'Customers',   value: 'Registered businesses only' },
-                { label: 'Company No',         value: '12345678' },
-                { label: 'VAT',         value: 'GB123456789' },
+                { label: 'Founded',    value: 'United Kingdom' },
+                { label: 'Sector',     value: 'B2B IT Hardware Wholesale' },
+                { label: 'Speciality', value: 'Laptops, computers, monitors' },
+                { label: 'Coverage',   value: 'Worldwide export' },
+                { label: 'Customers',  value: 'Registered businesses only' },
+                { label: 'Company No', value: '12345678' },
+                { label: 'VAT',        value: 'GB123456789' },
               ].map((r, i) => (
                 <div key={i} className="sc-row">
                   <span className="sc-row-label">{r.label}</span>
@@ -244,13 +206,7 @@ export default function AboutPage() {
                 </div>
               ))}
             </div>
-
-            <a
-              href="https://wa.me/447911123456"
-              target="_blank"
-              rel="noreferrer"
-              className="sc-wa"
-            >
+            <a href="https://wa.me/447911123456" target="_blank" rel="noreferrer" className="sc-wa">
               <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
                 <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/>
               </svg>
@@ -260,7 +216,6 @@ export default function AboutPage() {
         </div>
       </section>
 
-      {/* ── Values ───────────────────────────────────────────── */}
       <section className="values-section">
         <div className="container">
           <div className="values-header">
@@ -279,7 +234,6 @@ export default function AboutPage() {
         </div>
       </section>
 
-      {/* ── What we trade ────────────────────────────────────── */}
       <section className="trade-section">
         <div className="container">
           <div className="trade-header">
@@ -287,33 +241,7 @@ export default function AboutPage() {
             <h2 className="section-title">What we trade</h2>
           </div>
           <div className="trade-grid">
-            {[
-              {
-                icon: '💻',
-                cat: 'Laptops',
-                desc: 'Business laptops from HP, Dell, Lenovo, Apple and more. Single-brand and mixed batches, ranging from modern ultrabooks to older enterprise models.',
-                brands: ['HP', 'Dell', 'Lenovo', 'Apple', 'Toshiba', 'Asus', 'Acer'],
-              },
-              {
-                icon: '🖥️',
-                cat: 'Computers',
-                desc: 'Desktop computers and workstations in bulk. All-in-ones, towers and enterprise desktops. Single-brand and mixed batches.',
-                brands: ['HP', 'Dell', 'Lenovo', 'Apple', 'Acer', 'Mixed'],
-              },
-              {
-                icon: '🖥️',
-                cat: 'Monitors',
-                desc: 'LCD and LED monitors in bulk. Various screen sizes from 19" to 32". Single-brand and mixed batches with full condition information.',
-                brands: ['Dell', 'HP', 'Samsung', 'LG', 'Acer', 'Mixed'],
-              },
-              {
-                icon: '📦',
-                cat: 'Other',
-                desc: 'Multi-category batches combining various IT hardware. Best value per unit for buyers who want volume across different product types.',
-                brands: ['Mixed brands', 'Various models'],
-              },
-            ]}
-            ].map((t, i) => (
+            {TRADE.map((t, i) => (
               <div key={i} className="trade-card">
                 <div className="trade-icon">{t.icon}</div>
                 <h3 className="trade-cat">{t.cat}</h3>
@@ -323,10 +251,7 @@ export default function AboutPage() {
                     <span key={j} className="brand-chip">{b}</span>
                   ))}
                 </div>
-                <Link
-                  to={`/available-stock?category=${t.cat.toLowerCase().split(' ')[0]}`}
-                  className="trade-link"
-                >
+                <Link to={`/available-stock?category=${t.cat.toLowerCase()}`} className="trade-link">
                   Browse {t.cat.toLowerCase()} →
                 </Link>
               </div>
@@ -335,20 +260,18 @@ export default function AboutPage() {
         </div>
       </section>
 
-      {/* ── Location ─────────────────────────────────────────── */}
       <section className="location-section">
         <div className="container location-inner">
           <div className="location-text">
             <p className="section-eyebrow">Where we are</p>
             <h2 className="section-title">Based in the United Kingdom</h2>
             <p className="location-body">
-              Our warehouse and offices are located in Hertford,
-              United Kingdom. Centrally positioned in the UK for efficient
-              shipping across the continent and beyond.
+              Our warehouse and offices are located in Hertford, United Kingdom. Centrally
+              positioned in the UK for efficient shipping across the continent and beyond.
             </p>
             <p className="location-body">
-              Visits are by appointment only. If you would like to inspect a batch
-              in person before purchasing, contact us to arrange a suitable time.
+              Visits are by appointment only. If you would like to inspect a batch in person
+              before purchasing, contact us to arrange a suitable time.
             </p>
             <div className="location-details">
               <div className="ld-row">
@@ -368,18 +291,13 @@ export default function AboutPage() {
                   <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/>
                   <polyline points="22,6 12,13 2,6"/>
                 </svg>
-                info@alservice.org.uk
+                info@alservices.org.uk
               </div>
             </div>
             <div className="location-actions">
               <Link to="/contact" className="btn btn-outline">Contact us</Link>
-              <a
-                href="https://wa.me/447911123456"
-                target="_blank"
-                rel="noreferrer"
-                className="btn btn-primary"
-                style={{background:'#25D366', gap:'8px'}}
-              >
+              <a href="https://wa.me/447911123456" target="_blank" rel="noreferrer"
+                className="btn btn-primary" style={{background:'#25D366', gap:'8px'}}>
                 <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
                   <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/>
                 </svg>
@@ -387,36 +305,28 @@ export default function AboutPage() {
               </a>
             </div>
           </div>
-
-          {/* Map */}
           <div className="location-map">
             <iframe
-              title="A.L.S Trade  location"
+              title="A.L.S Trade location"
               src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2484.5!2d6.051!3d51.39!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0x0!2zNTHCsDIzJzI0LjAiTiA2wrAwMycwMy42IkU!5e0!3m2!1sen!2snl!4v1700000000000"
-              width="100%"
-              height="100%"
+              width="100%" height="100%"
               style={{ border: 0, display: 'block', minHeight: '360px' }}
-              allowFullScreen=""
-              loading="lazy"
-              referrerPolicy="no-referrer-when-downgrade"
+              allowFullScreen="" loading="lazy" referrerPolicy="no-referrer-when-downgrade"
             />
           </div>
         </div>
       </section>
 
-      {/* ── CTA ──────────────────────────────────────────────── */}
       <section className="about-cta">
         <div className="container about-cta-inner">
           <div>
             <h2 className="about-cta-title">Ready to do business?</h2>
-            <p className="about-cta-sub">
-              Register your company for free and start browsing live stock with full pricing.
-            </p>
+            <p className="about-cta-sub">Register your company for free and start browsing live stock with full pricing.</p>
           </div>
           <div className="about-cta-btns">
-            <Link to="/sign-up"          className="btn btn-primary">Register free</Link>
-            <Link to="/available-stock"  className="btn btn-outline-dark">View stock</Link>
-            <Link to="/contact"          className="btn btn-outline-dark">Contact us</Link>
+            <Link to="/sign-up"         className="btn btn-primary">Register free</Link>
+            <Link to="/available-stock" className="btn btn-outline-dark">View stock</Link>
+            <Link to="/contact"         className="btn btn-outline-dark">Contact us</Link>
           </div>
         </div>
       </section>
