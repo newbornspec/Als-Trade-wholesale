@@ -288,7 +288,6 @@ export default function AboutPage() {
           </div>
           <div className="trade-grid">
             {[
-             {[
               {
                 icon: '💻',
                 cat: 'Laptops',
