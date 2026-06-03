@@ -8,13 +8,9 @@ cloudinary.config({
   api_secret: process.env.CLOUDINARY_API_SECRET,
 });
 
-/* ── Image extensions ─────────────────────────────────────────── */
 const IMAGE_EXTS = ['.jpg','.jpeg','.jfif','.png','.webp','.gif','.bmp','.tiff','.tif','.heic','.heif'];
+const isImageFile = (originalname) => IMAGE_EXTS.includes(path.extname(originalname).toLowerCase());
 
-const isImageFile = (originalname) =>
-  IMAGE_EXTS.includes(path.extname(originalname).toLowerCase());
-
-/* ── MIME type map for non-image files ───────────────────────── */
 const MIME_MAP = {
   '.pdf':  'application/pdf',
   '.xlsx': 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
@@ -33,7 +29,6 @@ const getMime = (originalname) => {
   return MIME_MAP[ext] || 'application/octet-stream';
 };
 
-/* ── Upload image via stream ──────────────────────────────────── */
 const uploadImage = (buffer, originalname, folder) => {
   return new Promise((resolve, reject) => {
     cloudinary.uploader.upload_stream(
@@ -46,21 +41,17 @@ const uploadImage = (buffer, originalname, folder) => {
   });
 };
 
-/* ── Upload non-image file via base64 (prevents binary corruption) */
 const uploadRawFile = (buffer, originalname, folder) => {
   const mime     = getMime(originalname);
-  const ext      = path.extname(originalname).slice(1); // e.g. 'xlsx'
+  const ext      = path.extname(originalname).slice(1);
   const baseName = path.basename(originalname, path.extname(originalname));
   const dataUri  = `data:${mime};base64,${buffer.toString('base64')}`;
 
   return new Promise((resolve, reject) => {
     cloudinary.uploader.upload(dataUri, {
-      folder,
-      resource_type:   'raw',
-      public_id:       baseName,
-      format:          ext,
-      use_filename:    true,
-      unique_filename: true,
+      folder, resource_type: 'raw',
+      public_id: baseName, format: ext,
+      use_filename: true, unique_filename: true,
     }, (error, result) => {
       if (error) reject(error);
       else resolve(result.secure_url);
@@ -68,7 +59,6 @@ const uploadRawFile = (buffer, originalname, folder) => {
   });
 };
 
-/* ── Route upload to correct method ──────────────────────────── */
 const uploadToCloudinary = (buffer, originalname, folder) => {
   if (isImageFile(originalname)) return uploadImage(buffer, originalname, folder);
   return uploadRawFile(buffer, originalname, folder);
@@ -162,10 +152,9 @@ const updateBatch = async (req, res) => {
     const updates = { ...req.body };
     if (updates.moq) updates.moq = Number(updates.moq);
 
-    if (req.files && req.files.length > 0) {
-      const existing  = await Batch.findById(req.params.id).select('images productListFile');
-      const newImages = [];
+    const newImages = [];
 
+    if (req.files && req.files.length > 0) {
       for (const f of req.files) {
         const isImg  = isImageFile(f.originalname);
         const folder = isImg ? 'als-trade/batches' : 'als-trade/lists';
@@ -173,11 +162,28 @@ const updateBatch = async (req, res) => {
         if (isImg) newImages.push(url);
         else { updates.productListFile = url; updates.productListFileName = f.originalname; }
       }
-
-      if (newImages.length > 0) {
-        updates.images = [...(existing?.images || []), ...newImages];
-      }
     }
+
+    // Handle existing images sent from frontend
+    if (updates.existingImages !== undefined) {
+      const kept = Array.isArray(updates.existingImages)
+        ? updates.existingImages
+        : updates.existingImages ? [updates.existingImages] : [];
+      updates.images = [...kept, ...newImages];
+    } else if (newImages.length > 0) {
+      const existing = await Batch.findById(req.params.id).select('images');
+      updates.images = [...(existing?.images || []), ...newImages];
+    }
+
+    // Handle file removal
+    if (updates.removeFile === 'true') {
+      updates.productListFile     = null;
+      updates.productListFileName = null;
+    }
+
+    // Clean up frontend-only fields
+    delete updates.existingImages;
+    delete updates.removeFile;
 
     const batch = await Batch.findByIdAndUpdate(req.params.id, updates, {
       new: true, runValidators: true,
