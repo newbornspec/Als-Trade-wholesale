@@ -325,7 +325,7 @@ export default function AddBatchPage() {
             )}
             {images.length < 10 && (
               <label className="upload-area">
-                <input type="file" accept="image/jpeg,image/png,image/webp" multiple onChange={handleImages} style={{ display: 'none' }} />
+                <input type="file" accept="image/*,.heic,.heif,.jfif" multiple onChange={handleImages} style={{ display: 'none' }} />
                 <p>Click to upload images</p>
                 <span>or drag and drop</span>
               </label>
