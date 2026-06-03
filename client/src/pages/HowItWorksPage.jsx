@@ -116,7 +116,7 @@ const FAQS = [
   },
   {
     q: 'Can I inspect the batch before buying?',
-    a: 'Visiting our warehouse is possible by prior appointment. We are located in Derby, United Kingdom. Contact us to arrange a visit.',
+    a: 'Visiting our warehouse is possible by prior appointment. We are located in Hertfordshire, United Kingdom. Contact us to arrange a visit.',
   },
   {
     q: 'What does "No List" mean?',
