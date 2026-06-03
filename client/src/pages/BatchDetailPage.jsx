@@ -5,7 +5,7 @@ import { getImageUrl } from '../utils/imageUrl';
 import api from '../api/axios';
 import './BatchDetailPage.css';
 
-/* ── Enquiry form (embedded in the page) ─────────────────────── */
+/* ── Enquiry form ────────────────────────────────────────────── */
 function EnquiryForm({ batch }) {
   const { user } = useAuth();
   const [form, setForm] = useState({
@@ -15,7 +15,7 @@ function EnquiryForm({ batch }) {
     email:       user?.email       || '',
     message:     `Hi, I'm interested in batch ${batch.batchNumber} — ${batch.title}. Please contact me with more details.`,
   });
-  const [status, setStatus] = useState('idle'); // idle | sending | sent | error
+  const [status, setStatus] = useState('idle');
 
   const handle = e => setForm({ ...form, [e.target.name]: e.target.value });
 
@@ -64,20 +64,16 @@ function EnquiryForm({ batch }) {
         <label>Message *</label>
         <textarea name="message" value={form.message} onChange={handle} required rows={4} />
       </div>
-
       {status === 'error' && (
         <p className="form-error">Failed to send. Try again or WhatsApp us directly.</p>
       )}
-
       <div className="form-actions">
         <button type="submit" className="btn btn-primary" disabled={status === 'sending'}>
           {status === 'sending' ? 'Sending…' : 'Send enquiry'}
         </button>
         <a
           href={`https://wa.me/447911123456?text=${encodeURIComponent(`Hi, I'm interested in batch ${batch.batchNumber} — ${batch.title}`)}`}
-          target="_blank"
-          rel="noreferrer"
-          className="wa-btn"
+          target="_blank" rel="noreferrer" className="wa-btn"
         >
           <svg width="17" height="17" viewBox="0 0 24 24" fill="currentColor">
             <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/>
@@ -91,7 +87,7 @@ function EnquiryForm({ batch }) {
 
 /* ── Image gallery ───────────────────────────────────────────── */
 function Gallery({ images, title }) {
-  const [active, setActive] = useState(0);
+  const [active,   setActive]   = useState(0);
   const [lightbox, setLightbox] = useState(false);
 
   if (!images || images.length === 0) {
@@ -106,7 +102,6 @@ function Gallery({ images, title }) {
   return (
     <>
       <div className="gallery">
-        {/* Main image */}
         <div className="gallery-main" onClick={() => setLightbox(true)}>
           <img src={getImageUrl(images[active])} alt={`${title} — image ${active + 1}`} />
           <div className="gallery-zoom-hint">
@@ -119,38 +114,24 @@ function Gallery({ images, title }) {
             <div className="gallery-counter">{active + 1} / {images.length}</div>
           )}
         </div>
-
-        {/* Thumbnails */}
         {images.length > 1 && (
           <div className="gallery-thumbs">
             {images.map((img, i) => (
-              <button
-                key={i}
-                className={`thumb ${i === active ? 'active' : ''}`}
-                onClick={() => setActive(i)}
-              >
+              <button key={i} className={`thumb ${i === active ? 'active' : ''}`} onClick={() => setActive(i)}>
                 <img src={getImageUrl(img)} alt={`Thumbnail ${i + 1}`} />
               </button>
             ))}
           </div>
         )}
       </div>
-
-      {/* Lightbox */}
       {lightbox && (
         <div className="lightbox" onClick={() => setLightbox(false)}>
           <button className="lb-close">✕</button>
           <img src={getImageUrl(images[active])} alt={title} onClick={e => e.stopPropagation()} />
           {images.length > 1 && (
             <>
-              <button
-                className="lb-prev"
-                onClick={e => { e.stopPropagation(); setActive(i => (i - 1 + images.length) % images.length); }}
-              >‹</button>
-              <button
-                className="lb-next"
-                onClick={e => { e.stopPropagation(); setActive(i => (i + 1) % images.length); }}
-              >›</button>
+              <button className="lb-prev" onClick={e => { e.stopPropagation(); setActive(i => (i - 1 + images.length) % images.length); }}>‹</button>
+              <button className="lb-next" onClick={e => { e.stopPropagation(); setActive(i => (i + 1) % images.length); }}>›</button>
             </>
           )}
         </div>
@@ -172,7 +153,7 @@ function SpecRow({ label, value, highlight }) {
 
 /* ── Main page ───────────────────────────────────────────────── */
 export default function BatchDetailPage() {
-  const { slug } = useParams();
+  const { slug }  = useParams();
   const { user }  = useAuth();
   const navigate  = useNavigate();
 
@@ -185,11 +166,9 @@ export default function BatchDetailPage() {
     setLoading(true);
     setError('');
     window.scrollTo(0, 0);
-
     api.get(`/batches/${slug}`)
       .then(({ data }) => {
         setBatch(data);
-        // Fetch related batches (same category)
         return api.get(`/batches?category=${data.category}`);
       })
       .then(({ data }) => {
@@ -202,7 +181,6 @@ export default function BatchDetailPage() {
       .finally(() => setLoading(false));
   }, [slug]);
 
-  /* ── Loading skeleton ──────────────────────────────────────── */
   if (loading) return (
     <main className="detail-page">
       <div className="container detail-skeleton">
@@ -217,7 +195,6 @@ export default function BatchDetailPage() {
     </main>
   );
 
-  /* ── 404 ───────────────────────────────────────────────────── */
   if (error === '404') return (
     <main className="detail-page">
       <div className="container not-found">
@@ -228,7 +205,6 @@ export default function BatchDetailPage() {
     </main>
   );
 
-  /* ── Error ─────────────────────────────────────────────────── */
   if (error) return (
     <main className="detail-page">
       <div className="container not-found">
@@ -241,12 +217,32 @@ export default function BatchDetailPage() {
   if (!batch) return null;
 
   const isSold      = batch.status === 'sold';
-  const categoryMap = { laptops: 'Laptops', phones: 'Phones', tablets: 'Tablets', mixed: 'Mixed', other: 'Other' };
+  const categoryMap = {
+    laptops:   'Laptops',
+    computers: 'Computers',
+    monitors:  'Monitors',
+    other:     'Other',
+    phones:    'Phones',
+    tablets:   'Tablets',
+    mixed:     'Mixed',
+  };
+
+  /* ── Product list value logic ──────────────────────────────── */
+  const productListValue = () => {
+    if (batch.productListFile) {
+      // user logged in — show nothing here, download link shown below
+      if (user) return 'List available';
+      // user not logged in — prompt to login
+      return 'List available — login to download';
+    }
+    if (batch.hasList) return 'Available on request';
+    return 'Not available';
+  };
 
   return (
     <main className="detail-page">
 
-      {/* ── Breadcrumb ─────────────────────────────────────────── */}
+      {/* Breadcrumb */}
       <div className="breadcrumb-bar">
         <div className="container breadcrumb-inner">
           <Link to="/">Home</Link>
@@ -262,37 +258,28 @@ export default function BatchDetailPage() {
         {/* ══ LEFT COLUMN ══════════════════════════════════════ */}
         <div className="detail-left">
 
-          {/* Gallery */}
           <Gallery images={batch.images} title={batch.title} />
 
           {/* Specs table */}
           <div className="specs-card">
             <h2 className="card-heading">Batch specifications</h2>
             <div className="specs-table">
-              <SpecRow label="Batch number" value={batch.batchNumber} highlight />
-              <SpecRow label="Category"     value={categoryMap[batch.category]} />
-              <SpecRow label="Brand"        value={batch.brand} />
-              <SpecRow label="Quantity"     value={`${batch.quantity} units`} highlight />
+              <SpecRow label="Batch number"    value={batch.batchNumber} highlight />
+              <SpecRow label="Category"        value={categoryMap[batch.category]} />
+              <SpecRow label="Brand"           value={batch.brand} />
+              <SpecRow label="Quantity"        value={`${batch.quantity} units`} highlight />
               {batch.moq && (
                 <SpecRow label="Min. order (MOQ)" value={`${batch.moq} units`} highlight />
               )}
-              <SpecRow label="Grade"        value={batch.grade ? `Grade ${batch.grade}` : null} />
+              <SpecRow label="Grade"           value={batch.grade ? `Grade ${batch.grade}` : null} />
               <SpecRow
                 label="Condition"
                 value={batch.tested ? 'Tested & graded' : 'Untested'}
                 highlight
               />
-              <SpecRow
-                label="Product list"
-                value={
-                  batch.productListFile
-                    ? 'List available! Login to see the PDF file'
-                    : batch.hasList
-                    ? 'Available on request'
-                    : 'Not available (NO List!)'
-                }
-              />
-              {/* PDF download — only shown to logged-in users */}
+              <SpecRow label="Product list" value={productListValue()} />
+
+              {/* Download link — only shown to logged-in users */}
               {batch.productListFile && user && (
                 <div className="spec-row">
                   <span className="spec-label">Product list file</span>
@@ -300,6 +287,7 @@ export default function BatchDetailPage() {
                     href={batch.productListFile}
                     target="_blank"
                     rel="noreferrer"
+                    download={batch.productListFileName || true}
                     className="pdf-download-link"
                   >
                     <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
@@ -312,11 +300,15 @@ export default function BatchDetailPage() {
                   </a>
                 </div>
               )}
-              <SpecRow label="Status" value={isSold ? 'Sold' : 'Available for purchase'} highlight />
+
+              <SpecRow
+                label="Status"
+                value={isSold ? 'Sold' : 'Available for purchase'}
+                highlight
+              />
             </div>
           </div>
 
-          {/* Specs string — now first */}
           {batch.specs && (
             <div className="desc-card">
               <h2 className="card-heading">Specifications</h2>
@@ -324,7 +316,6 @@ export default function BatchDetailPage() {
             </div>
           )}
 
-          {/* Description — now below */}
           {batch.description && (
             <div className="desc-card">
               <h2 className="card-heading">Description</h2>
@@ -335,11 +326,8 @@ export default function BatchDetailPage() {
 
         {/* ══ RIGHT COLUMN ═════════════════════════════════════ */}
         <div className="detail-right">
-
-          {/* Sticky info card */}
           <div className="info-card">
 
-            {/* Status badge */}
             <div className="info-status">
               <span className={`status-badge ${isSold ? 'sold' : 'available'}`}>
                 <span className="status-dot" />
@@ -350,7 +338,6 @@ export default function BatchDetailPage() {
 
             <h1 className="detail-title">{batch.title}</h1>
 
-            {/* Meta badges */}
             <div className="detail-badges">
               {batch.tested
                 ? <span className="badge badge-green">Tested</span>
@@ -361,13 +348,11 @@ export default function BatchDetailPage() {
               {batch.brand && <span className="badge badge-amber">{batch.brand}</span>}
             </div>
 
-            {/* Quantity */}
             <div className="qty-block">
               <span className="qty-label">Quantity</span>
               <span className="qty-value">{batch.quantity} <span className="qty-unit">units</span></span>
             </div>
 
-            {/* Price */}
             <div className="price-block">
               <span className="price-label-txt">Price</span>
               {user ? (
@@ -399,7 +384,6 @@ export default function BatchDetailPage() {
               )}
             </div>
 
-            {/* Specs summary */}
             {batch.specs && (
               <div className="specs-summary">
                 <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
@@ -410,10 +394,8 @@ export default function BatchDetailPage() {
               </div>
             )}
 
-            {/* Divider */}
             <div className="info-divider" />
 
-            {/* CTA */}
             {!isSold ? (
               <>
                 <p className="enquiry-intro">
@@ -430,7 +412,6 @@ export default function BatchDetailPage() {
               </div>
             )}
 
-            {/* Trust row */}
             <div className="trust-row">
               <div className="trust-item">
                 <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
@@ -454,13 +435,12 @@ export default function BatchDetailPage() {
             </div>
           </div>
 
-          {/* Contact strip */}
           <div className="contact-strip">
             <div className="cs-row">
               <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
                 <path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07A19.5 19.5 0 013.07 8.81a19.79 19.79 0 01-3.07-8.68A2 2 0 012 0h3a2 2 0 012 1.72c.127.96.361 1.903.7 2.81a2 2 0 01-.45 2.11L6.09 7.91a16 16 0 006 6l1.27-1.27a2 2 0 012.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0122 14.92v2z"/>
               </svg>
-              <a href="tel:0203 747 1310">0203 747 1310</a>
+              <a href="tel:02037471310">0203 747 1310</a>
             </div>
             <div className="cs-row">
               <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
@@ -473,7 +453,7 @@ export default function BatchDetailPage() {
         </div>
       </div>
 
-      {/* ── Related batches ─────────────────────────────────────── */}
+      {/* Related batches */}
       {related.length > 0 && (
         <section className="related-section">
           <div className="container">
