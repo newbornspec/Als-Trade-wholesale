@@ -5,10 +5,9 @@ import BatchCard from '../components/BatchCard';
 import './HomePage.css';
 import { useAuth } from '../context/AuthContext';
 
-
 /* ── Animated counter ────────────────────────────────────────── */
 function CountUp({ target, suffix = '+', duration = 1600 }) {
-  const [count, setCount]   = useState(0);
+  const [count,   setCount]   = useState(0);
   const [started, setStarted] = useState(false);
   const ref = useRef(null);
 
@@ -37,7 +36,6 @@ function CountUp({ target, suffix = '+', duration = 1600 }) {
   return <span ref={ref}>{count}{suffix}</span>;
 }
 
-/* ── Static data for sections that don't need the backend ─── */
 const USPs = [
   {
     icon: (
@@ -87,12 +85,11 @@ const HOW_IT_WORKS = [
 
 export default function HomePage() {
   const { user } = useAuth();
-  const [latestBatches, setLatestBatches] = useState([]);
+  const [latestBatches,  setLatestBatches]  = useState([]);
   const [loadingBatches, setLoadingBatches] = useState(true);
-  const [stats, setStats] = useState({ available: 0, sold: 0, countries: '20+' });
+  const [stats,          setStats]          = useState({ available: 0, sold: 0, countries: '20+' });
 
   useEffect(() => {
-    /* Fetch the 3 most recent available batches for the preview */
     api.get('/batches?limit=3')
       .then(({ data }) => {
         setLatestBatches(data.slice(0, 3));
@@ -113,7 +110,6 @@ export default function HomePage() {
         </div>
 
         <div className="container hero-content">
-
           <h1 className="hero-title fade-up delay-1">
             Bulk IT stock<br/>
             <span className="hero-accent">at trade prices.</span>
@@ -132,13 +128,12 @@ export default function HomePage() {
               </svg>
             </Link>
             {!user && (
-  <Link to="/sign-up" className="btn btn-outline hero-btn">
-    Register free
-  </Link>
-)}
+              <Link to="/sign-up" className="btn btn-outline hero-btn">
+                Register free
+              </Link>
+            )}
           </div>
 
-          {/* Hero stats — Batches sold first, then available, then countries */}
           <div className="hero-stats fade-up delay-4">
             <div className="hero-stat">
               <span className="stat-value"><CountUp target={500} /></span>
@@ -167,10 +162,10 @@ export default function HomePage() {
       <section className="categories-strip">
         <div className="container cat-inner">
           {[
-            { label: 'Laptops',  icon: '💻', slug: 'laptops'  },
-            { label: 'Computer',  icon: '🖥️', slug: 'Computer'   },
-            { label: 'Monitors',  icon: '🖥️', slug: 'Monitors'  },
-            { label: 'Others',    icon: '📦', slug: 'Others'    },
+            { label: 'Laptops',   icon: '💻', slug: 'laptops'   },
+            { label: 'Computers', icon: '🖥️', slug: 'computers' },
+            { label: 'Monitors',  icon: '🖥️', slug: 'monitors'  },
+            { label: 'Other',     icon: '📦', slug: 'other'     },
           ].map(cat => (
             <Link
               key={cat.slug}
@@ -192,9 +187,7 @@ export default function HomePage() {
               <p className="section-eyebrow">Fresh listings</p>
               <h2 className="section-title">Latest available stock</h2>
             </div>
-            <Link to="/available-stock" className="btn btn-outline">
-              View all stock →
-            </Link>
+            <Link to="/available-stock" className="btn btn-outline">View all stock →</Link>
           </div>
 
           {loadingBatches ? (
@@ -223,19 +216,13 @@ export default function HomePage() {
               From sign-up to receiving your batch — four simple steps.
             </p>
           </div>
-
           <div className="steps-grid">
             {HOW_IT_WORKS.map((step, i) => (
               <div key={i} className="step-card">
-                {/* Connector line */}
-                {i < HOW_IT_WORKS.length - 1 && (
-                  <div className="step-connector" />
-                )}
-                {/* Number badge */}
+                {i < HOW_IT_WORKS.length - 1 && <div className="step-connector" />}
                 <div className="step-num-wrap">
                   <span className="step-num">{step.num}</span>
                 </div>
-                {/* Content */}
                 <div className="step-content">
                   <h3 className="step-title">{step.title}</h3>
                   <p className="step-body">{step.body}</p>
@@ -251,9 +238,8 @@ export default function HomePage() {
         <div className="container">
           <div className="section-header centered">
             <p className="section-eyebrow">Why us</p>
-            <h2 className="section-title">Why trade with A.L.S Trade </h2>
+            <h2 className="section-title">Why trade with A.L.S Trade</h2>
           </div>
-
           <div className="usp-grid">
             {USPs.map((usp, i) => (
               <div key={i} className="usp-card">
@@ -270,11 +256,20 @@ export default function HomePage() {
       <section className="cta-band">
         <div className="container cta-inner">
           <div>
-            <h2 className="cta-title">Ready to buy your first batch?</h2>
-            <p className="cta-sub">Register free and get instant access to all stock and pricing.</p>
+            <h2 className="cta-title">
+              {user ? 'Browse our latest stock' : 'Ready to buy your first batch?'}
+            </h2>
+            <p className="cta-sub">
+              {user
+                ? 'Browse our latest stock and get in touch with any questions.'
+                : 'Register free and get instant access to all stock and pricing.'
+              }
+            </p>
           </div>
           <div className="cta-actions">
-          {!user && <Link to="/sign-up" className="btn btn-primary">Register free</Link>}
+            {!user && (
+              <Link to="/sign-up" className="btn btn-primary">Register free</Link>
+            )}
             <Link to="/contact" className="btn btn-outline-dark">Contact us</Link>
           </div>
         </div>
