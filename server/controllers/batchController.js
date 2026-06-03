@@ -1,4 +1,5 @@
-const Batch = require('../models/Batch');
+const path    = require('path');
+const Batch   = require('../models/Batch');
 const cloudinary = require('cloudinary').v2;
 
 cloudinary.config({
@@ -7,32 +8,38 @@ cloudinary.config({
   api_secret: process.env.CLOUDINARY_API_SECRET,
 });
 
-// Helper to upload buffer to Cloudinary
-const uploadToCloudinary = (buffer, folder, isPdf = false) => {
+/* ── Determine if a file is an image by extension ─────────────── */
+const IMAGE_EXTS = ['.jpg','.jpeg','.jfif','.png','.webp','.gif','.bmp','.tiff','.tif','.heic','.heif'];
+
+const isImageFile = (originalname) =>
+  IMAGE_EXTS.includes(path.extname(originalname).toLowerCase());
+
+/* ── Upload a buffer to Cloudinary ────────────────────────────── */
+const uploadToCloudinary = (buffer, originalname, folder) => {
+  const resource_type = isImageFile(originalname) ? 'image' : 'raw';
   return new Promise((resolve, reject) => {
-    const options = {
-      folder,
-      resource_type: isPdf ? 'raw' : 'image',
-    };
-    cloudinary.uploader.upload_stream(options, (error, result) => {
-      if (error) reject(error);
-      else resolve(result.secure_url);
-    }).end(buffer);
+    cloudinary.uploader.upload_stream(
+      { folder, resource_type },
+      (error, result) => {
+        if (error) reject(error);
+        else resolve(result.secure_url);
+      }
+    ).end(buffer);
   });
 };
 
-// ── GET /api/batches ───────────────────────────────────────────────────────
+/* ── GET /api/batches ─────────────────────────────────────────── */
 const getAvailable = async (req, res) => {
   try {
     const { category, brand, tested, search } = req.query;
     const filter = { status: 'available' };
     if (category && category !== 'all') filter.category = category;
-    if (brand)  filter.brand  = new RegExp(brand, 'i');
+    if (brand)  filter.brand  = new RegExp(brand,  'i');
     if (tested) filter.tested = tested === 'true';
     if (search) filter.title  = new RegExp(search, 'i');
 
     const batches = await Batch.find(filter).sort('-createdAt');
-    const result = batches.map(batch =>
+    const result  = batches.map(batch =>
       req.user ? batch.toObject() : batch.toPublic()
     );
     res.json(result);
@@ -41,7 +48,7 @@ const getAvailable = async (req, res) => {
   }
 };
 
-// ── GET /api/batches/sold ──────────────────────────────────────────────────
+/* ── GET /api/batches/sold ────────────────────────────────────── */
 const getSold = async (req, res) => {
   try {
     const batches = await Batch
@@ -54,7 +61,7 @@ const getSold = async (req, res) => {
   }
 };
 
-// ── GET /api/batches/:slug ─────────────────────────────────────────────────
+/* ── GET /api/batches/:slug ───────────────────────────────────── */
 const getOne = async (req, res) => {
   try {
     const batch = await Batch.findOne({ slug: req.params.slug });
@@ -66,7 +73,7 @@ const getOne = async (req, res) => {
   }
 };
 
-// ── POST /api/batches — admin only ─────────────────────────────────────────
+/* ── POST /api/batches — admin only ──────────────────────────── */
 const createBatch = async (req, res) => {
   try {
     const {
@@ -79,18 +86,18 @@ const createBatch = async (req, res) => {
 
     if (req.files && req.files.length > 0) {
       for (const f of req.files) {
-        const isPdf = f.mimetype === 'application/pdf';
-        const folder = isPdf ? 'als-trade/lists' : 'als-trade/batches';
-        const url = await uploadToCloudinary(f.buffer, folder, isPdf);
-        if (isPdf) productListFile = url;
-        else images.push(url);
+        const isImg = isImageFile(f.originalname);
+        const folder = isImg ? 'als-trade/batches' : 'als-trade/lists';
+        const url    = await uploadToCloudinary(f.buffer, f.originalname, folder);
+        if (isImg) images.push(url);
+        else productListFile = url;
       }
     }
 
     const batch = await Batch.create({
       batchNumber, title, quantity, category, brand,
       description, specs, grade,
-      tested:  tested === 'true' || tested === true,
+      tested:  tested  === 'true' || tested  === true,
       hasList: hasList === 'true' || hasList === true,
       price, status, images,
       moq: moq ? Number(moq) : null,
@@ -110,22 +117,22 @@ const createBatch = async (req, res) => {
   }
 };
 
-// ── PUT /api/batches/:id — admin only ──────────────────────────────────────
+/* ── PUT /api/batches/:id — admin only ───────────────────────── */
 const updateBatch = async (req, res) => {
   try {
     const updates = { ...req.body };
     if (updates.moq) updates.moq = Number(updates.moq);
 
     if (req.files && req.files.length > 0) {
-      const existing = await Batch.findById(req.params.id).select('images productListFile');
+      const existing  = await Batch.findById(req.params.id).select('images productListFile');
       const newImages = [];
 
       for (const f of req.files) {
-        const isPdf = f.mimetype === 'application/pdf';
-        const folder = isPdf ? 'als-trade/lists' : 'als-trade/batches';
-        const url = await uploadToCloudinary(f.buffer, folder, isPdf);
-        if (isPdf) updates.productListFile = url;
-        else newImages.push(url);
+        const isImg = isImageFile(f.originalname);
+        const folder = isImg ? 'als-trade/batches' : 'als-trade/lists';
+        const url    = await uploadToCloudinary(f.buffer, f.originalname, folder);
+        if (isImg) newImages.push(url);
+        else updates.productListFile = url;
       }
 
       if (newImages.length > 0) {
@@ -145,7 +152,7 @@ const updateBatch = async (req, res) => {
   }
 };
 
-// ── PATCH /api/batches/:id/sold — admin only ───────────────────────────────
+/* ── PATCH /api/batches/:id/sold — admin only ────────────────── */
 const markSold = async (req, res) => {
   try {
     const batch = await Batch.findByIdAndUpdate(
@@ -160,7 +167,7 @@ const markSold = async (req, res) => {
   }
 };
 
-// ── DELETE /api/batches/:id — admin only ───────────────────────────────────
+/* ── DELETE /api/batches/:id — admin only ────────────────────── */
 const deleteBatch = async (req, res) => {
   try {
     const batch = await Batch.findByIdAndDelete(req.params.id);
