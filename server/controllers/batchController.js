@@ -8,18 +8,16 @@ cloudinary.config({
   api_secret: process.env.CLOUDINARY_API_SECRET,
 });
 
-/* ── Determine if a file is an image by extension ─────────────── */
 const IMAGE_EXTS = ['.jpg','.jpeg','.jfif','.png','.webp','.gif','.bmp','.tiff','.tif','.heic','.heif'];
 
 const isImageFile = (originalname) =>
   IMAGE_EXTS.includes(path.extname(originalname).toLowerCase());
 
-/* ── Upload a buffer to Cloudinary ────────────────────────────── */
 const uploadToCloudinary = (buffer, originalname, folder) => {
   const resource_type = isImageFile(originalname) ? 'image' : 'raw';
   return new Promise((resolve, reject) => {
     cloudinary.uploader.upload_stream(
-      { folder, resource_type },
+      { folder, resource_type, use_filename: true, unique_filename: true },
       (error, result) => {
         if (error) reject(error);
         else resolve(result.secure_url);
@@ -28,7 +26,6 @@ const uploadToCloudinary = (buffer, originalname, folder) => {
   });
 };
 
-/* ── GET /api/batches ─────────────────────────────────────────── */
 const getAvailable = async (req, res) => {
   try {
     const { category, brand, tested, search } = req.query;
@@ -37,31 +34,23 @@ const getAvailable = async (req, res) => {
     if (brand)  filter.brand  = new RegExp(brand,  'i');
     if (tested) filter.tested = tested === 'true';
     if (search) filter.title  = new RegExp(search, 'i');
-
     const batches = await Batch.find(filter).sort('-createdAt');
-    const result  = batches.map(batch =>
-      req.user ? batch.toObject() : batch.toPublic()
-    );
+    const result  = batches.map(batch => req.user ? batch.toObject() : batch.toPublic());
     res.json(result);
   } catch (err) {
     res.status(500).json({ message: err.message });
   }
 };
 
-/* ── GET /api/batches/sold ────────────────────────────────────── */
 const getSold = async (req, res) => {
   try {
-    const batches = await Batch
-      .find({ status: 'sold' })
-      .sort('-soldAt')
-      .select('-price');
+    const batches = await Batch.find({ status: 'sold' }).sort('-soldAt').select('-price');
     res.json(batches);
   } catch (err) {
     res.status(500).json({ message: err.message });
   }
 };
 
-/* ── GET /api/batches/:slug ───────────────────────────────────── */
 const getOne = async (req, res) => {
   try {
     const batch = await Batch.findOne({ slug: req.params.slug });
@@ -73,7 +62,6 @@ const getOne = async (req, res) => {
   }
 };
 
-/* ── POST /api/batches — admin only ──────────────────────────── */
 const createBatch = async (req, res) => {
   try {
     const {
@@ -82,7 +70,8 @@ const createBatch = async (req, res) => {
     } = req.body;
 
     const images = [];
-    let productListFile = null;
+    let productListFile     = null;
+    let productListFileName = null;
 
     if (req.files && req.files.length > 0) {
       for (const f of req.files) {
@@ -90,7 +79,7 @@ const createBatch = async (req, res) => {
         const folder = isImg ? 'als-trade/batches' : 'als-trade/lists';
         const url    = await uploadToCloudinary(f.buffer, f.originalname, folder);
         if (isImg) images.push(url);
-        else productListFile = url;
+        else { productListFile = url; productListFileName = f.originalname; }
       }
     }
 
@@ -102,6 +91,7 @@ const createBatch = async (req, res) => {
       price, status, images,
       moq: moq ? Number(moq) : null,
       productListFile,
+      productListFileName,
     });
 
     res.status(201).json(batch);
@@ -110,14 +100,11 @@ const createBatch = async (req, res) => {
       const messages = Object.values(err.errors).map(e => e.message);
       return res.status(400).json({ message: messages.join('. ') });
     }
-    if (err.code === 11000) {
-      return res.status(409).json({ message: 'Batch number already exists' });
-    }
+    if (err.code === 11000) return res.status(409).json({ message: 'Batch number already exists' });
     res.status(500).json({ message: err.message });
   }
 };
 
-/* ── PUT /api/batches/:id — admin only ───────────────────────── */
 const updateBatch = async (req, res) => {
   try {
     const updates = { ...req.body };
@@ -132,7 +119,7 @@ const updateBatch = async (req, res) => {
         const folder = isImg ? 'als-trade/batches' : 'als-trade/lists';
         const url    = await uploadToCloudinary(f.buffer, f.originalname, folder);
         if (isImg) newImages.push(url);
-        else updates.productListFile = url;
+        else { updates.productListFile = url; updates.productListFileName = f.originalname; }
       }
 
       if (newImages.length > 0) {
@@ -140,11 +127,7 @@ const updateBatch = async (req, res) => {
       }
     }
 
-    const batch = await Batch.findByIdAndUpdate(req.params.id, updates, {
-      new: true,
-      runValidators: true,
-    });
-
+    const batch = await Batch.findByIdAndUpdate(req.params.id, updates, { new: true, runValidators: true });
     if (!batch) return res.status(404).json({ message: 'Batch not found' });
     res.json(batch);
   } catch (err) {
@@ -152,13 +135,10 @@ const updateBatch = async (req, res) => {
   }
 };
 
-/* ── PATCH /api/batches/:id/sold — admin only ────────────────── */
 const markSold = async (req, res) => {
   try {
     const batch = await Batch.findByIdAndUpdate(
-      req.params.id,
-      { status: 'sold', soldAt: new Date() },
-      { new: true }
+      req.params.id, { status: 'sold', soldAt: new Date() }, { new: true }
     );
     if (!batch) return res.status(404).json({ message: 'Batch not found' });
     res.json({ message: 'Marked as sold', batch });
@@ -167,7 +147,6 @@ const markSold = async (req, res) => {
   }
 };
 
-/* ── DELETE /api/batches/:id — admin only ────────────────────── */
 const deleteBatch = async (req, res) => {
   try {
     const batch = await Batch.findByIdAndDelete(req.params.id);

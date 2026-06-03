@@ -9,7 +9,6 @@ const batchSchema = new mongoose.Schema(
       required: [true, 'Batch number is required'],
       unique:   true,
       trim:     true,
-      // e.g. RT3426
     },
     slug: {
       type:   String,
@@ -21,7 +20,6 @@ const batchSchema = new mongoose.Schema(
       type:     String,
       required: [true, 'Title is required'],
       trim:     true,
-      // e.g. "49x Apple iPhone & iPads Mix"
     },
     quantity: {
       type:     Number,
@@ -31,12 +29,11 @@ const batchSchema = new mongoose.Schema(
     category: {
       type:     String,
       required: [true, 'Category is required'],
-      enum:     ['laptops', 'Computers', 'Monitors', 'other'],
+      enum:     ['laptops', 'computers', 'monitors', 'other'],
     },
     brand: {
       type: String,
       trim: true,
-      // e.g. Apple, Samsung, HP, Mixed
     },
     description: {
       type: String,
@@ -45,13 +42,12 @@ const batchSchema = new mongoose.Schema(
     specs: {
       type: String,
       trim: true,
-      // e.g. "Intel Core i7 8th Gen - 8GB RAM - 256GB SSD"
     },
 
     // ── Condition ─────────────────────────────────────────────────────
     grade: {
-      type: String,
-      enum: ['A', 'B', 'C', 'mixed', null],
+      type:    String,
+      enum:    ['A', 'B', 'C', 'mixed', null],
       default: null,
     },
     tested: {
@@ -61,7 +57,6 @@ const batchSchema = new mongoose.Schema(
     hasList: {
       type:    Boolean,
       default: false,
-      // false = "NO List!" — no per-unit breakdown available
     },
 
     // ── Pricing (hidden from guests) ──────────────────────────────────
@@ -78,14 +73,17 @@ const batchSchema = new mongoose.Schema(
     images: [
       {
         type: String,
-        // stored as URL path e.g. /uploads/batches/RT3426-1.jpg
       },
     ],
 
-    // ── Product list file (PDF) ───────────────────────────────────────
+    // ── Product list file ─────────────────────────────────────────────
     productListFile: {
-      type: String,
-      // stored as URL path e.g. /uploads/lists/RT3426-list.pdf
+      type:    String,
+      default: null,
+    },
+    productListFileName: {
+      type:    String,
+      default: null,
     },
 
     // ── Minimum Order Quantity ────────────────────────────────────────
@@ -106,7 +104,7 @@ const batchSchema = new mongoose.Schema(
     },
   },
   {
-    timestamps: true, // adds createdAt + updatedAt automatically
+    timestamps: true,
   }
 );
 
@@ -118,7 +116,7 @@ batchSchema.pre('save', function (next) {
   next();
 });
 
-// ── Strip price from response for guests (called in controller) ───────────
+// ── Strip price from response for guests ──────────────────────────────────
 batchSchema.methods.toPublic = function () {
   const obj = this.toObject();
   delete obj.price;
