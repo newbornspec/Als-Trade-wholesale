@@ -19,13 +19,7 @@ const getStats = async (req, res) => {
       Enquiry.countDocuments({ isRead: false }),
     ]);
 
-    res.json({
-      totalBatches,
-      availableBatches,
-      soldBatches,
-      totalUsers,
-      unreadEnquiries,
-    });
+    res.json({ totalBatches, availableBatches, soldBatches, totalUsers, unreadEnquiries });
   } catch (err) {
     res.status(500).json({ message: err.message });
   }
@@ -60,6 +54,17 @@ const markEnquiryRead = async (req, res) => {
   }
 };
 
+// ── DELETE /api/admin/enquiries/:id ───────────────────────────────────────
+const deleteEnquiry = async (req, res) => {
+  try {
+    const enquiry = await Enquiry.findByIdAndDelete(req.params.id);
+    if (!enquiry) return res.status(404).json({ message: 'Enquiry not found.' });
+    res.json({ message: 'Enquiry deleted.' });
+  } catch (err) {
+    res.status(500).json({ message: 'Failed to delete enquiry.' });
+  }
+};
+
 // ── GET /api/admin/users ───────────────────────────────────────────────────
 const getUsers = async (req, res) => {
   try {
@@ -70,4 +75,4 @@ const getUsers = async (req, res) => {
   }
 };
 
-module.exports = { getStats, getEnquiries, markEnquiryRead, getUsers };
+module.exports = { getStats, getEnquiries, markEnquiryRead, deleteEnquiry, getUsers };

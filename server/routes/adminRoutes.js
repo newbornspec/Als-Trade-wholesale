@@ -1,13 +1,14 @@
 const router  = require('express').Router();
-const { getStats, getEnquiries, markEnquiryRead, getUsers } = require('../controllers/adminController');
+const { getStats, getEnquiries, markEnquiryRead, deleteEnquiry, getUsers } = require('../controllers/adminController');
 const { protect, admin } = require('../middleware/authMiddleware');
 
 // All admin routes require login + admin role
 router.use(protect, admin);
 
 router.get('/stats',                   getStats);
-router.get('/enquiries',               getEnquiries);         // ?unread=true
+router.get('/enquiries',               getEnquiries);
 router.patch('/enquiries/:id/read',    markEnquiryRead);
+router.delete('/enquiries/:id',        deleteEnquiry);
 router.get('/users',                   getUsers);
 
 module.exports = router;

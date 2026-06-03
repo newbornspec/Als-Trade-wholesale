@@ -5,8 +5,9 @@ import './AdminPages.css';
 export default function EnquiriesPage() {
   const [enquiries, setEnquiries] = useState([]);
   const [loading,   setLoading]   = useState(true);
-  const [filter,    setFilter]    = useState('all'); // all | unread
-  const [open,      setOpen]      = useState(null);  // expanded enquiry id
+  const [filter,    setFilter]    = useState('all');
+  const [open,      setOpen]      = useState(null);
+  const [deleting,  setDeleting]  = useState(null);
 
   useEffect(() => { load(); }, []);
 
@@ -28,6 +29,21 @@ export default function EnquiriesPage() {
     if (eq && !eq.isRead) markRead(id);
   };
 
+  const deleteEnquiry = async (e, id) => {
+    e.stopPropagation();
+    if (!window.confirm('Delete this enquiry? This cannot be undone.')) return;
+    setDeleting(id);
+    try {
+      await api.delete(`/admin/enquiries/${id}`);
+      setEnquiries(prev => prev.filter(eq => eq._id !== id));
+      if (open === id) setOpen(null);
+    } catch {
+      alert('Failed to delete. Please try again.');
+    } finally {
+      setDeleting(null);
+    }
+  };
+
   const visible = enquiries.filter(e => filter === 'unread' ? !e.isRead : true);
   const unreadCount = enquiries.filter(e => !e.isRead).length;
 
@@ -46,7 +62,6 @@ export default function EnquiriesPage() {
         </p>
       </div>
 
-      {/* Filter tabs */}
       <div className="filter-tabs" style={{marginBottom:'1.5rem'}}>
         {[['all','All',enquiries.length],['unread','Unread',unreadCount]].map(([v,l,c]) => (
           <button
@@ -75,9 +90,7 @@ export default function EnquiriesPage() {
               <div className="enq-header" onClick={() => toggle(eq._id)}>
                 <div className="enq-left">
                   {!eq.isRead && <div className="enq-dot" />}
-                  <div className="enq-avatar">
-                    {eq.name?.[0]?.toUpperCase() || '?'}
-                  </div>
+                  <div className="enq-avatar">{eq.name?.[0]?.toUpperCase() || '?'}</div>
                   <div>
                     <p className="enq-name">
                       {eq.name}
@@ -90,6 +103,21 @@ export default function EnquiriesPage() {
                 </div>
                 <div className="enq-right">
                   <span className="enq-date">{fmt(eq.createdAt)}</span>
+                  {/* Delete button */}
+                  <button
+                    onClick={e => deleteEnquiry(e, eq._id)}
+                    disabled={deleting === eq._id}
+                    title="Delete enquiry"
+                    style={{
+                      background: 'none', border: '1px solid #fecaca',
+                      borderRadius: 6, padding: '3px 8px', cursor: 'pointer',
+                      color: '#dc2626', fontSize: 11, fontWeight: 600,
+                      fontFamily: 'inherit', marginLeft: 8,
+                      opacity: deleting === eq._id ? 0.5 : 1,
+                    }}
+                  >
+                    {deleting === eq._id ? '…' : 'Delete'}
+                  </button>
                   <svg
                     className={`enq-chevron ${open === eq._id ? 'open' : ''}`}
                     width="14" height="14" viewBox="0 0 24 24"
@@ -131,8 +159,7 @@ export default function EnquiriesPage() {
                     </a>
                     <a
                       href={`https://wa.me/${eq.phone?.replace(/\D/g,'')}`}
-                      target="_blank"
-                      rel="noreferrer"
+                      target="_blank" rel="noreferrer"
                       className="btn wa-enq-btn"
                     >
                       <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor">
@@ -140,6 +167,17 @@ export default function EnquiriesPage() {
                       </svg>
                       WhatsApp
                     </a>
+                    <button
+                      onClick={e => deleteEnquiry(e, eq._id)}
+                      disabled={deleting === eq._id}
+                      className="btn"
+                      style={{
+                        background: '#fef2f2', border: '1px solid #fecaca',
+                        color: '#dc2626', fontSize: 13, cursor: 'pointer',
+                      }}
+                    >
+                      {deleting === eq._id ? 'Deleting…' : '🗑 Delete'}
+                    </button>
                   </div>
                 </div>
               )}
