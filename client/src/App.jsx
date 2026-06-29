@@ -18,6 +18,7 @@ import AdminHomePage     from './admin/AdminHomePage';
 import AddBatchPage      from './admin/AddBatchPage';
 import ManageBatchesPage from './admin/ManageBatchesPage';
 import EnquiriesPage     from './admin/EnquiriesPage';
+import BuyersPage        from './admin/BuyersPage';
 
 export default function App() {
   return (
@@ -49,6 +50,9 @@ export default function App() {
         } />
         <Route path="/admin/enquiries" element={
           <AdminRoute><AdminLayout><EnquiriesPage /></AdminLayout></AdminRoute>
+        } />
+        <Route path="/admin/buyers" element={
+          <AdminRoute><AdminLayout><BuyersPage /></AdminLayout></AdminRoute>
         } />
       </Routes>
       <Footer />

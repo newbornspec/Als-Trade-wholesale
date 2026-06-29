@@ -75,4 +75,17 @@ const getUsers = async (req, res) => {
   }
 };
 
-module.exports = { getStats, getEnquiries, markEnquiryRead, deleteEnquiry, getUsers };
+// ── DELETE /api/admin/users/:id ───────────────────────────────────────────
+const deleteUser = async (req, res) => {
+  try {
+    const user = await User.findById(req.params.id);
+    if (!user) return res.status(404).json({ message: 'Buyer not found.' });
+    if (user.role === 'admin') return res.status(403).json({ message: 'Cannot delete an admin account.' });
+    await User.findByIdAndDelete(req.params.id);
+    res.json({ message: 'Buyer removed successfully.' });
+  } catch (err) {
+    res.status(500).json({ message: 'Failed to remove buyer.' });
+  }
+};
+
+module.exports = { getStats, getEnquiries, markEnquiryRead, deleteEnquiry, getUsers, deleteUser };
