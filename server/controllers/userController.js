@@ -193,15 +193,6 @@ const login = async (req, res) => {
       return res.status(401).json({ message: 'Invalid email or password' });
     }
 
-    // Block login if email not yet verified
-    if (!user.isEmailVerified) {
-      return res.status(403).json({
-        message:             'Please verify your email before logging in. Check your inbox for the activation link.',
-        needsVerification:   true,
-        pendingEmail:        user.email,
-      });
-    }
-
     if (!user.isApproved) {
       return res.status(403).json({ message: 'Your account is pending approval' });
     }
