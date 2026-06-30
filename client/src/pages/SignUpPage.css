@@ -1,0 +1,239 @@
+/* ── Layout 5 card ─────────────────────────────────────────────── */
+.su5-card {
+  width: 100%;
+  max-width: 560px;
+  background: var(--white);
+  border: 1px solid var(--gray-100);
+  border-radius: 16px;
+  overflow: hidden;
+  box-shadow: 0 4px 24px rgba(0,0,0,.08);
+}
+
+/* ── Header block ──────────────────────────────────────────────── */
+.su5-header {
+  background: var(--gray-50);
+  border-bottom: 1px solid var(--gray-100);
+  padding: 1.5rem;
+  display: flex;
+  flex-direction: column;
+  gap: .75rem;
+}
+
+.su5-header-top {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.su5-title {
+  font-family: var(--font-display);
+  font-size: 22px;
+  font-weight: 800;
+  letter-spacing: -0.02em;
+  color: var(--gray-800);
+  margin-bottom: 2px;
+}
+
+.su5-sub {
+  font-size: 13px;
+  color: var(--gray-400);
+}
+
+/* Verify screen centres the icon */
+.su5-verify-icon {
+  width: 52px;
+  height: 52px;
+  background: var(--accent-lt);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--accent);
+  margin: 0 auto .75rem;
+}
+.su5-header .su5-title,
+.su5-header .su5-sub {
+  text-align: center;
+}
+
+/* ── Badges ────────────────────────────────────────────────────── */
+.su5-badges {
+  display: flex;
+  gap: 6px;
+  flex-shrink: 0;
+}
+
+.su5-badge {
+  display: inline-flex;
+  align-items: center;
+  padding: 3px 10px;
+  border-radius: 20px;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: .04em;
+}
+
+.su5-badge-green { background: #f0fdf4; color: #15803d; border: 1px solid #bbf7d0; }
+.su5-badge-blue  { background: var(--accent-lt); color: var(--accent-dk); border: 1px solid var(--accent-mid); }
+
+/* ── B2B notice ────────────────────────────────────────────────── */
+.su5-b2b-notice {
+  display: flex;
+  align-items: flex-start;
+  gap: 8px;
+  padding: .65rem .875rem;
+  background: #fffbeb;
+  border: 1px solid #fde68a;
+  border-radius: var(--radius);
+  font-size: 12px;
+  color: #92400e;
+  line-height: 1.5;
+}
+
+.su5-b2b-notice svg {
+  flex-shrink: 0;
+  margin-top: 1px;
+  color: #d97706;
+}
+
+/* ── Already-registered link ───────────────────────────────────── */
+.su5-login-link {
+  font-size: 12px;
+  color: var(--gray-400);
+  text-align: right;
+}
+
+.su5-login-link a {
+  color: var(--accent);
+  font-weight: 600;
+}
+
+/* ── Section dividers ──────────────────────────────────────────── */
+.su5-section-divider {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin: 1.25rem 0 .75rem;
+  font-size: 10px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: .08em;
+  color: var(--gray-400);
+}
+
+.su5-section-divider::after {
+  content: '';
+  flex: 1;
+  height: 1px;
+  background: var(--gray-100);
+}
+
+/* ── Footer hint ────────────────────────────────────────────────── */
+.su5-footer-hint {
+  font-size: 11px;
+  color: var(--gray-400);
+  text-align: center;
+  margin-top: .75rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 5px;
+}
+
+/* ── OTP boxes ──────────────────────────────────────────────────── */
+.otp-boxes {
+  display: flex;
+  gap: 10px;
+  justify-content: center;
+  margin: .75rem 0 0;
+}
+
+.otp-box {
+  width: 48px;
+  height: 56px;
+  border: 1.5px solid var(--gray-200);
+  border-radius: var(--radius);
+  background: var(--white);
+  text-align: center;
+  font-family: var(--font-display);
+  font-size: 22px;
+  font-weight: 800;
+  color: var(--gray-800);
+  outline: none;
+  transition: border-color .15s, box-shadow .15s;
+  caret-color: transparent;
+}
+
+.otp-box:focus {
+  border-color: var(--accent);
+  box-shadow: 0 0 0 3px rgba(201,146,43,.12);
+}
+
+.otp-box.filled {
+  border-color: var(--accent);
+  background: var(--accent-lt);
+  color: var(--accent-dk);
+}
+
+/* ── Resend row ─────────────────────────────────────────────────── */
+.su5-resend-row {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  margin-top: .875rem;
+  font-size: 13px;
+  color: var(--gray-400);
+}
+
+.su5-resend-btn {
+  background: none;
+  border: none;
+  color: var(--accent);
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  padding: 0;
+  font-family: inherit;
+}
+
+.su5-resend-btn:disabled {
+  opacity: .5;
+  cursor: not-allowed;
+}
+
+.su5-resend-msg {
+  font-size: 12px;
+  color: #15803d;
+  background: #f0fdf4;
+  border: 1px solid #bbf7d0;
+  border-radius: var(--radius);
+  padding: 8px 12px;
+  margin-top: 10px;
+  text-align: center;
+}
+
+/* ── Back button ────────────────────────────────────────────────── */
+.su5-back-btn {
+  display: block;
+  width: 100%;
+  background: none;
+  border: none;
+  color: var(--gray-400);
+  font-size: 12px;
+  font-family: inherit;
+  cursor: pointer;
+  margin-top: .875rem;
+  text-align: center;
+  padding: 4px;
+}
+
+.su5-back-btn:hover { color: var(--gray-600); }
+
+/* ── Mobile ─────────────────────────────────────────────────────── */
+@media (max-width: 480px) {
+  .su5-header-top { flex-direction: column; align-items: flex-start; }
+  .otp-box { width: 40px; height: 50px; font-size: 18px; }
+  .otp-boxes { gap: 7px; }
+}

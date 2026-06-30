@@ -27,6 +27,13 @@ export default function SignInPage() {
       navigate(from, { replace: true });
     } catch (err) {
       setStatus('error');
+      // If account exists but email not verified — send them to verify
+      if (err.response?.data?.needsVerification) {
+        navigate('/sign-up', {
+          state: { pendingEmail: err.response.data.pendingEmail, goToVerify: true },
+        });
+        return;
+      }
       setErrMsg(
         err.response?.status === 401
           ? 'Incorrect email or password. Please try again.'

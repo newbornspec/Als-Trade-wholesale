@@ -53,10 +53,23 @@ const userSchema = new mongoose.Schema(
     isApproved: {
       type:    Boolean,
       default: true,
-      // set to false if you want manual approval before seeing prices
     },
     lastLogin: {
       type: Date,
+    },
+
+    // ── Email verification (OTP) ───────────────────────────────────────
+    isEmailVerified: {
+      type:    Boolean,
+      default: false,
+    },
+    emailVerifyOTP: {
+      type:   String,
+      select: false, // never returned in queries by default
+    },
+    emailVerifyOTPExpires: {
+      type:   Date,
+      select: false,
     },
   },
   {
@@ -81,6 +94,8 @@ userSchema.methods.matchPassword = async function (enteredPassword) {
 userSchema.methods.toSafe = function () {
   const obj = this.toObject();
   delete obj.password;
+  delete obj.emailVerifyOTP;
+  delete obj.emailVerifyOTPExpires;
   delete obj.__v;
   return obj;
 };
