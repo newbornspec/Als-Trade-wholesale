@@ -55,7 +55,7 @@ export default function Footer() {
         <div className="footer-col">
           <h4>Contact</h4>
           <a href="tel:0203 747 1310">0203 747 1310</a>
-          <a href="mailto:info@alservices.org.uk">info@alservices.org.uk</a>
+          <a href="mailto:Sales@alswholesale.co.uk">Sales@alswholesale.co.uk</a>
           <p style={{color:'var(--gray-500)', fontSize:'13px', marginTop:'4px'}}>
             Unit 11a Waterhall Farm<br/>Hertford SG138LE<br/>United Kingdom
           </p>

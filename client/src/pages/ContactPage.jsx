@@ -111,7 +111,7 @@ export default function ContactPage() {
               </div>
             </a>
 
-            <a href="mailto:info@alservices.org.uk" className="qc-pill">
+            <a href="mailto:Sales@alswholesale.co.uk" className="qc-pill">
               <div className="qc-icon">
                 <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
                   <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z" />
@@ -120,7 +120,7 @@ export default function ContactPage() {
               </div>
               <div>
                 <span className="qc-label">Email us</span>
-                <span className="qc-value">info@alservices.org.uk</span>
+                <span className="qc-value">Sales@alswholesale.co.uk</span>
               </div>
             </a>
 
@@ -334,8 +334,8 @@ export default function ContactPage() {
                 </div>
                 <div>
                   <span className="info-row-label">Email</span>
-                  <a href="mailto:info@alservices.org.uk" className="info-row-value">
-                    info@alservices.org.uk
+                  <a href="mailto:Sales@alswholesale.co.uk" className="info-row-value">
+                    Sales@alswholesale.co.uk
                   </a>
                 </div>
               </div>
