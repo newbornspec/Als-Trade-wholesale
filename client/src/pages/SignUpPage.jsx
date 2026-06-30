@@ -32,7 +32,7 @@ const COUNTRIES = [
 ];
 
 export default function SignUpPage() {
-  const { login } = useAuth();
+  const { login, user } = useAuth();
   const navigate  = useNavigate();
 
   const [form, setForm] = useState({
@@ -88,10 +88,12 @@ export default function SignUpPage() {
 
       <div className="auth-form-inner" style={{ maxWidth: '480px' }}>
 
-          <div className="auth-top-link">
-            <span>Already have an account?</span>
-            <Link to="/sign-in">Log in →</Link>
-          </div>
+          {!user && (
+            <div className="auth-top-link">
+              <span>Already have an account?</span>
+              <Link to="/sign-in">Log in →</Link>
+            </div>
+          )}
 
           <div className="auth-card">
             <div className="auth-card-head">
