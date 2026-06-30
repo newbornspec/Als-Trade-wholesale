@@ -397,12 +397,44 @@ export default function BatchDetailPage() {
             <div className="info-divider" />
 
             {!isSold ? (
-              <>
-                <p className="enquiry-intro">
-                  Interested in this batch? Send us an enquiry or reach out directly on WhatsApp.
-                </p>
-                <EnquiryForm batch={batch} />
-              </>
+              user ? (
+                <>
+                  <p className="enquiry-intro">
+                    Interested in this batch? Send us an enquiry or reach out directly on WhatsApp.
+                  </p>
+                  <EnquiryForm batch={batch} />
+                </>
+              ) : (
+                <div className="enquiry-locked">
+                  <div className="enquiry-locked-icon">
+                    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
+                      <rect x="3" y="11" width="18" height="11" rx="2" ry="2"/>
+                      <path d="M7 11V7a5 5 0 0110 0v4"/>
+                    </svg>
+                  </div>
+                  <h3 className="enquiry-locked-title">Sign in to make an enquiry</h3>
+                  <p className="enquiry-locked-sub">
+                    Create a free account or log in to contact us about this batch, see pricing and download product lists.
+                  </p>
+                  <div className="enquiry-locked-actions">
+                    <Link
+                      to="/sign-in"
+                      state={{ from: `/available-stock/${batch.slug}` }}
+                      className="btn btn-primary"
+                      style={{ flex: 1, justifyContent: 'center' }}
+                    >
+                      Log in
+                    </Link>
+                    <Link
+                      to="/sign-up"
+                      className="btn btn-outline"
+                      style={{ flex: 1, justifyContent: 'center' }}
+                    >
+                      Register free
+                    </Link>
+                  </div>
+                </div>
+              )
             ) : (
               <div className="sold-notice">
                 <p>This batch has been sold.</p>

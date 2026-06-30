@@ -248,6 +248,49 @@
 .form-success p { font-size: 14px; color: var(--gray-500); }
 .sold-notice { padding: 1.25rem; background: var(--gray-50); border-radius: var(--radius); display: flex; flex-direction: column; gap: 1rem; }
 .sold-notice p { font-size: 14px; color: var(--gray-500); }
+
+/* Enquiry locked (guest) state */
+.enquiry-locked {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  gap: 10px;
+  padding: 1.75rem 1.25rem;
+  background: var(--gray-50);
+  border: 1.5px dashed var(--gray-200);
+  border-radius: var(--radius-lg);
+}
+.enquiry-locked-icon {
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  background: var(--accent-lt);
+  color: var(--accent);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 4px;
+}
+.enquiry-locked-title {
+  font-family: var(--font-display);
+  font-size: 16px;
+  font-weight: 800;
+  color: var(--gray-800);
+  letter-spacing: -0.02em;
+}
+.enquiry-locked-sub {
+  font-size: 13px;
+  color: var(--gray-500);
+  line-height: 1.6;
+  max-width: 280px;
+}
+.enquiry-locked-actions {
+  display: flex;
+  gap: 8px;
+  width: 100%;
+  margin-top: 6px;
+}
 .trust-row { display: flex; gap: 12px; border-top: 1px solid var(--gray-100); padding-top: 1rem; flex-wrap: wrap; }
 .trust-item { display: flex; align-items: center; gap: 5px; font-size: 12px; color: var(--gray-400); }
 .trust-item svg { color: var(--accent); flex-shrink: 0; }
