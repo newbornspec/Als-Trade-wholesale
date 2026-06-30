@@ -75,78 +75,6 @@
 }
 .sb-label { font-size: 11px; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: var(--gray-400); margin-bottom: 0.75rem; }
 
-/* ── Option C: Accent underline tab bar ──────────────────────────── */
-.cat-tab-bar {
-  display: flex;
-  background: var(--white);
-  border: 1px solid var(--gray-100);
-  border-radius: var(--radius-lg);
-  overflow: hidden;
-  margin-bottom: 1.25rem;
-  box-shadow: var(--shadow-xs);
-}
-
-.cat-tab {
-  flex: 1;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  gap: 4px;
-  padding: 16px 12px;
-  background: none;
-  border: none;
-  border-bottom: 3px solid transparent;
-  cursor: pointer;
-  color: var(--gray-400);
-  font-family: inherit;
-  transition: all var(--t);
-  position: relative;
-}
-
-.cat-tab + .cat-tab::before {
-  content: '';
-  position: absolute;
-  left: 0; top: 20%; height: 60%;
-  width: 1px;
-  background: var(--gray-100);
-}
-
-.cat-tab:hover {
-  color: var(--gray-700);
-  background: var(--gray-50);
-}
-
-.cat-tab.active {
-  color: var(--gray-800);
-  background: #fffbeb;
-  border-bottom-color: #f59e0b;
-}
-
-.cat-tab-label {
-  font-size: 13px;
-  font-weight: 700;
-  letter-spacing: 0.01em;
-  line-height: 1;
-}
-
-.cat-tab-count {
-  font-size: 10px;
-  font-weight: 700;
-  letter-spacing: 0.06em;
-  text-transform: uppercase;
-  color: var(--gray-400);
-  line-height: 1;
-}
-
-.cat-tab.active .cat-tab-count {
-  color: #f59e0b;
-}
-
-/* Hide the sidebar category section on desktop (tab bar replaces it) */
-.sb-section.cat-sidebar-section { display: none; }
-
-/* Sidebar cat-btn kept for reference but hidden on desktop */
 .cat-btn {
   display: flex;
   align-items: center;
@@ -371,10 +299,6 @@
   .stock-sidebar.open { display: flex; }
   .mobile-filter-btn { display: flex; }
   .stock-hero-cta { display: none; }
-  /* Show sidebar category section on mobile (tab bar is hidden) */
-  .sb-section.cat-sidebar-section { display: block; }
-  /* Hide tab bar on mobile — sidebar handles categories */
-  .cat-tab-bar { display: none; }
 }
 @media (max-width: 600px) {
   .batch-grid { grid-template-columns: 1fr; }

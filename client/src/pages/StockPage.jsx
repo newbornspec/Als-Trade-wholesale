@@ -179,8 +179,8 @@ export default function StockPage() {
           {/* ── Sidebar ───────────────────────────────────────── */}
           <aside className={`stock-sidebar ${sidebarOpen ? 'open' : ''}`}>
 
-            {/* Category — hidden on desktop, shown on mobile via sidebar */}
-            <div className="sb-section cat-sidebar-section">
+            {/* Category */}
+            <div className="sb-section">
               <h3 className="sb-label">Category</h3>
               {CATEGORIES.map(cat => (
                 <button
@@ -250,20 +250,6 @@ export default function StockPage() {
 
           {/* ── Main content ─────────────────────────────────── */}
           <div className="stock-main">
-
-            {/* Category tab bar — Option C */}
-            <div className="cat-tab-bar">
-              {CATEGORIES.map(cat => (
-                <button
-                  key={cat.value}
-                  className={`cat-tab ${activeCategory === cat.value ? 'active' : ''}`}
-                  onClick={() => setCategory(cat.value)}
-                >
-                  <span className="cat-tab-label">{cat.label}</span>
-                  <span className="cat-tab-count">{countFor(cat.value)}</span>
-                </button>
-              ))}
-            </div>
 
             {/* Toolbar */}
             <div className="stock-toolbar">
