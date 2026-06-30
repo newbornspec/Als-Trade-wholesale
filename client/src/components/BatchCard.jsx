@@ -12,6 +12,13 @@ export default function BatchCard({ batch }) {
 
   return (
     <div className="batch-card">
+      {/* Full-card clickable overlay — sits behind inner links */}
+      <Link
+        to={`/available-stock/${batch.slug}`}
+        className="card-full-link"
+        aria-label={`View details for ${batch.title}`}
+      />
+
       {/* Image */}
       <div className="card-image">
         {batch.images?.[0] ? (

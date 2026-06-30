@@ -7,6 +7,23 @@
   transition: box-shadow var(--t), transform var(--t), border-color var(--t);
   display: flex;
   flex-direction: column;
+  position: relative; /* anchor for the full-card overlay link */
+  cursor: pointer;
+}
+
+/* Full-card clickable overlay */
+.card-full-link {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  border-radius: var(--radius-lg);
+}
+
+/* Raise interactive elements above the overlay so they still work */
+.price-login,
+.card-cta {
+  position: relative;
+  z-index: 2;
 }
 .batch-card:hover {
   box-shadow: var(--shadow-xl);
