@@ -1,0 +1,145 @@
+.vep-card {
+  width: 100%;
+  max-width: 420px;
+  background: var(--white);
+  border: 1px solid var(--gray-100);
+  border-radius: 16px;
+  padding: 2.5rem 2rem;
+  box-shadow: 0 4px 24px rgba(0,0,0,.08);
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+}
+
+/* ── Icon circle ───────────────────────────────────────────────── */
+.vep-icon {
+  width: 64px;
+  height: 64px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 4px;
+}
+
+.vep-icon-spin {
+  background: var(--gray-50);
+  border: 1.5px solid var(--gray-200);
+  color: var(--gray-500);
+  animation: vep-spin 1s linear infinite;
+}
+
+.vep-icon-success {
+  background: #f0fdf4;
+  border: 1.5px solid #bbf7d0;
+  color: #16a34a;
+}
+
+.vep-icon-warn {
+  background: #fffbeb;
+  border: 1.5px solid #fde68a;
+  color: #d97706;
+}
+
+.vep-icon-error {
+  background: #fef2f2;
+  border: 1.5px solid #fecaca;
+  color: #dc2626;
+}
+
+@keyframes vep-spin {
+  from { transform: rotate(0deg); }
+  to   { transform: rotate(360deg); }
+}
+
+/* ── Text ───────────────────────────────────────────────────────── */
+.vep-title {
+  font-family: var(--font-display);
+  font-size: 22px;
+  font-weight: 800;
+  letter-spacing: -0.02em;
+  color: var(--gray-800);
+  margin: 0;
+}
+
+.vep-sub {
+  font-size: 14px;
+  color: var(--gray-500);
+  line-height: 1.6;
+  margin: 0;
+  max-width: 320px;
+}
+
+/* ── Progress bar (success) ─────────────────────────────────────── */
+.vep-progress {
+  width: 100%;
+  height: 3px;
+  background: var(--gray-100);
+  border-radius: 2px;
+  overflow: hidden;
+  margin-top: 8px;
+}
+
+.vep-progress-bar {
+  height: 100%;
+  background: #16a34a;
+  border-radius: 2px;
+  animation: vep-fill 2.4s ease forwards;
+}
+
+@keyframes vep-fill {
+  from { width: 0%; }
+  to   { width: 100%; }
+}
+
+/* ── Buttons ────────────────────────────────────────────────────── */
+.vep-btn {
+  width: 100%;
+  justify-content: center;
+  margin-top: 4px;
+}
+
+/* ── Back link ───────────────────────────────────────────────────── */
+.vep-back {
+  font-size: 12px;
+  color: var(--gray-400);
+  margin-top: 2px;
+}
+
+.vep-back:hover { color: var(--gray-600); }
+
+/* ── Error text ──────────────────────────────────────────────────── */
+.vep-error {
+  font-size: 12px;
+  color: var(--red);
+  background: #fef2f2;
+  border: 1px solid #fecaca;
+  border-radius: var(--radius);
+  padding: 8px 12px;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+/* ── Resent notice ───────────────────────────────────────────────── */
+.vep-resent {
+  display: flex;
+  align-items: flex-start;
+  gap: 8px;
+  background: #f0fdf4;
+  border: 1px solid #bbf7d0;
+  border-radius: var(--radius);
+  padding: 10px 14px;
+  font-size: 13px;
+  color: #15803d;
+  text-align: left;
+  width: 100%;
+  box-sizing: border-box;
+  line-height: 1.5;
+}
+
+.vep-resent svg {
+  flex-shrink: 0;
+  margin-top: 2px;
+}

@@ -9,8 +9,9 @@ import ContactPage     from './pages/ContactPage';
 import SoldStockPage   from './pages/SoldStockPage';
 import HowItWorksPage  from './pages/HowItWorksPage';
 import AboutPage       from './pages/AboutPage';
-import SignInPage      from './pages/SignInPage';
-import SignUpPage      from './pages/SignUpPage';
+import SignInPage       from './pages/SignInPage';
+import SignUpPage       from './pages/SignUpPage';
+import VerifyEmailPage  from './pages/VerifyEmailPage';
 import AdminRoute        from './admin/AdminRoute';
 import AdminLayout       from './admin/AdminLayout';
 import AdminDashboard    from './admin/AdminDashboard';
@@ -31,6 +32,7 @@ export default function App() {
         <Route path="/sold-stock"            element={<SoldStockPage />} />
         <Route path="/sign-in"               element={<SignInPage />} />
         <Route path="/sign-up"               element={<SignUpPage />} />
+        <Route path="/verify-email"          element={<VerifyEmailPage />} />
         <Route path="/how-it-works"          element={<HowItWorksPage />} />
         <Route path="/about-us"              element={<AboutPage />} />
         <Route path="/contact"               element={<ContactPage />} />

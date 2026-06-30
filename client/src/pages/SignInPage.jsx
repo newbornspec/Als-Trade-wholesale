@@ -8,7 +8,8 @@ export default function SignInPage() {
   const { login }  = useAuth();
   const navigate   = useNavigate();
   const location   = useLocation();
-  const from = location.state?.from || '/available-stock';
+  const from       = location.state?.from || '/available-stock';
+  const registered = location.state?.registered || false;
 
   const [form,   setForm]   = useState({ email: '', password: '' });
   const [showPw, setShowPw] = useState(false);
@@ -27,13 +28,6 @@ export default function SignInPage() {
       navigate(from, { replace: true });
     } catch (err) {
       setStatus('error');
-      // If account exists but email not verified — send them to verify
-      if (err.response?.data?.needsVerification) {
-        navigate('/sign-up', {
-          state: { pendingEmail: err.response.data.pendingEmail, goToVerify: true },
-        });
-        return;
-      }
       setErrMsg(
         err.response?.status === 401
           ? 'Incorrect email or password. Please try again.'
@@ -57,6 +51,15 @@ export default function SignInPage() {
               <h1 className="auth-title">Welcome back</h1>
               <p className="auth-sub">Log in to your ALS Trade account</p>
             </div>
+
+            {registered && (
+              <div className="auth-success">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                  <polyline points="20 6 9 17 4 12"/>
+                </svg>
+                Account created — log in below to get started.
+              </div>
+            )}
 
             {errMsg && (
               <div className="auth-error">

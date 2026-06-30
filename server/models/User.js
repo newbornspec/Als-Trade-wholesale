@@ -58,16 +58,16 @@ const userSchema = new mongoose.Schema(
       type: Date,
     },
 
-    // ── Email verification (OTP) ───────────────────────────────────────
+    // ── Email verification (one-time link) ────────────────────────────
     isEmailVerified: {
       type:    Boolean,
       default: false,
     },
-    emailVerifyOTP: {
+    emailVerifyToken: {
       type:   String,
-      select: false, // never returned in queries by default
+      select: false, // never returned in queries
     },
-    emailVerifyOTPExpires: {
+    emailVerifyTokenExpires: {
       type:   Date,
       select: false,
     },
@@ -94,8 +94,8 @@ userSchema.methods.matchPassword = async function (enteredPassword) {
 userSchema.methods.toSafe = function () {
   const obj = this.toObject();
   delete obj.password;
-  delete obj.emailVerifyOTP;
-  delete obj.emailVerifyOTPExpires;
+  delete obj.emailVerifyToken;
+  delete obj.emailVerifyTokenExpires;
   delete obj.__v;
   return obj;
 };
