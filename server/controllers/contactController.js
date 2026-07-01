@@ -1,23 +1,14 @@
-const nodemailer = require('nodemailer');
+const { Resend } = require('resend');
 const Enquiry    = require('../models/Enquiry');
 const Batch      = require('../models/Batch');
 
-// ── Build transporter once ─────────────────────────────────────────────────
-const createTransporter = () =>
-  nodemailer.createTransport({
-    host:   process.env.EMAIL_HOST || 'smtp.ionos.co.uk',
-    port:   parseInt(process.env.EMAIL_PORT) || 587,
-    secure: parseInt(process.env.EMAIL_PORT) === 465,
-    auth: {
-      user: process.env.EMAIL_USER,
-      pass: process.env.EMAIL_PASS,
-    },
-    // Fail fast — don't let the button spin for 2 minutes
-    connectionTimeout: 8000,   // 8s to establish TCP connection
-    greetingTimeout:   8000,   // 8s to get SMTP greeting
-    socketTimeout:     10000,  // 10s for each send operation
-    tls: { rejectUnauthorized: false }, // IONOS compatibility
-  });
+// ── Resend HTTPS email client (Railway blocks SMTP, so we use the API) ──────
+const resend = new Resend(process.env.RESEND_API_KEY);
+
+// Address emails are sent FROM — must be on a domain verified in Resend
+const FROM_ADDRESS  = process.env.EMAIL_FROM  || 'ALS Trade <Sales@alswholesale.co.uk>';
+// Address enquiry notifications are sent TO (your inbox)
+const NOTIFY_TO     = process.env.EMAIL_USER  || 'Sales@alswholesale.co.uk';
 
 // ── POST /api/contact ──────────────────────────────────────────────────────
 const sendEnquiry = async (req, res) => {
@@ -42,12 +33,10 @@ const sendEnquiry = async (req, res) => {
     // 1. Save enquiry to database
     await Enquiry.create({ name, companyName, phone, email, message, batchRef });
 
-    // 2. Send email notification to A.L.S Trade 
-    const transporter = createTransporter();
-
-    await transporter.sendMail({
-      from:    process.env.EMAIL_FROM || process.env.EMAIL_USER,
-      to:      process.env.EMAIL_USER,
+    // 2. Send email notification to A.L.S Trade
+    const notify = await resend.emails.send({
+      from:    FROM_ADDRESS,
+      to:      NOTIFY_TO,
       replyTo: email,
       subject: `New enquiry — ${name}${companyName ? ` (${companyName})` : ''}`,
       html: `
@@ -66,12 +55,13 @@ const sendEnquiry = async (req, res) => {
         </div>
       `,
     });
+    if (notify.error) throw new Error(`Resend (notify): ${notify.error.message || JSON.stringify(notify.error)}`);
 
     // 3. Send confirmation email to the customer
-    await transporter.sendMail({
-      from:    process.env.EMAIL_FROM || process.env.EMAIL_USER,
+    const confirm = await resend.emails.send({
+      from:    FROM_ADDRESS,
       to:      email,
-      subject: 'We received your message — A.L.S Trade ',
+      subject: 'We received your message — A.L.S Trade',
       html: `
         <div style="font-family: sans-serif; max-width: 600px;">
           <h2>Thank you, ${name}!</h2>
@@ -85,14 +75,15 @@ const sendEnquiry = async (req, res) => {
         </div>
       `,
     });
+    if (confirm.error) throw new Error(`Resend (confirm): ${confirm.error.message || JSON.stringify(confirm.error)}`);
 
     res.json({ message: 'Your message has been sent. We will contact you shortly.' });
   } catch (err) {
-    console.error('Contact error:', err.code, err.command, err.response, err.message);
-    // TEMP DIAGNOSTIC — surfaces the real SMTP error on screen. Remove after debugging.
+    console.error('Contact error:', err.message);
+    // TEMP DIAGNOSTIC — surfaces the real error on screen. Remove after debugging.
     res.status(500).json({
       message: 'Failed to send message. Please try again or contact us directly.',
-      debug: { code: err.code, command: err.command, response: err.response, message: err.message },
+      debug: { message: err.message },
     });
   }
 };
