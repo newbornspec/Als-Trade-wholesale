@@ -77,9 +77,7 @@ export default function ContactPage() {
       setStatus('sent');
     } catch (err) {
       setStatus('error');
-      const d = err.response?.data?.debug;
-      const dbg = d ? ` [debug: ${d.code || ''} ${d.response || d.message || ''}]` : '';
-      setErrMsg((err.response?.data?.message || 'Something went wrong. Please try again.') + dbg);
+      setErrMsg(err.response?.data?.message || 'Something went wrong. Please try again.');
     }
   };
 

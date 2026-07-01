@@ -80,11 +80,7 @@ const sendEnquiry = async (req, res) => {
     res.json({ message: 'Your message has been sent. We will contact you shortly.' });
   } catch (err) {
     console.error('Contact error:', err.message);
-    // TEMP DIAGNOSTIC — surfaces the real error on screen. Remove after debugging.
-    res.status(500).json({
-      message: 'Failed to send message. Please try again or contact us directly.',
-      debug: { message: err.message },
-    });
+    res.status(500).json({ message: 'Failed to send message. Please try again or contact us directly.' });
   }
 };
 
