@@ -2,6 +2,7 @@ import { Routes, Route } from 'react-router-dom';
 import { AuthProvider } from './context/AuthContext';
 import Navbar    from './components/Navbar';
 import Footer    from './components/Footer';
+import WhatsAppButton from './components/WhatsAppButton';
 import HomePage        from './pages/HomePage';
 import StockPage       from './pages/StockPage';
 import BatchDetailPage from './pages/BatchDetailPage';
@@ -58,6 +59,7 @@ export default function App() {
         } />
       </Routes>
       <Footer />
+      <WhatsAppButton />
     </AuthProvider>
   );
 }

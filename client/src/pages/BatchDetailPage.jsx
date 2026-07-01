@@ -3,6 +3,7 @@ import { useParams, Link, useNavigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 import { getImageUrl } from '../utils/imageUrl';
 import api from '../api/axios';
+import { whatsappLink } from '../config/whatsapp';
 import './BatchDetailPage.css';
 
 /* ── Enquiry form ────────────────────────────────────────────── */
@@ -72,7 +73,7 @@ function EnquiryForm({ batch }) {
           {status === 'sending' ? 'Sending…' : 'Send enquiry'}
         </button>
         <a
-          href={`https://wa.me/447911123456?text=${encodeURIComponent(`Hi, I'm interested in batch ${batch.batchNumber} — ${batch.title}`)}`}
+          href={whatsappLink(`Hi, I'm interested in batch ${batch.batchNumber} — ${batch.title}`)}
           target="_blank" rel="noreferrer" className="wa-btn"
         >
           <svg width="17" height="17" viewBox="0 0 24 24" fill="currentColor">

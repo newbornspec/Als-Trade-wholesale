@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import api from '../api/axios';
 import { useAuth } from '../context/AuthContext';
+import { whatsappLink } from '../config/whatsapp';
 import './ContactPage.css';
 
 const FAQ = [
@@ -125,7 +126,7 @@ export default function ContactPage() {
             </a>
 
             <a
-              href="https://wa.me/447911123456"
+              href={whatsappLink()}
               target="_blank"
               rel="noreferrer"
               className="qc-pill qc-wa"
@@ -390,7 +391,7 @@ export default function ContactPage() {
 
             {/* WhatsApp CTA */}
             <a
-              href="https://wa.me/447911123456"
+              href={whatsappLink()}
               target="_blank"
               rel="noreferrer"
               className="wa-cta"

@@ -1,5 +1,6 @@
 import { Link } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
+import { whatsappLink } from '../config/whatsapp';
 import './Footer.css';
 import logo from '../assets/logo.png';
 
@@ -16,7 +17,7 @@ export default function Footer() {
             Worldwide import &amp; export of<br/>bulk IT hardware.
           </p>
           <a
-            href="https://wa.me/447911123456"
+            href={whatsappLink()}
             target="_blank"
             rel="noreferrer"
             className="whatsapp-btn"
