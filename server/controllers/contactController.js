@@ -5,13 +5,18 @@ const Batch      = require('../models/Batch');
 // ── Build transporter once ─────────────────────────────────────────────────
 const createTransporter = () =>
   nodemailer.createTransport({
-    host:   process.env.EMAIL_HOST || 'smtp.gmail.com',
+    host:   process.env.EMAIL_HOST || 'smtp.ionos.co.uk',
     port:   parseInt(process.env.EMAIL_PORT) || 587,
-    secure: parseInt(process.env.EMAIL_PORT) === 465, // true for port 465, false for 587
+    secure: parseInt(process.env.EMAIL_PORT) === 465,
     auth: {
       user: process.env.EMAIL_USER,
       pass: process.env.EMAIL_PASS,
     },
+    // Fail fast — don't let the button spin for 2 minutes
+    connectionTimeout: 8000,   // 8s to establish TCP connection
+    greetingTimeout:   8000,   // 8s to get SMTP greeting
+    socketTimeout:     10000,  // 10s for each send operation
+    tls: { rejectUnauthorized: false }, // IONOS compatibility
   });
 
 // ── POST /api/contact ──────────────────────────────────────────────────────
