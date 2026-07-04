@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react';
 import { useParams, Link, useNavigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 import { getImageUrl } from '../utils/imageUrl';
+import { setJsonLd, removeJsonLd } from '../utils/jsonLd';
 import api from '../api/axios';
 import { whatsappLink } from '../config/whatsapp';
 import './BatchDetailPage.css';
@@ -181,6 +182,41 @@ export default function BatchDetailPage() {
       })
       .finally(() => setLoading(false));
   }, [slug]);
+
+  // Product structured data (JSON-LD) for this batch — helps search engines
+  // show rich details for stock listings.
+  useEffect(() => {
+    if (!batch) return;
+    const img = batch.images?.[0] ? getImageUrl(batch.images[0]) : undefined;
+    const condition = batch.grade && batch.grade !== 'mixed'
+      ? 'https://schema.org/RefurbishedCondition'
+      : 'https://schema.org/UsedCondition';
+    const data = {
+      '@context': 'https://schema.org',
+      '@type': 'Product',
+      name: batch.title,
+      sku: batch.batchNumber,
+      category: batch.category,
+      description: batch.description || batch.specs
+        || `Wholesale ${batch.category} — batch ${batch.batchNumber}.`,
+      itemCondition: condition,
+      ...(batch.brand ? { brand: { '@type': 'Brand', name: batch.brand } } : {}),
+      ...(img ? { image: img } : {}),
+      ...(batch.price > 0 ? {
+        offers: {
+          '@type': 'Offer',
+          priceCurrency: batch.currency || 'GBP',
+          price: batch.price,
+          availability: batch.status === 'sold'
+            ? 'https://schema.org/SoldOut'
+            : 'https://schema.org/InStock',
+          url: `https://alswholesale.co.uk/available-stock/${batch.slug}`,
+        },
+      } : {}),
+    };
+    setJsonLd('ld-product', data);
+    return () => removeJsonLd('ld-product');
+  }, [batch]);
 
   if (loading) return (
     <main className="detail-page">
