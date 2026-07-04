@@ -5,4 +5,4 @@ Disallow: /sign-in
 Disallow: /sign-up
 Disallow: /verify-email
 
-Sitemap: https://alswholesale.co.uk/sitemap.xml
+Sitemap: https://www.alswholesale.co.uk/sitemap.xml

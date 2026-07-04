@@ -210,7 +210,7 @@ export default function BatchDetailPage() {
           availability: batch.status === 'sold'
             ? 'https://schema.org/SoldOut'
             : 'https://schema.org/InStock',
-          url: `https://alswholesale.co.uk/available-stock/${batch.slug}`,
+          url: `https://www.alswholesale.co.uk/available-stock/${batch.slug}`,
         },
       } : {}),
     };

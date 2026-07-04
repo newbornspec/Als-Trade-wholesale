@@ -3,7 +3,7 @@ import { useEffect } from 'react';
 // ── Site-wide SEO settings ───────────────────────────────────────────
 // Change the site name or base URL here if they ever change.
 const SITE_NAME = 'A.L.S Trade';
-const BASE_URL  = 'https://alswholesale.co.uk';
+const BASE_URL  = 'https://www.alswholesale.co.uk';
 
 function upsertMeta(attr, key, content) {
   if (!content) return;
