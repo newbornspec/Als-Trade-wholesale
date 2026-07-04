@@ -4,6 +4,7 @@ import { useAuth } from '../context/AuthContext';
 import api from '../api/axios';
 import { getImageUrl } from '../utils/imageUrl';
 import BatchCard from '../components/BatchCard';
+import useSeo from '../hooks/useSeo';
 import './StockPage.css';
 
 /* ── Constants ────────────────────────────────────────────────── */
@@ -85,6 +86,7 @@ function BatchRow({ batch }) {
 
 /* ── Main page ────────────────────────────────────────────────── */
 export default function StockPage() {
+  useSeo({ title: 'Available Stock', description: 'Browse current batches of wholesale and refurbished IT hardware available to trade buyers. New stock added regularly.', path: '/available-stock' });
   const [searchParams, setSearchParams] = useSearchParams();
   const { user } = useAuth();
 

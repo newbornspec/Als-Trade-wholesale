@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 import api from '../api/axios';
 import { getImageUrl } from '../utils/imageUrl';
+import useSeo from '../hooks/useSeo';
 import './SoldStockPage.css';
 
 const CATEGORIES = [
@@ -68,6 +69,7 @@ function SoldCard({ batch, index }) {
 
 /* ── Main page ─────────────────────────────────────────────────── */
 export default function SoldStockPage() {
+  useSeo({ title: 'Sold Stock', description: 'Recently sold batches of wholesale IT hardware, a snapshot of the stock A.L.S Trade moves for trade buyers.', path: '/sold-stock' });
   const { user } = useAuth();
   const [allBatches,  setAllBatches]  = useState([]);
   const [loading,     setLoading]     = useState(true);

@@ -1,4 +1,5 @@
 import { Link } from 'react-router-dom';
+import useSeo from '../hooks/useSeo';
 import './HowItWorksPage.css';
 import { useAuth } from '../context/AuthContext';
 
@@ -154,6 +155,7 @@ function FaqItem({ q, a }) {
 }
 
 export default function HowItWorksPage() {
+  useSeo({ title: 'How It Works', description: 'See how buying wholesale IT hardware from A.L.S Trade works, from enquiry to delivery, for registered businesses.', path: '/how-it-works' });
   const { user } = useAuth();
   return (
     <main className="hiw-page">

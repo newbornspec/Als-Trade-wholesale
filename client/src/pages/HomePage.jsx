@@ -2,6 +2,7 @@ import { useEffect, useRef, useState } from 'react';
 import { Link } from 'react-router-dom';
 import api from '../api/axios';
 import BatchCard from '../components/BatchCard';
+import useSeo from '../hooks/useSeo';
 import './HomePage.css';
 import { useAuth } from '../context/AuthContext';
 
@@ -84,6 +85,7 @@ const HOW_IT_WORKS = [
 ];
 
 export default function HomePage() {
+  useSeo({ title: 'Bulk IT Hardware Wholesale UK', description: 'A.L.S Trade supplies bulk and refurbished IT hardware to registered businesses worldwide at genuine trade prices. Browse available stock.', path: '/' });
   const { user } = useAuth();
   const [latestBatches,  setLatestBatches]  = useState([]);
   const [loadingBatches, setLoadingBatches] = useState(true);

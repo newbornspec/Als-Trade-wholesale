@@ -1,6 +1,7 @@
 import { Link } from 'react-router-dom';
 import { useEffect, useRef, useState } from 'react';
 import { whatsappLink } from '../config/whatsapp';
+import useSeo from '../hooks/useSeo';
 import './AboutPage.css';
 
 function useCountUp(target, duration = 1800, start = false) {
@@ -120,6 +121,7 @@ const TRADE = [
 ];
 
 export default function AboutPage() {
+  useSeo({ title: 'About Us', description: 'A.L.S Trade is a UK-based wholesaler of bulk IT hardware, trading with registered businesses worldwide from Hertford.', path: '/about-us' });
   return (
     <main className="about-page">
 
