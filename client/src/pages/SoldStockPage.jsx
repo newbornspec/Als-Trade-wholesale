@@ -7,14 +7,14 @@ import useSeo from '../hooks/useSeo';
 import './SoldStockPage.css';
 
 const CATEGORIES = [
-  { value: 'all',     label: 'All'     },
-  { value: 'laptops', label: 'Laptops' },
-  { value: 'phones',  label: 'Phones'  },
-  { value: 'tablets', label: 'Tablets' },
-  { value: 'mixed',   label: 'Mixed'   },
+  { value: 'all',       label: 'All'       },
+  { value: 'laptops',   label: 'Laptops'   },
+  { value: 'computers', label: 'Computers' },
+  { value: 'monitors',  label: 'Monitors'  },
+  { value: 'other',     label: 'Other'     },
 ];
 
-const CAT_ICON = { laptops: '💻', phones: '📱', tablets: '📲', mixed: '📦', other: '📦' };
+const CAT_ICON = { laptops: '💻', computers: '🖥️', monitors: '🖥️', other: '📦' };
 
 function timeAgo(dateStr) {
   const diff  = Date.now() - new Date(dateStr).getTime();

@@ -259,9 +259,6 @@ export default function BatchDetailPage() {
     computers: 'Computers',
     monitors:  'Monitors',
     other:     'Other',
-    phones:    'Phones',
-    tablets:   'Tablets',
-    mixed:     'Mixed',
   };
 
   /* ── Product list value logic ──────────────────────────────── */

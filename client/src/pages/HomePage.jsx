@@ -118,7 +118,7 @@ export default function HomePage() {
           </h1>
 
           <p className="hero-sub fade-up delay-2">
-            Laptops, phones and tablets — by the batch.<br/>
+            Laptops, computers and monitors — by the batch.<br/>
             Sourced, graded and sold to businesses worldwide.
           </p>
 

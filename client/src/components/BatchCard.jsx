@@ -7,7 +7,7 @@ export default function BatchCard({ batch }) {
   const { user } = useAuth();
 
   const categoryIcon = {
-    laptops: '💻', phones: '📱', tablets: '📲', mixed: '📦', other: '📦',
+    laptops: '💻', computers: '🖥️', monitors: '🖥️', other: '📦',
   }[batch.category] || '📦';
 
   return (

@@ -27,7 +27,7 @@ const STEPS = [
     title: 'Browse available stock',
     body:  'Once logged in, browse our full catalogue of available batches with live pricing on every listing. Filter by category, condition grade and whether an item list is available.',
     detail: [
-      'Laptops, phones, tablets and mixed batches',
+      'Laptops, computers, monitors and mixed batches',
       'Live pricing visible after login',
       'Filter by tested / untested, grade, category',
     ],
