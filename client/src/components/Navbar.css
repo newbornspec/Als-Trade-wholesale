@@ -70,7 +70,7 @@
   transition: all var(--t);
 }
 .nav-links a:hover { color: var(--gray-800); background: var(--gray-50); }
-.nav-links a.active { color: var(--gray-800); font-weight: 600; }
+.nav-links a.active { color: var(--accent-dk); font-weight: 700; background: var(--accent-lt); }
 
 /* Auth buttons */
 .nav-auth {
