@@ -277,7 +277,7 @@
 /* ── CTA band ─────────────────────────────────── */
 .cta-band {
   background: var(--gray-800);
-  padding: 5rem 0;
+  padding: 3.5rem 0 2rem;
 }
 .cta-inner {
   display: flex;

@@ -14,7 +14,7 @@
   display: grid;
   grid-template-columns: 1.8fr 1fr 1fr 1fr;
   gap: 2rem;
-  padding-top: 2.5rem;
+  padding-top: 1rem;
   padding-bottom: 2rem;
 }
 
