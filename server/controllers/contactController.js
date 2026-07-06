@@ -71,7 +71,7 @@ const sendEnquiry = async (req, res) => {
             <li>Phone / WhatsApp: <a href="tel:0203 747 1310">0203 747 1310</a></li>
             <li>Email: <a href="mailto:Sales@alswholesale.co.uk">Sales@alswholesale.co.uk</a></li>
           </ul>
-          <p style="color:#666; font-size:13px;">A.L.S Trade  Ltd — Unit 11a Waterhall Farm, Hertford SG138LE, United Kingdom</p>
+          <p style="color:#666; font-size:13px;">A.L.S Trade  Ltd — Bizspace Business Park, Redfern Road, Birmingham B11 2AL, United Kingdom</p>
         </div>
       `,
     });

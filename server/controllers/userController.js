@@ -63,7 +63,7 @@ const sendVerificationEmail = async (email, name, token) => {
 
         <hr style="border: none; border-top: 1px solid #eee; margin: 24px 0;" />
         <p style="font-size: 11px; color: #bbb;">
-          A.L.S Trade Ltd · Unit 11a Waterhall Farm, Hertford SG138LE · United Kingdom
+          A.L.S Trade Ltd · Bizspace Business Park, Redfern Road, Birmingham B11 2AL · United Kingdom
         </p>
       </div>
     `,

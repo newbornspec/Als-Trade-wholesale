@@ -121,7 +121,7 @@ const TRADE = [
 ];
 
 export default function AboutPage() {
-  useSeo({ title: 'About Us', description: 'A.L.S Trade is a UK-based wholesaler of bulk IT hardware, trading with registered businesses worldwide from Hertford.', path: '/about-us' });
+  useSeo({ title: 'About Us', description: 'A.L.S Trade is a UK-based wholesaler of bulk IT hardware, trading with registered businesses worldwide from Birmingham.', path: '/about-us' });
   return (
     <main className="about-page">
 
@@ -179,7 +179,7 @@ export default function AboutPage() {
             <p>What began in Birmingham as a small IT trading operation, focused on sourcing and selling individual batches of technology equipment, has grown into a trusted international business built on industry expertise, strong supplier relationships, and a commitment to delivering reliable service. By understanding market demand, developing long-term partnerships, and maintaining high standards of accuracy and transparency, we have steadily expanded our reach throughout the UK and across international markets.</p>
             <p>Over the years, we have developed an extensive network of buyers, resellers, refurbishers, wholesalers, and technology businesses worldwide. Today, we successfully handle hundreds of IT hardware batches each year across a wide range of product categories, including laptops, desktops, servers, networking equipment, components, peripherals, and enterprise technology solutions.</p>
             <p>Our customer base spans more than 20 countries and includes everyone from independent repair shops and local technology retailers to large-scale resellers, distributors, and refurbishment companies. Regardless of the size of the transaction, our focus remains the same: providing accurate product information, competitive pricing, responsive communication, and a smooth trading experience from start to finish.</p>
-            <p>Based in Hertfordshire, United Kingdom, A.L.S Trade operates as a dedicated and experienced team rather than a faceless online marketplace. We believe that successful business relationships are built on trust, expertise, and direct communication. When you contact us, you speak with someone who understands the inventory, knows the market, and can provide the information you need quickly and accurately.</p>
+            <p>Based in Birmingham, United Kingdom, A.L.S Trade operates as a dedicated and experienced team rather than a faceless online marketplace. We believe that successful business relationships are built on trust, expertise, and direct communication. When you contact us, you speak with someone who understands the inventory, knows the market, and can provide the information you need quickly and accurately.</p>
             <p>As we continue to grow, our commitment remains unchanged: to make buying and selling surplus IT hardware simple, reliable, and profitable for businesses around the world.</p>
           </div>
 
@@ -269,7 +269,7 @@ export default function AboutPage() {
             <p className="section-eyebrow">Where we are</p>
             <h2 className="section-title">Based in the United Kingdom</h2>
             <p className="location-body">
-              Our warehouse and offices are located in Hertford, United Kingdom. Centrally
+              Our warehouse and offices are located in Birmingham, United Kingdom. Centrally
               positioned in the UK for efficient shipping across the continent and beyond.
             </p>
             <p className="location-body">
@@ -281,7 +281,7 @@ export default function AboutPage() {
                 <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
                   <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3"/>
                 </svg>
-                Unit 11a Waterhall Farm, Hertford SG138LE, United Kingdom
+                Bizspace Business Park, Redfern Road, Birmingham B11 2AL, United Kingdom
               </div>
               <div className="ld-row">
                 <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
@@ -311,7 +311,7 @@ export default function AboutPage() {
           <div className="location-map">
             <iframe
               title="A.L.S Trade location"
-              src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2484.5!2d6.051!3d51.39!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0x0!2zNTHCsDIzJzI0LjAiTiA2wrAwMycwMy42IkU!5e0!3m2!1sen!2snl!4v1700000000000"
+              src="https://www.google.com/maps?q=Bizspace+Business+Park,+Redfern+Road,+Birmingham+B11+2AL&output=embed"
               width="100%" height="100%"
               style={{ border: 0, display: 'block', minHeight: '360px' }}
               allowFullScreen="" loading="lazy" referrerPolicy="no-referrer-when-downgrade"

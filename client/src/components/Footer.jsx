@@ -58,7 +58,7 @@ export default function Footer() {
           <a href="tel:0203 747 1310">0203 747 1310</a>
           <a href="mailto:Sales@alswholesale.co.uk">Sales@alswholesale.co.uk</a>
           <p style={{color:'var(--gray-500)', fontSize:'13px', marginTop:'4px'}}>
-            Unit 11a Waterhall Farm<br/>Hertford SG138LE<br/>United Kingdom
+            Bizspace Business Park, Redfern Road<br/>Birmingham B11 2AL<br/>United Kingdom
           </p>
         </div>
       </div>

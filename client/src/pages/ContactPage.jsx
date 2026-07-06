@@ -353,8 +353,8 @@ export default function ContactPage() {
                 <div>
                   <span className="info-row-label">Address</span>
                   <span className="info-row-value">
-                    Unit 11a Waterhall Farm<br />
-                    Hertford SG138LE<br />
+                    Bizspace Business Park, Redfern Road<br />
+                    Birmingham B11 2AL<br />
                     United Kingdom
                   </span>
                 </div>
@@ -411,11 +411,11 @@ export default function ContactPage() {
               <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
                 <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z" /><circle cx="12" cy="10" r="3" />
               </svg>
-              Unit 11a Waterhall Farm, Hertford SG138LE, United Kingdom
+              Bizspace Business Park, Redfern Road, Birmingham B11 2AL, United Kingdom
             </div>
             <iframe
               title="A.L.S Trade  location"
-              src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2484.5!2d6.051!3d51.39!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0x0!2zNTHCsDIzJzI0LjAiTiA2wrAwMycwMy42IkU!5e0!3m2!1sen!2snl!4v1700000000000"
+              src="https://www.google.com/maps?q=Bizspace+Business+Park,+Redfern+Road,+Birmingham+B11+2AL&output=embed"
               width="100%"
               height="260"
               style={{ border: 0, borderRadius: '0 0 6px 6px', display: 'block' }}
