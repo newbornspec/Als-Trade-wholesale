@@ -59,7 +59,7 @@
   font-weight: 700;
   letter-spacing: 0.1em;
   text-transform: uppercase;
-  color: var(--gray-500);
+  color: var(--accent);
   margin-bottom: 1rem;
 }
 .footer-col a,
