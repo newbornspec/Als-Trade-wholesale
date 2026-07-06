@@ -132,7 +132,7 @@ export default function AboutPage() {
               <p className="section-eyebrow">Who we are</p>
               <h1 className="ah-title">About Us</h1>
               <div className="ah-tags">
-                {['B2B Wholesale','IT Hardware','UK Based','Est. 2019'].map(t => (
+                {['B2B Wholesale','IT Hardware','UK Based','Est. 2018'].map(t => (
                   <span key={t} className="ah-tag">{t}</span>
                 ))}
               </div>
