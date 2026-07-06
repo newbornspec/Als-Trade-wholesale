@@ -147,9 +147,9 @@ export default function AboutPage() {
               </p>
               <div className="ah-highlights">
                 {[
-                  { icon: '📦', text: 'Laptops, computers & monitors' },
-                  { icon: '🌍', text: 'Worldwide export' },
-                  { icon: '🏢', text: 'Registered businesses only' },
+                  { icon: (<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.7"><rect x="3" y="4" width="18" height="12" rx="1"/><line x1="2" y1="20" x2="22" y2="20"/></svg>), text: 'Laptops, computers & monitors' },
+                  { icon: (<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.7"><circle cx="12" cy="12" r="9"/><path d="M3 12h18"/><path d="M12 3a15 15 0 0 1 0 18"/><path d="M12 3a15 15 0 0 0 0 18"/></svg>), text: 'Worldwide export' },
+                  { icon: (<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.7"><path d="M3 21V8l9-5 9 5v13"/><path d="M9 21v-6h6v6"/></svg>), text: 'Registered businesses only' },
                 ].map((h, i) => (
                   <div key={i} className="ah-highlight">
                     <span className="ah-highlight-icon">{h.icon}</span>
