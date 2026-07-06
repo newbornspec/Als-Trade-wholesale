@@ -162,20 +162,23 @@ export default function HomePage() {
 
       {/* ═══════════ CATEGORIES STRIP ═══════════════════════════ */}
       <section className="categories-strip">
-        <div className="container cat-inner">
+        <div className="container cat-cards">
           {[
-            { label: 'Laptops',   icon: '💻', slug: 'laptops'   },
-            { label: 'Computers', icon: '🖥️', slug: 'computers' },
-            { label: 'Monitors',  icon: '🖥️', slug: 'monitors'  },
-            { label: 'Other',     icon: '📦', slug: 'other'     },
+            { label: 'Laptops',   img: '/categories/laptops.jpg',   slug: 'laptops',   tint: 'cat-tint-blue'  },
+            { label: 'Computers', img: '/categories/computers.jpg', slug: 'computers', tint: 'cat-tint-peach' },
+            { label: 'Monitors',  img: '/categories/monitors.jpg',  slug: 'monitors',  tint: 'cat-tint-lilac' },
+            { label: 'Other',     img: '/categories/other.jpg',     slug: 'other',     tint: 'cat-tint-mint'  },
           ].map(cat => (
             <Link
               key={cat.slug}
               to={`/available-stock?category=${cat.slug}`}
-              className="cat-chip"
+              className={`cat-card ${cat.tint}`}
             >
-              <span className="cat-icon">{cat.icon}</span>
-              <span>{cat.label}</span>
+              <span className="cat-card-media">
+                <img src={cat.img} alt={cat.label} loading="lazy"
+                  onError={(e) => { e.currentTarget.style.visibility = 'hidden'; }} />
+              </span>
+              <span className="cat-card-label">{cat.label}</span>
             </Link>
           ))}
         </div>

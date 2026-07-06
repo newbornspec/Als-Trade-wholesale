@@ -85,30 +85,55 @@
 
 /* ── Categories ──────────────────────────────── */
 .categories-strip {
-  background: var(--off-white);
-  border-top: 1px solid var(--gray-100);
-  border-bottom: 1px solid var(--gray-100);
+  background: var(--white);
+  padding: 3.5rem 0 1.5rem;
 }
-.cat-inner {
+.cat-cards {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 20px;
+}
+.cat-card {
   display: flex;
-  gap: 0;
-  overflow-x: auto;
+  flex-direction: column;
+  border-radius: 16px;
+  overflow: hidden;
+  border: 1px solid var(--gray-100);
+  background: var(--white);
+  text-decoration: none;
+  box-shadow: var(--shadow-sm);
+  transition: transform var(--t) var(--ease), box-shadow var(--t) var(--ease);
 }
-.cat-chip {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  padding: 1.1rem 2rem;
-  font-size: 13px;
-  font-weight: 600;
-  color: var(--gray-500);
-  border-right: 1px solid var(--gray-100);
-  transition: all var(--t);
-  white-space: nowrap;
-  flex-shrink: 0;
+.cat-card:hover { transform: translateY(-5px); box-shadow: var(--shadow-lg); }
+.cat-card-media {
+  width: 100%;
+  aspect-ratio: 4 / 3;
+  overflow: hidden;
+  background: var(--gray-50);
 }
-.cat-chip:hover { color: var(--gray-800); background: var(--white); }
-.cat-icon { font-size: 18px; }
+.cat-card-media img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.4s var(--ease);
+}
+.cat-card:hover .cat-card-media img { transform: scale(1.06); }
+.cat-card-label {
+  font-family: var(--font-display);
+  font-size: 16px;
+  font-weight: 700;
+  color: var(--ink);
+  letter-spacing: -0.01em;
+  text-align: center;
+  padding: 15px 12px;
+}
+.cat-tint-blue  { background: #eef4ff; }
+.cat-tint-peach { background: #fdf2ea; }
+.cat-tint-lilac { background: #f3eefe; }
+.cat-tint-mint  { background: #eafaf1; }
+
+@media (max-width: 860px) { .cat-cards { grid-template-columns: repeat(2, 1fr); } }
+@media (max-width: 460px) { .cat-cards { grid-template-columns: 1fr; } }
 
 /* ── Sections ────────────────────────────────── */
 .section { padding: 4rem 0; }
