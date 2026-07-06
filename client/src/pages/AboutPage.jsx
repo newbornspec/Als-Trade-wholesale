@@ -200,8 +200,7 @@ export default function AboutPage() {
                 { label: 'Speciality', value: 'Laptops, computers, monitors' },
                 { label: 'Coverage',   value: 'Worldwide export' },
                 { label: 'Customers',  value: 'Registered businesses only' },
-                { label: 'Company No', value: '12345678' },
-                { label: 'VAT',        value: 'GB123456789' },
+                { label: 'Company No', value: '11269566' },
               ].map((r, i) => (
                 <div key={i} className="sc-row">
                   <span className="sc-row-label">{r.label}</span>

@@ -384,8 +384,7 @@ export default function ContactPage() {
                   <span className="info-row-label">Company</span>
                   <span className="info-row-value">
                     A.L.S Trade  Ltd<br />
-                    Company No: 12345678<br />
-                    VAT: GB123456789
+                    Company No: 11269566
                   </span>
                 </div>
               </div>

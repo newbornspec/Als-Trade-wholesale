@@ -65,7 +65,7 @@ export default function Footer() {
 
       <div className="footer-bottom container">
         <p>© {new Date().getFullYear()} A.L.S Trade  Ltd All rights reserved.</p>
-        <p>Company No: 12345678 | VAT: GB123456789</p>
+        <p>Company No: 11269566</p>
       </div>
     </footer>
   );
