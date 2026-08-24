@@ -106,6 +106,21 @@ const verifyEmailToken = async (req, res) => {
     const { token } = req.query;
     if (!token) return res.status(400).json({ message: 'Verification token is missing.' });
 
+    // Must be exactly what generateVerifyToken produces: 32 random bytes as
+    // hex. The shape check is the security control, not tidiness.
+    //
+    // `!token` passes anything truthy, and Express parses ?token[$ne]=x into
+    // an object, so without this the value reached Mongo as an operator
+    // rather than a string. `{ $ne: 'x' }` matches documents where the field
+    // is absent — that is every account — and the handler below answers a
+    // match by issuing a 30-day JWT for it. An unauthenticated caller could
+    // therefore be handed a session for someone else's account.
+    if (typeof token !== 'string' || !/^[a-f0-9]{64}$/.test(token)) {
+      return res.status(400).json({
+        message: 'This verification link is invalid or has already been used.',
+      });
+    }
+
     const user = await User
       .findOne({ emailVerifyToken: token })
       .select('+emailVerifyToken +emailVerifyTokenExpires');
