@@ -12,26 +12,44 @@ function CountUp({ target, suffix = '+', duration = 1600 }) {
   const [started, setStarted] = useState(false);
   const ref = useRef(null);
 
+  /* The stats sit in the hero, so they are in view the moment the page loads.
+     A strict 50%-visible observer misses them on short viewports and the
+     numbers stay stuck on 0, so start on any overlap and never wait forever. */
   useEffect(() => {
+    const el = ref.current;
+    const fallback = setTimeout(() => setStarted(true), 1200);
+    if (!el || typeof IntersectionObserver === 'undefined') return () => clearTimeout(fallback);
+
     const observer = new IntersectionObserver(
       ([entry]) => { if (entry.isIntersecting) { setStarted(true); observer.disconnect(); } },
-      { threshold: 0.5 }
+      { threshold: 0, rootMargin: '200px' }
     );
-    if (ref.current) observer.observe(ref.current);
-    return () => observer.disconnect();
+    observer.observe(el);
+    return () => { observer.disconnect(); clearTimeout(fallback); };
   }, []);
 
   useEffect(() => {
-    if (!started || target === 0) return;
+    if (!started) return;
+
+    const reduced = window.matchMedia?.('(prefers-reduced-motion: reduce)').matches;
+    const dur = reduced ? 0 : duration;
+
+    let frame = 0;
     let startTime = null;
     const animate = (ts) => {
-      if (!startTime) startTime = ts;
-      const progress = Math.min((ts - startTime) / duration, 1);
+      if (startTime === null) startTime = ts;
+      const progress = dur > 0 ? Math.min((ts - startTime) / dur, 1) : 1;
       const eased = 1 - Math.pow(1 - progress, 3);
-      setCount(Math.floor(eased * target));
-      if (progress < 1) requestAnimationFrame(animate);
+      setCount(Math.round(eased * target));
+      if (progress < 1) frame = requestAnimationFrame(animate);
     };
-    requestAnimationFrame(animate);
+    frame = requestAnimationFrame(animate);
+
+    /* rAF is paused in background tabs, so a page opened in one would show 0
+       until it is focused. Snap to the real number if the frames never came. */
+    const safety = setTimeout(() => setCount(target), dur + 400);
+
+    return () => { cancelAnimationFrame(frame); clearTimeout(safety); };
   }, [started, target, duration]);
 
   return <span ref={ref}>{count}{suffix}</span>;
