@@ -31,7 +31,13 @@ const sendEnquiry = async (req, res) => {
   let batchInfo = '';
   try {
     let batchRef = null;
-    if (batchSlug) {
+    // Only look up a genuine slug. This body is unauthenticated, and without
+    // the type guard an object like {"$regex":"^"} would reach Mongo as an
+    // operator rather than a string — attaching the enquiry to an arbitrary
+    // batch, or driving a regex scan across the collection. Slugs are always
+    // slugify() output (lowercase, alphanumeric and hyphens), so anything
+    // else is not a real reference and is simply ignored.
+    if (typeof batchSlug === 'string' && /^[a-z0-9-]+$/.test(batchSlug)) {
       const batch = await Batch.findOne({ slug: batchSlug }).select('batchNumber title');
       if (batch) {
         batchRef  = batch._id;
