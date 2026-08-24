@@ -1,57 +1,17 @@
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import api from '../api/axios';
 import BatchCard from '../components/BatchCard';
 import useSeo from '../hooks/useSeo';
+import useCountUp from '../hooks/useCountUp';
 import './HomePage.css';
 import { useAuth } from '../context/AuthContext';
 
 /* ── Animated counter ────────────────────────────────────────── */
+/* These sit in the hero, in view the moment the page loads, so they fall
+   back to counting on a timer rather than risk showing a reader zeroes. */
 function CountUp({ target, suffix = '+', duration = 1600 }) {
-  const [count,   setCount]   = useState(0);
-  const [started, setStarted] = useState(false);
-  const ref = useRef(null);
-
-  /* The stats sit in the hero, so they are in view the moment the page loads.
-     A strict 50%-visible observer misses them on short viewports and the
-     numbers stay stuck on 0, so start on any overlap and never wait forever. */
-  useEffect(() => {
-    const el = ref.current;
-    const fallback = setTimeout(() => setStarted(true), 1200);
-    if (!el || typeof IntersectionObserver === 'undefined') return () => clearTimeout(fallback);
-
-    const observer = new IntersectionObserver(
-      ([entry]) => { if (entry.isIntersecting) { setStarted(true); observer.disconnect(); } },
-      { threshold: 0, rootMargin: '200px' }
-    );
-    observer.observe(el);
-    return () => { observer.disconnect(); clearTimeout(fallback); };
-  }, []);
-
-  useEffect(() => {
-    if (!started) return;
-
-    const reduced = window.matchMedia?.('(prefers-reduced-motion: reduce)').matches;
-    const dur = reduced ? 0 : duration;
-
-    let frame = 0;
-    let startTime = null;
-    const animate = (ts) => {
-      if (startTime === null) startTime = ts;
-      const progress = dur > 0 ? Math.min((ts - startTime) / dur, 1) : 1;
-      const eased = 1 - Math.pow(1 - progress, 3);
-      setCount(Math.round(eased * target));
-      if (progress < 1) frame = requestAnimationFrame(animate);
-    };
-    frame = requestAnimationFrame(animate);
-
-    /* rAF is paused in background tabs, so a page opened in one would show 0
-       until it is focused. Snap to the real number if the frames never came. */
-    const safety = setTimeout(() => setCount(target), dur + 400);
-
-    return () => { cancelAnimationFrame(frame); clearTimeout(safety); };
-  }, [started, target, duration]);
-
+  const { count, ref } = useCountUp(target, { duration, fallback: 1200 });
   return <span ref={ref}>{count}{suffix}</span>;
 }
 
