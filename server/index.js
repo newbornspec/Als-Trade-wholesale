@@ -78,6 +78,10 @@ app.use('/api/batches', require('./routes/batchRoutes'))
 app.use('/api/contact', require('./routes/contactRoutes'))
 app.use('/api/admin',   require('./routes/adminRoutes'))
 
+// Dynamic sitemap. Served at the site root via a Vercel rewrite so the URL is
+// https://www.alswholesale.co.uk/sitemap.xml (matching robots.txt).
+app.get('/sitemap.xml', require('./controllers/sitemapController').getSitemap)
+
 // ── Health check ───────────────────────────────────────────────────────────
 app.get('/api/health', (req, res) => {
   res.json({ status: 'OK', env: process.env.NODE_ENV, time: new Date() })
