@@ -13,6 +13,12 @@ const mongoUri = () => process.env.MONGO_URI || process.env.MONGODB_URI
 
 console.log('Mongo URI loaded:', mongoUri() ? 'YES' : 'MISSING')
 
+// A missing key used to crash the API on boot, which at least made it obvious.
+// It degrades quietly now, so say so loudly here instead.
+if (!process.env.RESEND_API_KEY) {
+  console.warn('WARNING: RESEND_API_KEY is not set — contact enquiries will save but send no email')
+}
+
 const app = express()
 app.set('trust proxy', 1) 
 // ... rest stays the same
