@@ -20,16 +20,17 @@ const NOTIFY_TO     = process.env.EMAIL_USER  || 'Sales@alswholesale.co.uk';
 
 // ── POST /api/contact ──────────────────────────────────────────────────────
 const sendEnquiry = async (req, res) => {
+  const { name, companyName, phone, email, message, batchSlug } = req.body;
+
+  if (!name || !phone || !email || !message) {
+    return res.status(400).json({ message: 'Name, phone, email and message are required' });
+  }
+
+  // ── 1. Save the enquiry. This is the step that decides the response: once
+  // it lands the enquiry is a real lead, visible under Admin > Enquiries.
+  let batchInfo = '';
   try {
-    const { name, companyName, phone, email, message, batchSlug } = req.body;
-
-    if (!name || !phone || !email || !message) {
-      return res.status(400).json({ message: 'Name, phone, email and message are required' });
-    }
-
-    // Optionally resolve batch reference
-    let batchRef  = null;
-    let batchInfo = '';
+    let batchRef = null;
     if (batchSlug) {
       const batch = await Batch.findOne({ slug: batchSlug }).select('batchNumber title');
       if (batch) {
@@ -37,20 +38,45 @@ const sendEnquiry = async (req, res) => {
         batchInfo = `<p><strong>Re batch:</strong> ${batch.batchNumber} — ${batch.title}</p>`;
       }
     }
-
-    // 1. Save enquiry to database
     await Enquiry.create({ name, companyName, phone, email, message, batchRef });
+  } catch (err) {
+    console.error('Contact error — enquiry NOT saved:', err.message);
+    return res.status(500).json({ message: 'Failed to send message. Please try again or contact us directly.' });
+  }
 
-    const resend = getResend();
-    if (!resend) throw new Error('RESEND_API_KEY is not set — enquiry saved but no email sent');
+  // ── 2. Email is a notification of something already recorded, so trouble
+  // here is ours to chase, not the customer's. Telling them it failed only
+  // gets the same enquiry sent again. Each send is attempted independently:
+  // a failed confirmation must not suppress the notification, or vice versa.
+  await sendEnquiryEmails({ name, companyName, phone, email, message, batchInfo });
 
-    // 2. Send email notification to A.L.S Trade
-    const notify = await resend.emails.send({
-      from:    FROM_ADDRESS,
-      to:      NOTIFY_TO,
-      replyTo: email,
-      subject: `New enquiry — ${name}${companyName ? ` (${companyName})` : ''}`,
-      html: `
+  res.json({ message: 'Your message has been sent. We will contact you shortly.' });
+};
+
+// Sends the two enquiry emails, reporting failures to the log only.
+const sendEnquiryEmails = async ({ name, companyName, phone, email, message, batchInfo }) => {
+  const resend = getResend();
+  if (!resend) {
+    console.error('Contact email skipped — RESEND_API_KEY is not set. Enquiry WAS saved.');
+    return;
+  }
+
+  const send = async (label, payload) => {
+    try {
+      const { error } = await resend.emails.send(payload);
+      if (error) throw new Error(error.message || JSON.stringify(error));
+    } catch (err) {
+      console.error(`Contact email failed (${label}) — enquiry WAS saved:`, err.message);
+    }
+  };
+
+  // Notification to A.L.S Trade
+  await send('notify', {
+    from:    FROM_ADDRESS,
+    to:      NOTIFY_TO,
+    replyTo: email,
+    subject: `New enquiry — ${name}${companyName ? ` (${companyName})` : ''}`,
+    html: `
         <div style="font-family: sans-serif; max-width: 600px;">
           <h2 style="color: #1a1a1a;">New enquiry via A.L.S Trade  website</h2>
           ${batchInfo}
@@ -65,15 +91,14 @@ const sendEnquiry = async (req, res) => {
           </div>
         </div>
       `,
-    });
-    if (notify.error) throw new Error(`Resend (notify): ${notify.error.message || JSON.stringify(notify.error)}`);
+  });
 
-    // 3. Send confirmation email to the customer
-    const confirm = await resend.emails.send({
-      from:    FROM_ADDRESS,
-      to:      email,
-      subject: 'We received your message — A.L.S Trade',
-      html: `
+  // Confirmation to the customer
+  await send('confirm', {
+    from:    FROM_ADDRESS,
+    to:      email,
+    subject: 'We received your message — A.L.S Trade',
+    html: `
         <div style="font-family: sans-serif; max-width: 600px;">
           <h2>Thank you, ${name}!</h2>
           <p>We have received your message and will contact you as soon as possible.</p>
@@ -85,14 +110,7 @@ const sendEnquiry = async (req, res) => {
           <p style="color:#666; font-size:13px;">A.L.S Trade  Ltd — Bizspace Business Park, Redfern Road, Birmingham B11 2AL, United Kingdom</p>
         </div>
       `,
-    });
-    if (confirm.error) throw new Error(`Resend (confirm): ${confirm.error.message || JSON.stringify(confirm.error)}`);
-
-    res.json({ message: 'Your message has been sent. We will contact you shortly.' });
-  } catch (err) {
-    console.error('Contact error:', err.message);
-    res.status(500).json({ message: 'Failed to send message. Please try again or contact us directly.' });
-  }
+  });
 };
 
 module.exports = { sendEnquiry };
