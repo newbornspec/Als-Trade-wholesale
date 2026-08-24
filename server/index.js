@@ -6,8 +6,12 @@ const morgan = require('morgan')
 const rateLimit = require('express-rate-limit')
 
 dotenv.config()
-dotenv.config()
-console.log('MONGODB_URI loaded:', process.env.MONGODB_URI ? 'YES' : 'MISSING')
+
+// Railway is provisioned with MONGODB_URI, everything else uses MONGO_URI.
+// Accept either so the API connects wherever it runs.
+const mongoUri = () => process.env.MONGO_URI || process.env.MONGODB_URI
+
+console.log('Mongo URI loaded:', mongoUri() ? 'YES' : 'MISSING')
 
 const app = express()
 app.set('trust proxy', 1) 
@@ -55,7 +59,7 @@ app.use('/api/users/login',    authLimiter)
 app.use('/api/users/register', authLimiter)
 
 // ── MongoDB ────────────────────────────────────────────────────────────────
-mongoose.connect(process.env.MONGODB_URI)
+mongoose.connect(mongoUri())
   .then(() => console.log('MongoDB connected'))
   .catch(err => console.error('MongoDB connection failed:', err))
 

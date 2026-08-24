@@ -4,7 +4,7 @@ const User     = require('./models/User');
 
 const EMAIL = 'shady@alservices.org.uk'; // ← change this
 
-mongoose.connect(process.env.MONGO_URI).then(async () => {
+mongoose.connect(process.env.MONGO_URI || process.env.MONGODB_URI).then(async () => {
   const user = await User.findOneAndUpdate(
     { email: EMAIL },
     { role: 'admin' },
