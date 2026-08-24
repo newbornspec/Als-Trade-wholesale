@@ -3,7 +3,15 @@ const Enquiry    = require('../models/Enquiry');
 const Batch      = require('../models/Batch');
 
 // ── Resend HTTPS email client (Railway blocks SMTP, so we use the API) ──────
-const resend = new Resend(process.env.RESEND_API_KEY);
+// Built on first use. The constructor throws when the key is missing, and
+// doing that at require time took the whole API down instead of just this
+// route — every endpoint died because contact email was misconfigured.
+let resendClient = null;
+const getResend = () => {
+  if (!process.env.RESEND_API_KEY) return null;
+  if (!resendClient) resendClient = new Resend(process.env.RESEND_API_KEY);
+  return resendClient;
+};
 
 // Address emails are sent FROM — must be on a domain verified in Resend
 const FROM_ADDRESS  = process.env.EMAIL_FROM  || 'ALS Trade <Sales@alswholesale.co.uk>';
@@ -32,6 +40,9 @@ const sendEnquiry = async (req, res) => {
 
     // 1. Save enquiry to database
     await Enquiry.create({ name, companyName, phone, email, message, batchRef });
+
+    const resend = getResend();
+    if (!resend) throw new Error('RESEND_API_KEY is not set — enquiry saved but no email sent');
 
     // 2. Send email notification to A.L.S Trade
     const notify = await resend.emails.send({
