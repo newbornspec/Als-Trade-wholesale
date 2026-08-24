@@ -22,7 +22,7 @@ export default function BatchCard({ batch }) {
       {/* Image */}
       <div className="card-image">
         {batch.images?.[0] ? (
-          <img src={getImageUrl(batch.images[0])} alt={batch.title} />
+          <img src={getImageUrl(batch.images[0])} alt={batch.title} loading="lazy" decoding="async" />
         ) : (
           <div className="card-image-placeholder">
             <span>{categoryIcon}</span>

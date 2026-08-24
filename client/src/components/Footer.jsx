@@ -11,7 +11,7 @@ export default function Footer() {
       <div className="container footer-inner">
         <div className="footer-brand">
           <div className="footer-logo">
-          <img src={logo} alt="Your Company" className="footer-logo-img" /> 
+          <img src={logo} alt="A.L.S Trade" className="footer-logo-img" /> 
              </div>
           <p className="footer-tagline">
             Worldwide import &amp; export of<br/>bulk IT hardware.

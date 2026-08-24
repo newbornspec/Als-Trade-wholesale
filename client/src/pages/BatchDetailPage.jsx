@@ -3,6 +3,7 @@ import { useParams, Link, useNavigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 import { getImageUrl } from '../utils/imageUrl';
 import { setJsonLd, removeJsonLd } from '../utils/jsonLd';
+import useSeo from '../hooks/useSeo';
 import api from '../api/axios';
 import { whatsappLink } from '../config/whatsapp';
 import './BatchDetailPage.css';
@@ -120,7 +121,7 @@ function Gallery({ images, title }) {
           <div className="gallery-thumbs">
             {images.map((img, i) => (
               <button key={i} className={`thumb ${i === active ? 'active' : ''}`} onClick={() => setActive(i)}>
-                <img src={getImageUrl(img)} alt={`Thumbnail ${i + 1}`} />
+                <img src={getImageUrl(img)} alt={`${title} — thumbnail ${i + 1}`} loading="lazy" decoding="async" />
               </button>
             ))}
           </div>
@@ -183,15 +184,34 @@ export default function BatchDetailPage() {
       .finally(() => setLoading(false));
   }, [slug]);
 
-  // Product structured data (JSON-LD) for this batch — helps search engines
-  // show rich details for stock listings.
+  // Per-page metadata (title / description / canonical / OG). Without this the
+  // batch pages — the highest-intent, most-linkable URLs on the site — inherit
+  // the homepage's tags. Values fall back until the batch loads, then refresh.
+  useSeo({
+    title:       batch ? `${batch.title} — Batch ${batch.batchNumber}` : 'Stock',
+    description: batch
+      ? (batch.description || batch.specs
+          || `Wholesale ${batch.category} — batch ${batch.batchNumber}, ${batch.quantity} units, at trade prices.`
+        ).slice(0, 160)
+      : undefined,
+    path:    `/available-stock/${slug}`,
+    ogImage: batch?.images?.[0] ? getImageUrl(batch.images[0]) : undefined,
+    ogType:  'product',
+  });
+
+  // Structured data (JSON-LD) for this batch: a Product node plus a
+  // BreadcrumbList mirroring the visible breadcrumb.
   useEffect(() => {
     if (!batch) return;
     const img = batch.images?.[0] ? getImageUrl(batch.images[0]) : undefined;
-    const condition = batch.grade && batch.grade !== 'mixed'
+    const url = `https://www.alswholesale.co.uk/available-stock/${batch.slug}`;
+    // Only claim "refurbished" for tested, graded stock; anything else is used.
+    // Publishing RefurbishedCondition on a batch the page labels "Untested"
+    // would contradict the visible content.
+    const condition = batch.tested && batch.grade && batch.grade !== 'mixed'
       ? 'https://schema.org/RefurbishedCondition'
       : 'https://schema.org/UsedCondition';
-    const data = {
+    const product = {
       '@context': 'https://schema.org',
       '@type': 'Product',
       name: batch.title,
@@ -202,20 +222,31 @@ export default function BatchDetailPage() {
       itemCondition: condition,
       ...(batch.brand ? { brand: { '@type': 'Brand', name: batch.brand } } : {}),
       ...(img ? { image: img } : {}),
-      ...(batch.price > 0 ? {
-        offers: {
-          '@type': 'Offer',
-          priceCurrency: batch.currency || 'GBP',
-          price: batch.price,
-          availability: batch.status === 'sold'
-            ? 'https://schema.org/SoldOut'
-            : 'https://schema.org/InStock',
-          url: `https://www.alswholesale.co.uk/available-stock/${batch.slug}`,
-        },
-      } : {}),
+      // Availability is visible on the page (the status badge), so it is safe
+      // to publish. Price is deliberately login-gated and NOT shown to logged
+      // out visitors or crawlers, so it is omitted here — publishing a price
+      // that the page hides would violate structured-data policy.
+      offers: {
+        '@type': 'Offer',
+        priceCurrency: batch.currency || 'GBP',
+        availability: batch.status === 'sold'
+          ? 'https://schema.org/SoldOut'
+          : 'https://schema.org/InStock',
+        url,
+      },
     };
-    setJsonLd('ld-product', data);
-    return () => removeJsonLd('ld-product');
+    const breadcrumb = {
+      '@context': 'https://schema.org',
+      '@type': 'BreadcrumbList',
+      itemListElement: [
+        { '@type': 'ListItem', position: 1, name: 'Home', item: 'https://www.alswholesale.co.uk/' },
+        { '@type': 'ListItem', position: 2, name: 'Available stock', item: 'https://www.alswholesale.co.uk/available-stock' },
+        { '@type': 'ListItem', position: 3, name: `${batch.batchNumber} — ${batch.title}`, item: url },
+      ],
+    };
+    setJsonLd('ld-product', product);
+    setJsonLd('ld-breadcrumb', breadcrumb);
+    return () => { removeJsonLd('ld-product'); removeJsonLd('ld-breadcrumb'); };
   }, [batch]);
 
   if (loading) return (
@@ -534,7 +565,7 @@ export default function BatchDetailPage() {
                 <Link key={b._id} to={`/available-stock/${b.slug}`} className="related-card">
                   <div className="rc-thumb">
                     {b.images?.[0]
-                      ? <img src={getImageUrl(b.images[0])} alt={b.title} />
+                      ? <img src={getImageUrl(b.images[0])} alt={b.title} loading="lazy" decoding="async" />
                       : <span>📦</span>}
                   </div>
                   <div className="rc-body">

@@ -1,8 +1,9 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import api from '../api/axios';
 import { useAuth } from '../context/AuthContext';
 import { whatsappLink } from '../config/whatsapp';
 import useSeo from '../hooks/useSeo';
+import { setJsonLd, removeJsonLd } from '../utils/jsonLd';
 import './ContactPage.css';
 
 const FAQ = [
@@ -57,6 +58,20 @@ function FaqItem({ q, a }) {
 export default function ContactPage() {
   useSeo({ title: 'Contact Us', description: 'Get in touch with A.L.S Trade for wholesale IT hardware enquiries by phone, email, or WhatsApp.', path: '/contact' });
   const { user } = useAuth();
+
+  // FAQPage structured data, generated from the same Q&A the page renders.
+  useEffect(() => {
+    setJsonLd('ld-faq', {
+      '@context': 'https://schema.org',
+      '@type': 'FAQPage',
+      mainEntity: FAQ.map(({ q, a }) => ({
+        '@type': 'Question',
+        name: q,
+        acceptedAnswer: { '@type': 'Answer', text: a },
+      })),
+    });
+    return () => removeJsonLd('ld-faq');
+  }, []);
 
   const [form, setForm] = useState({
     name:        user?.name        || '',
