@@ -1,5 +1,7 @@
+import { useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import useSeo from '../hooks/useSeo';
+import { setJsonLd, removeJsonLd } from '../utils/jsonLd';
 import './HowItWorksPage.css';
 import { useAuth } from '../context/AuthContext';
 
@@ -157,6 +159,20 @@ function FaqItem({ q, a }) {
 export default function HowItWorksPage() {
   useSeo({ title: 'How It Works', description: 'See how buying wholesale IT hardware from A.L.S Trade works, from enquiry to delivery, for registered businesses.', path: '/how-it-works' });
   const { user } = useAuth();
+
+  // FAQPage structured data, generated from the same Q&A the page renders.
+  useEffect(() => {
+    setJsonLd('ld-faq', {
+      '@context': 'https://schema.org',
+      '@type': 'FAQPage',
+      mainEntity: FAQS.map(({ q, a }) => ({
+        '@type': 'Question',
+        name: q,
+        acceptedAnswer: { '@type': 'Answer', text: a },
+      })),
+    });
+    return () => removeJsonLd('ld-faq');
+  }, []);
   return (
     <main className="hiw-page">
 

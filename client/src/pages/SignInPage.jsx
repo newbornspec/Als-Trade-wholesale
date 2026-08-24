@@ -3,9 +3,11 @@ import { Link, useNavigate, useLocation } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 import api from '../api/axios';
 import { whatsappLink } from '../config/whatsapp';
+import useSeo from '../hooks/useSeo';
 import './AuthPages.css';
 
 export default function SignInPage() {
+  useSeo({ title: 'Log in', description: 'Log in to your A.L.S Trade account to view wholesale prices and download product lists.', path: '/sign-in', noIndex: true });
   const { login }  = useAuth();
   const navigate   = useNavigate();
   const location   = useLocation();

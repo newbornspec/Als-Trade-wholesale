@@ -2,10 +2,12 @@ import { useEffect, useState } from 'react';
 import { useSearchParams, Link, useNavigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 import api from '../api/axios';
+import useSeo from '../hooks/useSeo';
 import './AuthPages.css';
 import './VerifyEmailPage.css';
 
 export default function VerifyEmailPage() {
+  useSeo({ title: 'Verify email', path: '/verify-email', noIndex: true });
   const [searchParams]  = useSearchParams();
   const { login }       = useAuth();
   const navigate        = useNavigate();

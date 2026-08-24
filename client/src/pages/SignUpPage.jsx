@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 import api from '../api/axios';
+import useSeo from '../hooks/useSeo';
 import './AuthPages.css';
 import './SignUpPage.css';
 
@@ -34,6 +35,7 @@ const COUNTRIES = [
 ];
 
 export default function SignUpPage() {
+  useSeo({ title: 'Register free', description: 'Create a free A.L.S Trade business account to view wholesale prices and enquire about bulk IT hardware.', path: '/sign-up', noIndex: true });
   const { user } = useAuth();
   const navigate  = useNavigate();
 

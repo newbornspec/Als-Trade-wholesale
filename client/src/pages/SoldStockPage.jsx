@@ -4,6 +4,7 @@ import { useAuth } from '../context/AuthContext';
 import api from '../api/axios';
 import { getImageUrl } from '../utils/imageUrl';
 import useSeo from '../hooks/useSeo';
+import { setJsonLd, removeJsonLd } from '../utils/jsonLd';
 import './SoldStockPage.css';
 
 const CATEGORIES = [
@@ -35,7 +36,7 @@ function SoldCard({ batch, index }) {
       {/* Thumbnail */}
       <div className="sc-thumb">
         {batch.images?.[0]
-          ? <img src={getImageUrl(batch.images[0])} alt={batch.title} />
+          ? <img src={getImageUrl(batch.images[0])} alt={batch.title} loading="lazy" decoding="async" />
           : <span className="sc-thumb-icon">{CAT_ICON[batch.category] || '📦'}</span>
         }
         <span className="sc-sold-tag">Sold</span>
@@ -69,7 +70,7 @@ function SoldCard({ batch, index }) {
 
 /* ── Main page ─────────────────────────────────────────────────── */
 export default function SoldStockPage() {
-  useSeo({ title: 'Sold Stock', description: 'Recently sold batches of wholesale IT hardware, a snapshot of the stock A.L.S Trade moves for trade buyers.', path: '/sold-stock' });
+  useSeo({ title: 'Recently Sold Wholesale IT Stock', description: 'Recently sold batches of wholesale IT hardware — a snapshot of the laptops, computers and monitors A.L.S Trade moves for trade buyers.', path: '/sold-stock' });
   const { user } = useAuth();
   const [allBatches,  setAllBatches]  = useState([]);
   const [loading,     setLoading]     = useState(true);
@@ -85,6 +86,21 @@ export default function SoldStockPage() {
       .catch(() => setError('Could not load sold stock.'))
       .finally(() => setLoading(false));
   }, []);
+
+  useEffect(() => {
+    if (!allBatches.length) return;
+    setJsonLd('ld-itemlist', {
+      '@context': 'https://schema.org',
+      '@type': 'ItemList',
+      itemListElement: allBatches.slice(0, 50).map((b, i) => ({
+        '@type': 'ListItem',
+        position: i + 1,
+        url: `https://www.alswholesale.co.uk/available-stock/${b.slug}`,
+        name: b.title,
+      })),
+    });
+    return () => removeJsonLd('ld-itemlist');
+  }, [allBatches]);
 
   const results = useCallback(() => {
     let list = [...allBatches];
