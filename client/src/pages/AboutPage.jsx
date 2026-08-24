@@ -1,60 +1,13 @@
 import { Link } from 'react-router-dom';
-import { useEffect, useRef, useState } from 'react';
 import { whatsappLink } from '../config/whatsapp';
 import useSeo from '../hooks/useSeo';
+import useCountUp from '../hooks/useCountUp';
 import './AboutPage.css';
 
-function useCountUp(target, duration = 1800, start = false) {
-  const [count, setCount] = useState(0);
-  useEffect(() => {
-    if (!start) return;
-
-    const reduced = window.matchMedia?.('(prefers-reduced-motion: reduce)').matches;
-    const dur = reduced ? 0 : duration;
-
-    let frame = 0;
-    let startTime = null;
-    const step = (timestamp) => {
-      if (startTime === null) startTime = timestamp;
-      const progress = dur > 0 ? Math.min((timestamp - startTime) / dur, 1) : 1;
-      const eased = 1 - Math.pow(1 - progress, 3);
-      setCount(Math.round(eased * target));
-      if (progress < 1) frame = requestAnimationFrame(step);
-    };
-    frame = requestAnimationFrame(step);
-
-    /* rAF is paused in background tabs, so the numbers would sit on 0 until
-       the tab is focused. Snap to the real value if the frames never came. */
-    const safety = setTimeout(() => setCount(target), dur + 400);
-
-    return () => { cancelAnimationFrame(frame); clearTimeout(safety); };
-  }, [start, target, duration]);
-  return count;
-}
-
+/* This row sits well down the page, so it counts on scroll with no timed
+   fallback — the numbers should not run past a reader who never sees them. */
 function AnimatedStat({ target, suffix, label, delay = 0 }) {
-  const [started, setStarted] = useState(false);
-  const ref = useRef(null);
-  const count = useCountUp(target, 1800, started);
-  useEffect(() => {
-    const el = ref.current;
-    let observer = null;
-
-    /* The stagger delay must not swallow the observer cleanup — returning it
-       from inside the timeout discarded it, so the observer outlived unmount.
-       Start on any overlap too: a third of the row had to be visible before,
-       which the row never reached on short viewports. */
-    const timer = setTimeout(() => {
-      if (!el || typeof IntersectionObserver === 'undefined') { setStarted(true); return; }
-      observer = new IntersectionObserver(
-        ([entry]) => { if (entry.isIntersecting) { setStarted(true); observer.disconnect(); } },
-        { threshold: 0, rootMargin: '200px' }
-      );
-      observer.observe(el);
-    }, delay);
-
-    return () => { clearTimeout(timer); if (observer) observer.disconnect(); };
-  }, [delay]);
+  const { count, ref } = useCountUp(target, { duration: 1800, delay });
   const display = target >= 1000 ? Math.floor(count / 1000) + 'K' : count;
   return (
     <div className="number-item" ref={ref}>
