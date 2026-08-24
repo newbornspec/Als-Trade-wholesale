@@ -37,6 +37,9 @@ app.use(cors({
     else callback(new Error('Not allowed by CORS'));
   },
   credentials: true,
+  // The site is served from a different origin to this API, so a custom
+  // header stays invisible to browser JS unless it is named here.
+  exposedHeaders: ['X-Total-Count'],
 }));
 
 app.use(express.json())
