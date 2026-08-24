@@ -11,6 +11,26 @@ cloudinary.config({
 // Ceiling on ?limit so a caller cannot ask for an unbounded page.
 const MAX_PAGE_SIZE = 100;
 
+// Longest search term we will match on. Bounds the work per document.
+const MAX_SEARCH_LENGTH = 80;
+
+// Turns a user-supplied value into a literal, case-insensitive substring match.
+//
+// Feeding raw input to `new RegExp` let a caller send a pattern rather than a
+// search term. `?search=(a%2B)%2B%24` is a classic catastrophic-backtracking
+// pattern, and Mongo evaluates it against every document in the collection, so
+// a single request could pin the database. Escaping the metacharacters means
+// the term can only ever match itself, literally.
+//
+// Non-strings are rejected outright: Express parses `?brand[$ne]=x` into an
+// object, and query values must never be anything but text here.
+const literalMatch = (value) => {
+  if (typeof value !== 'string') return null;
+  const term = value.trim().slice(0, MAX_SEARCH_LENGTH);
+  if (!term) return null;
+  return new RegExp(term.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'), 'i');
+};
+
 const IMAGE_EXTS = ['.jpg','.jpeg','.jfif','.png','.webp','.gif','.bmp','.tiff','.tif','.heic','.heif'];
 const isImageFile = (originalname) => IMAGE_EXTS.includes(path.extname(originalname).toLowerCase());
 
@@ -72,10 +92,14 @@ const getAvailable = async (req, res) => {
   try {
     const { category, brand, tested, search, limit, page } = req.query;
     const filter = { status: 'available' };
-    if (category && category !== 'all') filter.category = category;
-    if (brand)  filter.brand  = new RegExp(brand,  'i');
+    // Only ever a string: an object here would reach the query as an operator.
+    if (typeof category === 'string' && category && category !== 'all') filter.category = category;
     if (tested) filter.tested = tested === 'true';
-    if (search) filter.title  = new RegExp(search, 'i');
+
+    const brandMatch  = literalMatch(brand);
+    const searchMatch = literalMatch(search);
+    if (brandMatch)  filter.brand = brandMatch;
+    if (searchMatch) filter.title = searchMatch;
 
     // Always report the full count for the filter, never just the page. It is
     // what lets a caller show "9 available" after fetching only three.
