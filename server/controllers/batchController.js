@@ -8,6 +8,9 @@ cloudinary.config({
   api_secret: process.env.CLOUDINARY_API_SECRET,
 });
 
+// Ceiling on ?limit so a caller cannot ask for an unbounded page.
+const MAX_PAGE_SIZE = 100;
+
 const IMAGE_EXTS = ['.jpg','.jpeg','.jfif','.png','.webp','.gif','.bmp','.tiff','.tif','.heic','.heif'];
 const isImageFile = (originalname) => IMAGE_EXTS.includes(path.extname(originalname).toLowerCase());
 
@@ -67,13 +70,29 @@ const uploadToCloudinary = (buffer, originalname, folder) => {
 /* ── GET /api/batches ─────────────────────────────────────────── */
 const getAvailable = async (req, res) => {
   try {
-    const { category, brand, tested, search } = req.query;
+    const { category, brand, tested, search, limit, page } = req.query;
     const filter = { status: 'available' };
     if (category && category !== 'all') filter.category = category;
     if (brand)  filter.brand  = new RegExp(brand,  'i');
     if (tested) filter.tested = tested === 'true';
     if (search) filter.title  = new RegExp(search, 'i');
-    const batches = await Batch.find(filter).sort('-createdAt');
+
+    // Always report the full count for the filter, never just the page. It is
+    // what lets a caller show "9 available" after fetching only three.
+    const total = await Batch.countDocuments(filter);
+    res.set('X-Total-Count', String(total));
+
+    let query = Batch.find(filter).sort('-createdAt');
+
+    // Paginate only when asked. Without ?limit the response is the same full
+    // array it has always been, so existing callers are unaffected.
+    const perPage = Math.min(Math.max(parseInt(limit, 10) || 0, 0), MAX_PAGE_SIZE);
+    if (perPage) {
+      const pageNum = Math.max(parseInt(page, 10) || 1, 1);
+      query = query.skip((pageNum - 1) * perPage).limit(perPage);
+    }
+
+    const batches = await query;
     const result  = batches.map(b => req.user ? b.toObject() : b.toPublic());
     res.json(result);
   } catch (err) {

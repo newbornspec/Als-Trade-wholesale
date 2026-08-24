@@ -70,10 +70,14 @@ export default function HomePage() {
   const [stats,          setStats]          = useState({ available: 0, sold: 0, countries: '20+' });
 
   useEffect(() => {
+    // Three cards is all this page shows, so fetch three. The real number of
+    // available batches comes back in a header rather than by counting a full
+    // download of every batch.
     api.get('/batches?limit=3')
-      .then(({ data }) => {
-        setLatestBatches(data.slice(0, 3));
-        setStats(s => ({ ...s, available: data.length }));
+      .then(({ data, headers }) => {
+        setLatestBatches(data);
+        const total = Number(headers['x-total-count']);
+        setStats(s => ({ ...s, available: Number.isFinite(total) ? total : data.length }));
       })
       .catch(() => {})
       .finally(() => setLoadingBatches(false));
