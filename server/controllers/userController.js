@@ -4,10 +4,14 @@ const nodemailer = require('nodemailer');
 const User       = require('../models/User');
 
 // ── Helper: generate JWT ───────────────────────────────────────────────────
-const generateToken = (id) =>
-  jwt.sign({ id }, process.env.JWT_SECRET, {
-    expiresIn: process.env.JWT_EXPIRES_IN || '30d',
-  });
+// The token carries the account's current tokenVersion so it can be revoked:
+// bumping the stored value makes every token signed with the old one fail.
+const generateToken = (user) =>
+  jwt.sign(
+    { id: user._id, tv: user.tokenVersion || 0 },
+    process.env.JWT_SECRET,
+    { expiresIn: process.env.JWT_EXPIRES_IN || '30d' }
+  );
 
 // ── Helper: generate a cryptographically secure random token ──────────────
 const generateVerifyToken = () => crypto.randomBytes(32).toString('hex');
@@ -147,7 +151,7 @@ const verifyEmailToken = async (req, res) => {
     await user.save();
 
     res.json({
-      token:       generateToken(user._id),
+      token:       generateToken(user),
       id:          user._id,
       name:        user.name,
       companyName: user.companyName,
@@ -216,7 +220,7 @@ const login = async (req, res) => {
     await user.save();
 
     res.json({
-      token:       generateToken(user._id),
+      token:       generateToken(user),
       id:          user._id,
       name:        user.name,
       companyName: user.companyName,
