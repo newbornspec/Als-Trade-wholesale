@@ -3,6 +3,7 @@ const cors = require('cors')
 const mongoose = require('mongoose')
 const dotenv = require('dotenv')
 const morgan = require('morgan')
+const helmet = require('helmet')
 const rateLimit = require('express-rate-limit')
 
 dotenv.config()
@@ -20,7 +21,21 @@ if (!process.env.RESEND_API_KEY) {
 }
 
 const app = express()
-app.set('trust proxy', 1) 
+app.set('trust proxy', 1)
+
+// ── Security headers ───────────────────────────────────────────────────────
+// These cover API responses. The pages people actually browse are served by
+// Vercel, not this process, so the site's CSP and clickjacking protection are
+// set in client/vercel.json — helmet here cannot reach them.
+app.use(helmet({
+  // The API returns JSON and the crawler HTML; a CSP on those does nothing
+  // useful, and having two sources of CSP invites drift. Vercel owns it.
+  contentSecurityPolicy: false,
+  // Default is same-origin, which would stop the site (a different origin)
+  // from loading batch images this API serves under /uploads.
+  crossOriginResourcePolicy: { policy: 'cross-origin' },
+  crossOriginEmbedderPolicy: false,
+}))
 // ... rest stays the same
 // ── Global Middleware ──────────────────────────────────────────────────────
 const allowedOrigins = [
