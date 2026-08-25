@@ -13,6 +13,18 @@ const getResend = () => {
   return resendClient;
 };
 
+// Escapes a value for interpolation into the HTML email bodies below.
+// Everything here comes from an unauthenticated request, so without this a
+// sender could put markup or a link into the notification that lands in the
+// sales inbox — the message body is the obvious vector, but the name, company
+// and phone fields are equally interpolated.
+const esc = (value) => String(value ?? '')
+  .replace(/&/g, '&amp;')
+  .replace(/</g, '&lt;')
+  .replace(/>/g, '&gt;')
+  .replace(/"/g, '&quot;')
+  .replace(/'/g, '&#39;');
+
 // Address emails are sent FROM — must be on a domain verified in Resend
 const FROM_ADDRESS  = process.env.EMAIL_FROM  || 'ALS Trade <Sales@alswholesale.co.uk>';
 // Address enquiry notifications are sent TO (your inbox)
@@ -41,7 +53,7 @@ const sendEnquiry = async (req, res) => {
       const batch = await Batch.findOne({ slug: batchSlug }).select('batchNumber title');
       if (batch) {
         batchRef  = batch._id;
-        batchInfo = `<p><strong>Re batch:</strong> ${batch.batchNumber} — ${batch.title}</p>`;
+        batchInfo = `<p><strong>Re batch:</strong> ${esc(batch.batchNumber)} — ${esc(batch.title)}</p>`;
       }
     }
     await Enquiry.create({ name, companyName, phone, email, message, batchRef });
@@ -81,19 +93,20 @@ const sendEnquiryEmails = async ({ name, companyName, phone, email, message, bat
     from:    FROM_ADDRESS,
     to:      NOTIFY_TO,
     replyTo: email,
-    subject: `New enquiry — ${name}${companyName ? ` (${companyName})` : ''}`,
+    // Strip CR/LF so a crafted name cannot inject extra mail headers.
+    subject: `New enquiry — ${name}${companyName ? ` (${companyName})` : ''}`.replace(/[\r\n]+/g, ' ').slice(0, 200),
     html: `
         <div style="font-family: sans-serif; max-width: 600px;">
           <h2 style="color: #1a1a1a;">New enquiry via A.L.S Trade  website</h2>
           ${batchInfo}
           <table style="width:100%; border-collapse:collapse;">
-            <tr><td style="padding:8px 0; color:#666; width:130px;">Name</td><td style="padding:8px 0;"><strong>${name}</strong></td></tr>
-            <tr><td style="padding:8px 0; color:#666;">Company</td><td style="padding:8px 0;">${companyName || '—'}</td></tr>
-            <tr><td style="padding:8px 0; color:#666;">Phone</td><td style="padding:8px 0;">${phone}</td></tr>
-            <tr><td style="padding:8px 0; color:#666;">Email</td><td style="padding:8px 0;"><a href="mailto:${email}">${email}</a></td></tr>
+            <tr><td style="padding:8px 0; color:#666; width:130px;">Name</td><td style="padding:8px 0;"><strong>${esc(name)}</strong></td></tr>
+            <tr><td style="padding:8px 0; color:#666;">Company</td><td style="padding:8px 0;">${esc(companyName) || '—'}</td></tr>
+            <tr><td style="padding:8px 0; color:#666;">Phone</td><td style="padding:8px 0;">${esc(phone)}</td></tr>
+            <tr><td style="padding:8px 0; color:#666;">Email</td><td style="padding:8px 0;">${esc(email)}</td></tr>
           </table>
           <div style="margin-top:16px; padding:16px; background:#f5f5f5; border-radius:8px;">
-            <p style="margin:0; color:#333;">${message.replace(/\n/g, '<br/>')}</p>
+            <p style="margin:0; color:#333;">${esc(message).replace(/\n/g, '<br/>')}</p>
           </div>
         </div>
       `,
@@ -106,7 +119,7 @@ const sendEnquiryEmails = async ({ name, companyName, phone, email, message, bat
     subject: 'We received your message — A.L.S Trade',
     html: `
         <div style="font-family: sans-serif; max-width: 600px;">
-          <h2>Thank you, ${name}!</h2>
+          <h2>Thank you, ${esc(name)}!</h2>
           <p>We have received your message and will contact you as soon as possible.</p>
           <p>In the meantime you can also reach us directly:</p>
           <ul>
