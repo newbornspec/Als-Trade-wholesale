@@ -1,7 +1,10 @@
-/* ── Footer: dark rounded card on the light page ── */
+/* ── Footer: bordered card floating inside a full-width dark zone ──
+   The zone matches the site's dark CTA band (--gray-800) so the two flow
+   together with no seam, instead of the card looking marooned on white. */
 .footer {
   margin-top: auto;
-  padding: 1.5rem;
+  background: var(--gray-800);
+  padding: 2rem 1.5rem;
 }
 
 .footer-card {
