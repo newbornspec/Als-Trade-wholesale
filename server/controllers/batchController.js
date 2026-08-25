@@ -192,7 +192,19 @@ const createBatch = async (req, res) => {
 /* ── PUT /api/batches/:id ─────────────────────────────────────── */
 const updateBatch = async (req, res) => {
   try {
-    const updates = { ...req.body };
+    // Copy only fields that are meant to be editable. Spreading req.body sent
+    // whatever the caller supplied straight into findByIdAndUpdate, so a
+    // request could set slug, soldAt, currency or _id — or a key beginning
+    // with $, which Mongo would read as an update operator rather than a
+    // field. Everything not named here is ignored.
+    const EDITABLE = [
+      'batchNumber', 'title', 'quantity', 'category', 'brand', 'description',
+      'specs', 'grade', 'tested', 'hasList', 'price', 'status', 'moq',
+    ];
+    const updates = {};
+    for (const key of EDITABLE) {
+      if (req.body[key] !== undefined) updates[key] = req.body[key];
+    }
     if (updates.moq) updates.moq = Number(updates.moq);
 
     const newImages = [];
@@ -207,11 +219,15 @@ const updateBatch = async (req, res) => {
       }
     }
 
-    // Handle existing images sent from frontend
-    if (updates.existingImages !== undefined) {
-      const kept = Array.isArray(updates.existingImages)
-        ? updates.existingImages
-        : updates.existingImages ? [updates.existingImages] : [];
+    // Handle existing images sent from frontend. These two are instructions
+    // from the form rather than stored fields, so they are read from the body
+    // directly and never copied into the update.
+    const { existingImages, removeFile } = req.body;
+
+    if (existingImages !== undefined) {
+      const kept = Array.isArray(existingImages)
+        ? existingImages
+        : existingImages ? [existingImages] : [];
       updates.images = [...kept, ...newImages];
     } else if (newImages.length > 0) {
       const existing = await Batch.findById(req.params.id).select('images');
@@ -219,14 +235,10 @@ const updateBatch = async (req, res) => {
     }
 
     // Handle file removal
-    if (updates.removeFile === 'true') {
+    if (removeFile === 'true') {
       updates.productListFile     = null;
       updates.productListFileName = null;
     }
-
-    // Clean up frontend-only fields
-    delete updates.existingImages;
-    delete updates.removeFile;
 
     const batch = await Batch.findByIdAndUpdate(req.params.id, updates, {
       new: true, runValidators: true,
