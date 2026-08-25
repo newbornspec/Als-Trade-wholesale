@@ -13,41 +13,53 @@
   background: var(--ink);
   border: 1px solid rgba(255, 255, 255, 0.08);
   border-radius: var(--radius-lg);
-  padding: 2rem 2.5rem 1.25rem;
+  padding: 2rem 2rem 1.25rem;
   color: #9aa4b2;
 }
 
-/* ── Top row ── */
+/* ── Top row ──
+   Three columns on one line. Nothing wraps and nothing is allowed to
+   squeeze: the row is nowrap, and the nav and contact columns hold their
+   intrinsic size. Below the breakpoint the row stacks instead — that
+   switch happens while everything still fits, never by compressing. */
 .footer-top {
   display: flex;
   align-items: flex-start;
   justify-content: space-between;
-  gap: 2rem;
-  flex-wrap: wrap;
+  flex-wrap: nowrap;
+  gap: 1.5rem;
 }
 
 /* Brand */
+.footer-brand {
+  flex: 0 1 auto;
+  min-width: 0;
+}
 .footer-brand-row {
   display: flex;
   align-items: center;
-  gap: 1.25rem;
+  gap: 1rem;
 }
 .footer-logo-img {
-  height: 40px;
+  height: 38px;
   width: auto;
   object-fit: contain;
+  flex-shrink: 0;
 }
 .footer-brand-sep {
   width: 1px;
-  height: 34px;
+  height: 32px;
   background: rgba(255, 255, 255, 0.14);
   flex-shrink: 0;
 }
+/* Two lines by design ("…bulk IT / hardware."), so it is given exactly the
+   width that break needs and is not allowed to shrink below it. */
 .footer-tagline {
   font-size: 14px;
   line-height: 1.5;
   color: #9aa4b2;
-  max-width: 220px;
+  width: 11.5rem;
+  flex-shrink: 0;
   margin: 0;
 }
 
@@ -62,44 +74,54 @@
   color: #fff;
   font-size: 14px;
   font-weight: 600;
+  white-space: nowrap;
   border-radius: 999px;
   transition: var(--t);
 }
 .footer-wa:hover { background: #1eb257; transform: translateY(-1px); }
 
-/* Nav */
+/* Nav.
+   Every link carries the same padding and a transparent border, so the
+   active pill only turns its border visible — the row measures the same
+   width on every page and the layout never shifts between routes. */
 .footer-nav {
   display: flex;
   align-items: center;
-  flex-wrap: wrap;
-  gap: 0.5rem 1.5rem;
-  padding-top: 0.5rem;
+  flex-wrap: nowrap;
+  flex-shrink: 0;
+  gap: 0.5rem;
+  padding-top: 0.25rem;
 }
 .footer-nav a {
   font-size: 15px;
+  line-height: 1.4;
   color: #c3cad6;
-  padding: 6px 4px;
+  white-space: nowrap;
+  padding: 6px 10px;
+  border: 1px solid transparent;
   border-radius: 8px;
-  transition: color var(--t);
+  transition: color var(--t), border-color var(--t);
 }
 .footer-nav a:hover { color: #fff; }
 .footer-nav a.active {
   color: #eafff6;
-  padding: 6px 14px;
-  border: 1px solid #3ddc97;
+  border-color: #3ddc97;
 }
 
-/* Contact */
+/* Contact — must never wrap or break across lines. */
 .footer-contact {
   display: flex;
   flex-direction: column;
   gap: 4px;
+  flex-shrink: 0;
   text-align: right;
-  padding-top: 0.5rem;
+  padding-top: 0.25rem;
 }
 .footer-contact a {
   font-size: 15px;
+  line-height: 1.5;
   color: #c3cad6;
+  white-space: nowrap;
   transition: color var(--t);
 }
 .footer-contact a:first-child { color: #e5e9f0; }
@@ -115,13 +137,13 @@
 /* ── Bottom bar ── */
 .footer-bottom {
   display: grid;
-  grid-template-columns: 1fr auto 1fr;
+  grid-template-columns: auto 1fr auto;
   align-items: center;
-  gap: 1rem;
+  gap: 1.5rem;
   font-size: 13px;
   color: #6b7683;
 }
-.footer-copy { margin: 0; justify-self: start; }
+.footer-copy { margin: 0; justify-self: start; white-space: nowrap; }
 .footer-address { margin: 0; justify-self: center; text-align: center; }
 .footer-account { justify-self: end; }
 .footer-account a,
@@ -133,23 +155,61 @@
   padding: 0;
   cursor: pointer;
   font-family: inherit;
+  white-space: nowrap;
   transition: color var(--t);
 }
 .footer-account a:hover,
 .footer-link-btn:hover { color: #fff; }
 
-/* ── Responsive ── */
-@media (max-width: 860px) {
+/* ── Below the point where the one-line row still fits, stack it.
+   Stacking happens before anything is compressed, so the desktop
+   arrangement is never shown in a squeezed state. ── */
+/* The one-line row needs a 1216px viewport (1104px of content inside a
+   1200px card). Stack from just above that, so the row is never rendered
+   in a squeezed state. */
+@media (max-width: 1219px) {
+  .footer-top {
+    flex-wrap: wrap;
+    gap: 1.5rem 2rem;
+  }
+  .footer-nav {
+    flex-wrap: wrap;
+    gap: 0.5rem 0.75rem;
+    padding-top: 0;
+  }
+  .footer-contact {
+    text-align: left;
+    padding-top: 0;
+  }
+}
+
+@media (max-width: 760px) {
+  .footer { padding: 1.5rem 1rem; }
   .footer-card { padding: 1.75rem 1.5rem 1rem; }
   .footer-top { flex-direction: column; gap: 1.5rem; }
-  .footer-nav, .footer-contact { padding-top: 0; }
-  .footer-contact { text-align: left; }
   .footer-bottom {
     grid-template-columns: 1fr;
     justify-items: start;
     gap: 0.5rem;
-    text-align: left;
   }
-  .footer-copy, .footer-address, .footer-account { justify-self: start; }
-  .footer-address { text-align: left; }
+  .footer-copy,
+  .footer-address,
+  .footer-account { justify-self: start; }
+  .footer-address { text-align: left; white-space: normal; }
+}
+
+@media (max-width: 420px) {
+  .footer-brand-row {
+    gap: 0.75rem;
+    flex-wrap: wrap;
+  }
+  /* Releasing the fixed width here also has to release flex-shrink, or the
+     tagline claims its full max-content width and overflows the card. */
+  .footer-tagline {
+    width: auto;
+    flex: 1 1 auto;
+    min-width: 0;
+    font-size: 13px;
+  }
+  .footer-copy { white-space: normal; }
 }
