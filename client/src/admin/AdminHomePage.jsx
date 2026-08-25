@@ -255,27 +255,6 @@ export default function AdminHomePage() {
 
         </div>
 
-        {/* ── Platform status strip ─────────────────────── */}
-        <div className="ah-status-strip">
-          <div className="ah-ss-item">
-            <div className="ah-ss-dot green" />
-            <span>Frontend live at alswholesale.co.uk</span>
-          </div>
-          <div className="ah-ss-item">
-            <div className="ah-ss-dot green" />
-            <span>API live at https://als-trade-wholesale-production.up.railway.app/api/batches</span>
-          </div>
-          <div className="ah-ss-item">
-            <div className="ah-ss-dot green" />
-            <span>MongoDB connected</span>
-          </div>
-          <div className="ah-ss-item" style={{marginLeft:'auto'}}>
-            <span style={{color:'var(--gray-500)',fontSize:'12px'}}>
-              Logged in as <strong style={{color:'var(--white)'}}>{user?.companyName}</strong>
-            </span>
-          </div>
-        </div>
-
       </div>
     </div>
   );
