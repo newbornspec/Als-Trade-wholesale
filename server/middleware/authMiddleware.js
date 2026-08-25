@@ -42,7 +42,13 @@ const softAuth = async (req, res, next) => {
     try {
       const token   = auth.split(' ')[1];
       const decoded = jwt.verify(token, process.env.JWT_SECRET);
-      req.user = await User.findById(decoded.id).select('-password');
+      const user    = await User.findById(decoded.id).select('-password');
+
+      // Mirror the approval check protect enforces. Without it a de-approved
+      // account still counted as logged in here, so it kept seeing trade
+      // prices on the public reads even though every protected route had
+      // started refusing it.
+      req.user = user && user.isApproved ? user : null;
     } catch {
       // Invalid token — just ignore, treat as guest
       req.user = null;

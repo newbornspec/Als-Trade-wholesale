@@ -67,6 +67,17 @@ const authLimiter = rateLimit({
 app.use('/api/users/login',    authLimiter)
 app.use('/api/users/register', authLimiter)
 
+// The contact route is unauthenticated and sends mail from our verified
+// domain — the confirmation goes to whatever address the sender types, so at
+// 100/15min it could be used to push mail at arbitrary recipients. A genuine
+// enquirer sends one message, not five.
+const contactLimiter = rateLimit({
+  windowMs: 15 * 60 * 1000,
+  max: 5,
+  message: { message: 'Too many enquiries sent. Please try again in 15 minutes.' },
+})
+app.use('/api/contact', contactLimiter)
+
 // ── MongoDB ────────────────────────────────────────────────────────────────
 mongoose.connect(mongoUri())
   .then(() => console.log('MongoDB connected'))
