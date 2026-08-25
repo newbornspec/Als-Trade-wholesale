@@ -1,5 +1,5 @@
 import { Routes, Route } from 'react-router-dom';
-import { AuthProvider } from './context/AuthContext';
+import { AuthProvider } from './context/AuthProvider';
 import Navbar    from './components/Navbar';
 import Footer    from './components/Footer';
 import WhatsAppButton from './components/WhatsAppButton';

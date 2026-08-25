@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { useSearchParams, Link, useNavigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 import api from '../api/axios';
@@ -13,14 +13,18 @@ export default function VerifyEmailPage() {
   const navigate        = useNavigate();
   const token           = searchParams.get('token');
 
-  const [status,   setStatus]   = useState('verifying'); // verifying | success | invalid | expired
+  // Derived rather than corrected inside the effect: with no token the answer
+  // is known at first render, so this also removes a one-frame flash of the
+  // "Verifying…" spinner on a token-less URL.
+  const [status,   setStatus]   = useState(() => (token ? 'verifying' : 'invalid')); // verifying | success | invalid | expired
   const [email,    setEmail]    = useState('');
   const [resent,   setResent]   = useState(false);
   const [resending, setResending] = useState(false);
   const [resendErr, setResendErr] = useState('');
+  const redirectTimer = useRef(null);
 
   useEffect(() => {
-    if (!token) { setStatus('invalid'); return; }
+    if (!token) return;
 
     api.get(`/users/verify-email?token=${token}`)
       .then(({ data }) => {
@@ -30,7 +34,9 @@ export default function VerifyEmailPage() {
         );
         setStatus('success');
         // Brief pause so the user sees the success screen, then redirect
-        setTimeout(() => navigate('/available-stock', { replace: true }), 2500);
+        redirectTimer.current = setTimeout(
+          () => navigate('/available-stock', { replace: true }), 2500
+        );
       })
       .catch(err => {
         const resp = err.response?.data;
@@ -41,7 +47,11 @@ export default function VerifyEmailPage() {
           setStatus('invalid');
         }
       });
-  }, [token]);
+
+    // Without this the pending redirect fires after unmount if the user
+    // navigates away during the 2.5s success pause.
+    return () => clearTimeout(redirectTimer.current);
+  }, [token, login, navigate]);
 
   const resendLink = async () => {
     if (!email) return;

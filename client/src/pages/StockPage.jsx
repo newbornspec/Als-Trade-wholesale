@@ -104,10 +104,9 @@ export default function StockPage() {
 
   const activeCategory = searchParams.get('category') || 'all';
 
-  /* Fetch once on mount */
+  /* Fetch once on mount. loading already starts true and error empty, so
+     re-setting them here only triggered an extra render. */
   useEffect(() => {
-    setLoading(true);
-    setError('');
     api.get('/batches')
       .then(({ data }) => setAllBatches(data))
       .catch(() => setError('Could not load stock. Please check your connection.'))

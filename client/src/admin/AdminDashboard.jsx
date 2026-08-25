@@ -3,6 +3,19 @@ import { Link } from 'react-router-dom';
 import api from '../api/axios';
 import './AdminPages.css';
 
+// Declared at module level. Defining it inside the component made it a new
+// component type on every render, so React unmounted and remounted all four
+// cards each time state changed.
+function StatCard({ label, value, sub, accent }) {
+  return (
+    <div className={`stat-card ${accent ? 'accent' : ''}`}>
+      <span className="sc-value">{value}</span>
+      <span className="sc-label">{label}</span>
+      {sub && <span className="sc-sub">{sub}</span>}
+    </div>
+  );
+}
+
 export default function AdminDashboard() {
   const [stats,   setStats]   = useState(null);
   const [recent,  setRecent]  = useState([]);
@@ -18,13 +31,8 @@ export default function AdminDashboard() {
     }).finally(() => setLoading(false));
   }, []);
 
-  const StatCard = ({ label, value, sub, accent }) => (
-    <div className={`stat-card ${accent ? 'accent' : ''}`}>
-      <span className="sc-value">{loading ? '…' : value}</span>
-      <span className="sc-label">{label}</span>
-      {sub && <span className="sc-sub">{sub}</span>}
-    </div>
-  );
+  // StatCard used to read `loading` from its closure; it is passed in now.
+  const show = (value) => (loading ? '…' : value);
 
   return (
     <div className="admin-page">
@@ -35,10 +43,10 @@ export default function AdminDashboard() {
 
       {/* Stats grid */}
       <div className="stats-grid">
-        <StatCard accent label="Available batches" value={stats?.availableBatches ?? '…'} sub="Currently for sale" />
-        <StatCard label="Sold batches"      value={stats?.soldBatches     ?? '…'} sub="All time" />
-        <StatCard label="Registered buyers" value={stats?.totalUsers      ?? '…'} sub="Company accounts" />
-        <StatCard label="Unread enquiries"  value={stats?.unreadEnquiries ?? '…'} sub="Need a reply" />
+        <StatCard accent label="Available batches" value={show(stats?.availableBatches ?? '…')} sub="Currently for sale" />
+        <StatCard label="Sold batches"      value={show(stats?.soldBatches     ?? '…')} sub="All time" />
+        <StatCard label="Registered buyers" value={show(stats?.totalUsers      ?? '…')} sub="Company accounts" />
+        <StatCard label="Unread enquiries"  value={show(stats?.unreadEnquiries ?? '…')} sub="Need a reply" />
       </div>
 
       {/* Quick actions */}

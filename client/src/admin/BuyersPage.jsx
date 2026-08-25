@@ -16,15 +16,14 @@ export default function BuyersPage() {
   const [deleting, setDeleting] = useState(null);
   const [expanded, setExpanded] = useState(null);
 
-  useEffect(() => { load(); }, []);
-
-  const load = () => {
-    setLoading(true);
+  // Inlined rather than calling a load() declared below: loading already
+  // starts true, so the fetch is the only work this needs to do.
+  useEffect(() => {
     api.get('/admin/users')
       .then(({ data }) => setBuyers(data))
       .catch(() => {})
       .finally(() => setLoading(false));
-  };
+  }, []);
 
   const handleDelete = async (e, id, name) => {
     e.stopPropagation();
