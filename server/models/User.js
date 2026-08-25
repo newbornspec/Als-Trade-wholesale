@@ -54,6 +54,15 @@ const userSchema = new mongoose.Schema(
       type:    Boolean,
       default: true,
     },
+    // Bumped to invalidate every token already issued to this account.
+    // A JWT is self-contained, so without this there is no way to revoke one
+    // before it expires — a leaked token stays valid for its full lifetime.
+    // Tokens carry the value they were signed with and are rejected once it
+    // no longer matches.
+    tokenVersion: {
+      type:    Number,
+      default: 0,
+    },
     lastLogin: {
       type: Date,
     },
