@@ -174,7 +174,7 @@ export default function HowItWorksPage() {
     return () => removeJsonLd('ld-faq');
   }, []);
   return (
-    <main className="hiw-page">
+    <main id="main" className="hiw-page">
 
       {/* ── Hero ─────────────────────────────────────────────── */}
       <header className="hiw-hero">

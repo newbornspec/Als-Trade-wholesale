@@ -84,7 +84,7 @@ export default function HomePage() {
   }, []);
 
   return (
-    <main className="home">
+    <main id="main" className="home">
 
       {/* ═══════════ HERO ═══════════════════════════════════════ */}
       <section className="hero">

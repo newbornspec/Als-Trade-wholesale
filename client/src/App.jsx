@@ -25,6 +25,10 @@ import BuyersPage        from './admin/BuyersPage';
 export default function App() {
   return (
     <AuthProvider>
+      {/* First focusable element on the page: lets keyboard and screen-reader
+          users jump past the nav straight to the content. Visible only when
+          focused. */}
+      <a href="#main" className="skip-link">Skip to main content</a>
       <Navbar />
       <Routes>
         <Route path="/"                      element={<HomePage />} />

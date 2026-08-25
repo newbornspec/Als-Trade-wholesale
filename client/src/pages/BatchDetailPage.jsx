@@ -260,7 +260,7 @@ export default function BatchDetailPage() {
   }, [batch]);
 
   if (loading) return (
-    <main className="detail-page">
+    <main id="main" className="detail-page">
       <div className="container detail-skeleton">
         <div className="sk sk-gallery" />
         <div className="sk-body">
@@ -274,7 +274,7 @@ export default function BatchDetailPage() {
   );
 
   if (error === '404') return (
-    <main className="detail-page">
+    <main id="main" className="detail-page">
       <div className="container not-found">
         <h1>Batch not found</h1>
         <p>This batch may have been sold or removed.</p>
@@ -284,7 +284,7 @@ export default function BatchDetailPage() {
   );
 
   if (error) return (
-    <main className="detail-page">
+    <main id="main" className="detail-page">
       <div className="container not-found">
         <p>{error}</p>
         <button className="btn btn-outline" onClick={() => navigate(-1)}>Go back</button>
@@ -315,7 +315,7 @@ export default function BatchDetailPage() {
   };
 
   return (
-    <main className="detail-page">
+    <main id="main" className="detail-page">
 
       {/* Breadcrumb */}
       <div className="breadcrumb-bar">
