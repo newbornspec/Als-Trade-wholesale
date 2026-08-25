@@ -100,7 +100,7 @@ export default function ContactPage() {
   };
 
   return (
-    <main className="contact-page">
+    <main id="main" className="contact-page">
 
       {/* ── Hero ─────────────────────────────────────────────── */}
       <header className="contact-hero">

@@ -121,7 +121,7 @@ export default function SoldStockPage() {
   const totalUnits = allBatches.reduce((sum, b) => sum + (b.quantity || 0), 0);
 
   return (
-    <main className="sold-page">
+    <main id="main" className="sold-page">
 
       {/* ── Hero ─────────────────────────────────────────────── */}
       <header className="sold-hero">

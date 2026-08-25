@@ -227,3 +227,24 @@ button{cursor:pointer;font-family:var(--font-body)}
   transition:border-color var(--t);
 }
 .price-login:hover{border-color:var(--accent)}
+
+/* ── Skip to main content ─────────────────────────────
+   Off-screen until focused, then anchored top-left so a keyboard user can
+   bypass the navigation. */
+.skip-link {
+  position: absolute;
+  left: -9999px;
+  top: 0;
+  z-index: 1000;
+  padding: 12px 20px;
+  background: var(--ink);
+  color: var(--white);
+  font-size: 14px;
+  font-weight: 600;
+  border-radius: 0 0 var(--radius) 0;
+}
+.skip-link:focus {
+  left: 0;
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+}

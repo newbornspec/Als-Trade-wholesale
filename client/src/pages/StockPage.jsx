@@ -158,7 +158,7 @@ export default function StockPage() {
     cat === 'all' ? allBatches.length : allBatches.filter(b => b.category === cat).length;
 
   return (
-    <main className="stock-page">
+    <main id="main" className="stock-page">
 
       {/* ── Hero header ─────────────────────────────────────── */}
       <header className="stock-hero">

@@ -95,7 +95,7 @@ const TRADE = [
 export default function AboutPage() {
   useSeo({ title: 'About Us', description: 'A.L.S Trade is a UK-based wholesaler of bulk IT hardware, trading with registered businesses worldwide from Birmingham.', path: '/about-us' });
   return (
-    <main className="about-page">
+    <main id="main" className="about-page">
 
       <header className="about-hero">
         <div className="container">
