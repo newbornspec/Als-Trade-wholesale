@@ -4,6 +4,43 @@
       "source": "/sitemap.xml",
       "destination": "https://als-trade-wholesale-production.up.railway.app/sitemap.xml"
     },
+
+    {
+      "source": "/",
+      "has": [{ "type": "header", "key": "user-agent", "value": "(?i).*(facebookexternalhit|facebot|twitterbot|linkedinbot|whatsapp|slackbot|slack-imgproxy|telegrambot|discordbot|pinterest|redditbot|applebot|bingbot|skypeuripreview|vkshare|embedly|flipboard|tumblr|mastodon|bluesky|quora link preview).*" }],
+      "destination": "https://als-trade-wholesale-production.up.railway.app/prerender"
+    },
+    {
+      "source": "/available-stock",
+      "has": [{ "type": "header", "key": "user-agent", "value": "(?i).*(facebookexternalhit|facebot|twitterbot|linkedinbot|whatsapp|slackbot|slack-imgproxy|telegrambot|discordbot|pinterest|redditbot|applebot|bingbot|skypeuripreview|vkshare|embedly|flipboard|tumblr|mastodon|bluesky|quora link preview).*" }],
+      "destination": "https://als-trade-wholesale-production.up.railway.app/prerender/available-stock"
+    },
+    {
+      "source": "/available-stock/:slug",
+      "has": [{ "type": "header", "key": "user-agent", "value": "(?i).*(facebookexternalhit|facebot|twitterbot|linkedinbot|whatsapp|slackbot|slack-imgproxy|telegrambot|discordbot|pinterest|redditbot|applebot|bingbot|skypeuripreview|vkshare|embedly|flipboard|tumblr|mastodon|bluesky|quora link preview).*" }],
+      "destination": "https://als-trade-wholesale-production.up.railway.app/prerender/available-stock/:slug"
+    },
+    {
+      "source": "/sold-stock",
+      "has": [{ "type": "header", "key": "user-agent", "value": "(?i).*(facebookexternalhit|facebot|twitterbot|linkedinbot|whatsapp|slackbot|slack-imgproxy|telegrambot|discordbot|pinterest|redditbot|applebot|bingbot|skypeuripreview|vkshare|embedly|flipboard|tumblr|mastodon|bluesky|quora link preview).*" }],
+      "destination": "https://als-trade-wholesale-production.up.railway.app/prerender/sold-stock"
+    },
+    {
+      "source": "/how-it-works",
+      "has": [{ "type": "header", "key": "user-agent", "value": "(?i).*(facebookexternalhit|facebot|twitterbot|linkedinbot|whatsapp|slackbot|slack-imgproxy|telegrambot|discordbot|pinterest|redditbot|applebot|bingbot|skypeuripreview|vkshare|embedly|flipboard|tumblr|mastodon|bluesky|quora link preview).*" }],
+      "destination": "https://als-trade-wholesale-production.up.railway.app/prerender/how-it-works"
+    },
+    {
+      "source": "/about-us",
+      "has": [{ "type": "header", "key": "user-agent", "value": "(?i).*(facebookexternalhit|facebot|twitterbot|linkedinbot|whatsapp|slackbot|slack-imgproxy|telegrambot|discordbot|pinterest|redditbot|applebot|bingbot|skypeuripreview|vkshare|embedly|flipboard|tumblr|mastodon|bluesky|quora link preview).*" }],
+      "destination": "https://als-trade-wholesale-production.up.railway.app/prerender/about-us"
+    },
+    {
+      "source": "/contact",
+      "has": [{ "type": "header", "key": "user-agent", "value": "(?i).*(facebookexternalhit|facebot|twitterbot|linkedinbot|whatsapp|slackbot|slack-imgproxy|telegrambot|discordbot|pinterest|redditbot|applebot|bingbot|skypeuripreview|vkshare|embedly|flipboard|tumblr|mastodon|bluesky|quora link preview).*" }],
+      "destination": "https://als-trade-wholesale-production.up.railway.app/prerender/contact"
+    },
+
     { "source": "/(.*)", "destination": "/index.html" }
   ]
 }

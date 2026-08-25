@@ -93,6 +93,12 @@ app.use('/api/admin',   require('./routes/adminRoutes'))
 // https://www.alswholesale.co.uk/sitemap.xml (matching robots.txt).
 app.get('/sitemap.xml', require('./controllers/sitemapController').getSitemap)
 
+// Crawler HTML for social scrapers, which do not run the SPA's JavaScript.
+// Vercel rewrites matching user-agents here (see client/vercel.json).
+const { getPrerender } = require('./controllers/prerenderController')
+app.get('/prerender', getPrerender)
+app.get('/prerender/*', getPrerender)
+
 // ── Health check ───────────────────────────────────────────────────────────
 app.get('/api/health', (req, res) => {
   res.json({ status: 'OK', env: process.env.NODE_ENV, time: new Date() })
