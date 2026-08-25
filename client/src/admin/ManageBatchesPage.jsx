@@ -26,7 +26,6 @@ function EditDrawer({ batch, onClose, onSaved }) {
   const [existingImages, setExistingImages] = useState(batch.images || []);
   const [newImages,      setNewImages]      = useState([]);
   const [newPreviews,    setNewPreviews]    = useState([]);
-  const [removedImages,  setRemovedImages]  = useState([]);
 
   /* ── File state ── */
   const [existingFile,   setExistingFile]   = useState(batch.productListFile     || null);
@@ -52,9 +51,10 @@ function EditDrawer({ batch, onClose, onSaved }) {
     });
   };
 
-  /* ── Remove existing image ── */
+  /* ── Remove existing image ──
+     Only the kept list is sent; the server derives removals from it, so
+     there is nothing to track separately. */
   const removeExisting = url => {
-    setRemovedImages(prev => [...prev, url]);
     setExistingImages(prev => prev.filter(img => img !== url));
   };
 
@@ -425,14 +425,13 @@ export default function ManageBatchesPage() {
   const [working,  setWorking]  = useState(null);
   const [editing,  setEditing]  = useState(null);
 
-  useEffect(() => { load(); }, []);
-
-  const load = () => {
-    setLoading(true);
+  // Inlined rather than calling a load() declared below: loading already
+  // starts true, so the fetch is the only work this needs to do.
+  useEffect(() => {
     Promise.all([api.get('/batches'), api.get('/batches/sold')])
       .then(([a, s]) => setBatches([...a.data, ...s.data]))
       .finally(() => setLoading(false));
-  };
+  }, []);
 
   const markSold = async id => {
     setWorking(id);

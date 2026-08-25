@@ -165,9 +165,19 @@ export default function BatchDetailPage() {
   const [loading, setLoading] = useState(true);
   const [error,   setError]   = useState('');
 
-  useEffect(() => {
+  // Unlike the listing pages this reset does real work: moving from one batch
+  // to a related one keeps the component mounted, so loading must go back to
+  // true. Doing it during render for the new slug — React's documented way to
+  // adjust state when a prop changes — rather than after commit, which
+  // painted one frame of the previous batch before the skeleton appeared.
+  const [loadedSlug, setLoadedSlug] = useState(slug);
+  if (loadedSlug !== slug) {
+    setLoadedSlug(slug);
     setLoading(true);
     setError('');
+  }
+
+  useEffect(() => {
     window.scrollTo(0, 0);
     api.get(`/batches/${slug}`)
       .then(({ data }) => {

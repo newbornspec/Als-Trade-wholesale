@@ -9,14 +9,13 @@ export default function EnquiriesPage() {
   const [open,      setOpen]      = useState(null);
   const [deleting,  setDeleting]  = useState(null);
 
-  useEffect(() => { load(); }, []);
-
-  const load = () => {
-    setLoading(true);
+  // Inlined rather than calling a load() declared below: loading already
+  // starts true, so the fetch is the only work this needs to do.
+  useEffect(() => {
     api.get('/admin/enquiries')
       .then(({ data }) => setEnquiries(data))
       .finally(() => setLoading(false));
-  };
+  }, []);
 
   const markRead = async id => {
     await api.patch(`/admin/enquiries/${id}/read`);

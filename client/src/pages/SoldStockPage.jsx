@@ -79,8 +79,8 @@ export default function SoldStockPage() {
   const [search,      setSearch]      = useState('');
   const [sortBy,      setSortBy]      = useState('newest');
 
+  // loading already starts true, so setting it here only cost a render.
   useEffect(() => {
-    setLoading(true);
     api.get('/batches/sold')
       .then(({ data }) => setAllBatches(data))
       .catch(() => setError('Could not load sold stock.'))
